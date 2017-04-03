@@ -1,4 +1,11 @@
 const was = require( "./app.js" );
 
-was.setDispatcher( "/Users/changhokang/git/Nodejs/spring-summer/dispatcher", "/dispatcher.json" );
-was.setDefaultViewPath( __dirname + "/views" );
+var os = "windows";
+
+if( os === "windows" ){
+  was.setDispatcher( __dirname + "\\dispatcher", "dispatcher.json" );
+  was.setDefaultViewPath( __dirname + "\\views" );
+} else{
+  was.setDispatcher( __dirname + "/dispatcher", "dispatcher.json" );
+  was.setDefaultViewPath( __dirname + "/views" );
+}

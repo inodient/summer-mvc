@@ -1,0 +1,25 @@
+{
+  "GET" : [
+    {
+      "id": "welcome",
+      "path": "/welcome",
+      "controllerPath": "../controller",
+      "controller": "controller.js",
+      "controlFunction": "control",
+      "viewPath": "welcomeView",
+      "view": "welcome.ejs"
+    },
+    {
+      "id": "welcome2",
+      "path": "/welcome2",
+      "controllerPath": "../controller",
+      "controller": "controller-dispatcher.js",
+      "controlFunction": "dispatching",
+      "viewPath": "welcomeView",
+      "view": "welcome.ejs"
+    }
+  ],
+  "POST" : [
+
+  ]
+}

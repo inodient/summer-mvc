@@ -1,6 +1,12 @@
 const express = require( "express" );
 const app = express();
 
+const bodyParser = require( "body-parser" );
+app.use( bodyParser.urlencoded({extended : true}) );
+
+app.set( "view engine", "ejs" );
+app.engine( "html", require("ejs").renderFile );
+
 
 
 
@@ -20,11 +26,15 @@ exports.setDefaultViewPath = function( path ){
 app.get( "/*", (req, res) => {
   var mav = dispatcher.dispatching( req );
 
+  console.log( "mav.view : " + mav.view + ", mav.model : " + mav.model );
+
   res.render( mav.view, mav.model );
 } );
 
 app.post( "/*", (req, res) => {
   var mav = dispatcher.dispatching( req );
+
+  console.log( "mav.view : " + mav.view + ", mav.model : " + mav.model );
 
   res.render( mav.view, mav.model );
 } );

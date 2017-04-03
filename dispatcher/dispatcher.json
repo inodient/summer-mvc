@@ -12,14 +12,33 @@
     {
       "id": "welcome2",
       "path": "/welcome2",
-      "controllerPath": "..",
-      "controller": "controller.js",
+      "controllerPath": "../controller",
+      "controller": "controller-dispatcher.js",
+      "controlFunction": "dispatching",
+      "dispatcherPath": "",
+      "dispatcher": "controller-dispatcher.json",
+      "viewPath": "welcomeView",
+      "view": "welcomePost.ejs"
+    },
+    {
+      "id": "welcome3",
+      "path": "/welcome3",
+      "controllerPath": "../controller",
+      "controller": "controller-dispatcher.js",
+      "controlFunction": "control",
+      "viewPath": "",
+      "view": "welcomePost.ejs"
+    }
+  ],
+  "POST" : [
+    {
+      "id": "welcomePost",
+      "path": "/welcomePost",
+      "controllerPath": "../controller",
+      "controller": "controllerPost.js",
       "controlFunction": "control",
       "viewPath": "welcomeView",
       "view": "welcome.ejs"
     }
-  ],
-  "POST" : [
-
   ]
 }

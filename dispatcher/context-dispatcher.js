@@ -20,9 +20,16 @@ var ModelAndView = function( model, view ){
 exports.setDispatcher = function( path, file ){
   dispatchingInfo = require( "./dispatcher.json" );
 
+  var os = "windows";
+
   if( path ){
     if( file ){
-      dispatchingInfo = require( path + "/" + file );
+      if( os === "windows" ){
+        dispatchingInfo = require( path + "\\" + file );
+      } else{
+        dispatchingInfo = require( path + "/" + file );
+      }
+
     } else{
       dispatchingInfo = require( path );
     }
@@ -59,10 +66,28 @@ exports.dispatching = function( req ){
           controller = require( dispatchingInfo.GET[i].controller );
         }
 
-        var model = controller[ dispatchingInfo.GET[i].controlFunction ]( req );
+        var model = controller[ dispatchingInfo.GET[i].controlFunction ]( req, dispatchingInfo.GET[i].dispatcherPath, dispatchingInfo.GET[i].dispatcher );
 
         mav.setModel( model );
         mav.setView( dispatchingInfo.GET[i].viewPath + "/" + dispatchingInfo.GET[i].view );
+        break;
+      }
+    }
+  } else if( reqMethod.toUpperCase() === "POST" ){
+    for( var i=0; i<dispatchingInfo.POST.length; i++ ){
+      if( dispatchingInfo.POST[i].path === reqPath ){
+
+        var controller;
+        if( dispatchingInfo.POST[i].controllerPath ){
+          controller = require( dispatchingInfo.POST[i].controllerPath + "/" + dispatchingInfo.POST[i].controller );
+        } else{
+          controller = require( dispatchingInfo.POST[i].controller );
+        }
+
+        var model = controller[ dispatchingInfo.POST[i].controlFunction ]( req, dispatchingInfo.POST[i].dispatcherPath, dispatchingInfo.POST[i].dispatcher );
+
+        mav.setModel( model );
+        mav.setView( dispatchingInfo.POST[i].viewPath + "/" + dispatchingInfo.POST[i].view );
         break;
       }
     }
