@@ -1,26 +1,71 @@
-function setDispatcher( path, file ){
-  var dispatchingInfo = require( "./controller-dispatcher.json" );
+var common = require( "../js/common.js" );
 
-  var os = "windows";
+var dispatchingInfo;
 
-  if( path ){
-    if( file ){
-      if( os === "windows" ){
-        dispatchingInfo = require( path + "\\" + file );
-      } else{
-        dispatchingInfo = require( path + "/" + file );
+function setDispatchingInfo( path, file ){
+  try{
+    dispatchingInfo = require( "./controller-dispatcher.json" );
+
+    if( path ){
+      if( file ){
+        path = path + "/" + file;
       }
-
-    } else{
-      dispatchingInfo = require( path );
     }
+
+    dispatchingInfo = require( common.parsePath(path) );
+
+  } catch( e ){
+    console.log( e );
   }
-  return dispatchingInfo;
 }
 
-exports.dispatching = function( req, dispatcherPath, dispatcher ){
+exports.dispatching = function( req, pathes ){
+  setDispatchingInfo( pathes.controllerDispatcherPath, pathes.controllerDispatcherJS );
 
-  console.log( setDispatcher( dispatcherPath, dispatcher ) );
+  // get req specifics
+  var action;
 
-  return { "result" : "Dispatching Succeed" };
+  try{
+    if( req.method.toUpperCase() === "GET" ){
+      action = req.query.action;
+    } else if( req.method.toUpperCase() === "POST" ){
+      action = req.body.action;
+    }
+  } catch( e ){
+    console.log( e );
+  }
+
+  // get dispatching Info
+  var length;
+  var servicerPath;
+  var servicerJS;
+  var serviceFunction;
+
+  try{
+    var model = {};
+    length = dispatchingInfo.length;
+
+    for( var i=0; i<length; i++ ){
+      // servicerPath = dispatchingInfo[i].servicerPath;
+      servicerPath = pathes.servicerPath;
+      servicerJS = dispatchingInfo[i].servicerJS;
+      serviceFunction = dispatchingInfo[i].serviceFunction;
+
+      if( action === dispatchingInfo[i].action ){
+
+        var servicer;
+        if( servicerPath ){
+          servicer = require( require("../js/common.js").parsePath(servicerPath + "/" + servicerJS) );
+        } else{
+          servicer = require( servicerJS );
+        }
+
+        model = servicer[ serviceFunction ]( req, model, pathes );
+      }
+    }
+  } catch( e ){
+    console.log( e );
+  }
+
+  return model;
 }

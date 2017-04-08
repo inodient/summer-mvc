@@ -1,38 +1,26 @@
+var common = require( "../js/common.js" );
+var ModelAndView = common.ModelAndView;
+
+
+
+
+// Set Dispatcher & Dispatching Info (JSON)
 var dispatchingInfo;
 
+exports.setDispatchingInfo = function( path, file ){
+  try{
+    dispatchingInfo = require( "./dispatcher.json" );
 
-
-
-var ModelAndView = function( model, view ){
-  this.model = model;
-  this.view = view;
-  this.setModel = function( m ){
-    this.model = m;
-  }
-  this.setView = function( v ){
-    this.view = v;
-  }
-}
-
-
-
-
-exports.setDispatcher = function( path, file ){
-  dispatchingInfo = require( "./dispatcher.json" );
-
-  var os = "windows";
-
-  if( path ){
-    if( file ){
-      if( os === "windows" ){
-        dispatchingInfo = require( path + "\\" + file );
-      } else{
-        dispatchingInfo = require( path + "/" + file );
+    if( path ){
+      if( file ){
+        path = path + "/" + file;
       }
-
-    } else{
-      dispatchingInfo = require( path );
     }
+
+    dispatchingInfo = require( common.parsePath(path) );
+
+  } catch( e ){
+    console.log( e );
   }
 }
 
@@ -40,61 +28,110 @@ exports.getDispatcher = function(){
   return dispatchingInfo;
 }
 
-exports.dispatching = function( req ){
+
+
+// Execute Dispatching
+exports.dispatching = function( req, pathes ){
 
   var mav = new ModelAndView();
 
   // get req specifics
-  var reqMethod = req.method;
-  var reqUrl = req._parsedUrl;
-
-  var reqOriginalUrl = req.originalUrl;
-  var reqPath = reqUrl.pathname;
-  var reqParam = req.params;
-  var reqQuery = req.query;
-  var reqBody = req.body;
+  try{
+    var reqMethod = req.method;
+    var reqPath = req._parsedUrl.pathname;
+  } catch( e ){
+    console.log( e );
+  }
 
   // get dispatchingInfo
+  var length;
+  var dispatchingSpec;
+  var dispatchedPath;
+  var controllerPath;
+  var controllerJS;
+  var controlFunction;
+  var controllerDispatcherPath;
+  var controllerDispatcherJSON;
+  var viewPath;
+  var view;
+
   if( reqMethod.toUpperCase() === "GET" ){
-    for( var i=0; i<dispatchingInfo.GET.length; i++ ){
-      if( dispatchingInfo.GET[i].path === reqPath ){
 
-        var controller;
-        if( dispatchingInfo.GET[i].controllerPath ){
-          controller = require( dispatchingInfo.GET[i].controllerPath + "/" + dispatchingInfo.GET[i].controller );
-        } else{
-          controller = require( dispatchingInfo.GET[i].controller );
+    try{
+      length = dispatchingInfo.GET.length;
+
+      for( var i=0; i<length; i++ ){
+        dispatchingSpec = dispatchingInfo.GET[i];
+
+        dispatchedPath = dispatchingSpec.path;
+        // controllerPath = dispatchingSpec.controllerPath;
+        controllerPath = pathes.controllerDispatcherPath;
+        controllerJS = dispatchingSpec.controllerJS;
+        controlFunction = dispatchingSpec.controlFunction;
+        // controllerDispatcherPath = dispatchingSpec.dispatcherPath;
+        // controllerDispatcherJSON = dispatchingSpec.dispatcherJSON;
+        viewPath = dispatchingSpec.viewPath;
+        view = dispatchingSpec.view;
+
+        if( dispatchedPath === reqPath ){
+
+          var controller;
+          if( controllerPath ){
+            controller = require( require("../js/common.js").parsePath(controllerPath + "/" + controllerJS) );
+          } else{
+            controller = require( controllerJS );
+          }
+
+          var model = controller[ controlFunction ]( req, pathes );
+
+          mav.setModel( model );
+          mav.setView( require("../js/common.js").parsePath(viewPath + "/" + view) );
+          break;
         }
-
-        var model = controller[ dispatchingInfo.GET[i].controlFunction ]( req, dispatchingInfo.GET[i].dispatcherPath, dispatchingInfo.GET[i].dispatcher );
-
-        mav.setModel( model );
-        mav.setView( dispatchingInfo.GET[i].viewPath + "/" + dispatchingInfo.GET[i].view );
-        break;
       }
+
+      console.log( "dispatching Succeed... (GET)" );
+    } catch( e ){
+      console.log( e );
     }
   } else if( reqMethod.toUpperCase() === "POST" ){
-    for( var i=0; i<dispatchingInfo.POST.length; i++ ){
-      if( dispatchingInfo.POST[i].path === reqPath ){
+    try{
+      length = dispatchingInfo.POST.length;
 
-        var controller;
-        if( dispatchingInfo.POST[i].controllerPath ){
-          controller = require( dispatchingInfo.POST[i].controllerPath + "/" + dispatchingInfo.POST[i].controller );
-        } else{
-          controller = require( dispatchingInfo.POST[i].controller );
+      for( var i=0; i<length; i++ ){
+        dispatchingSpec = dispatchingInfo.POST[i];
+        dispatchedPath = dispatchingSpec.path;
+        // controllerPath = dispatchingSpec.controllerPath;
+        controllerPath = pathes.controllerDispatcherPath;
+        controllerJS = dispatchingSpec.controllerJS;
+        controlFunction = dispatchingSpec.controlFunction;
+        // controllerDispatcherPath = dispatchingSpec.dispatcherPath;
+        // controllerDispatcherJSON = dispatchingSpec.dispatcherJSON;
+        viewPath = dispatchingSpec.viewPath;
+        view = dispatchingSpec.view;
+
+        if( dispatchedPath === reqPath ){
+
+          var controller;
+          if( controllerPath ){
+            controller = require( require("../js/common.js").parsePath(controllerPath + "/" + controllerJS) );
+          } else{
+            controller = require( controllerJS );
+          }
+
+          var model = controller[ controlFunction ]( req, pathes );
+
+          mav.setModel( model );
+          mav.setView( require("../js/common.js").parsePath(viewPath + "/" + view) );
+          break;
         }
-
-        var model = controller[ dispatchingInfo.POST[i].controlFunction ]( req, dispatchingInfo.POST[i].dispatcherPath, dispatchingInfo.POST[i].dispatcher );
-
-        mav.setModel( model );
-        mav.setView( dispatchingInfo.POST[i].viewPath + "/" + dispatchingInfo.POST[i].view );
-        break;
       }
+
+      console.log( "dispatching Succeed... (POST)" );
+    } catch( e ){
+      console.log( e );
     }
   }
 
   return mav;
-  // console.log( dispatchingInfo );
-
-  // console.log( reqPath );
 }

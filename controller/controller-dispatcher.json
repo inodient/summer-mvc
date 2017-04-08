@@ -1,25 +1,14 @@
-{
-  "GET" : [
-    {
-      "id": "welcome",
-      "path": "/welcome",
-      "controllerPath": "../controller",
-      "controller": "controller.js",
-      "controlFunction": "control",
-      "viewPath": "welcomeView",
-      "view": "welcome.ejs"
-    },
-    {
-      "id": "welcome2",
-      "path": "/welcome2",
-      "controllerPath": "../controller",
-      "controller": "controller-dispatcher.js",
-      "controlFunction": "dispatching",
-      "viewPath": "welcomeView",
-      "view": "welcome.ejs"
-    }
-  ],
-  "POST" : [
-
-  ]
-}
+[
+  {
+    "action": "initial",
+    "id": "service1",
+    "servicerJS": "service1.js",
+    "serviceFunction": "executeService"
+  },
+  {
+    "action": "initial",
+    "id": "service2",
+    "servicerJS": "service2.js",
+    "serviceFunction": "executeService"
+  }
+]
