@@ -39,17 +39,15 @@ exports.setContextDispatchingInfo = function( path, file ){
 
   if( path ){
     pathes.setDispatcherPath( path );
+  } else{
+    pathes.setDispatcherPath( __dirname + "/dispatcher" );
   }
 
   if( file ){
     pathes.setDispatcherJS( file );
+  } else{
+    pathes.setDispatcherJS( "context-dispatcher.json" );
   }
-
-  path = __dirname + "/dispatcher";
-  file = "context-dispatcher.json";
-
-  pathes.setDispatcherPath( path );
-  pathes.setDispatcherJS( file );
 
   dispatcher.setDispatchingInfo( path, file );
 }
@@ -60,17 +58,15 @@ exports.setControllerDispatchingInfo = function( path, file ){
 
   if( path ){
     pathes.setControllerDispatcherPath( path );
+  } else{
+    pathes.setControllerDispatcherPath( __dirname + "/controller" );
   }
 
   if( file ){
     pathes.setControllerDispatcherJS( file );
+  } else{
+    pathes.setControllerDispatcherJS( "controller-dispatcher.json" );
   }
-
-  path = __dirname + "/controller";
-  file = "controller-dispatcher.json";
-
-  pathes.setControllerDispatcherPath( path );
-  pathes.setControllerDispatcherJS( file );
 }
 
 exports.setServicerPath = function( path ){
@@ -79,11 +75,9 @@ exports.setServicerPath = function( path ){
 
   if( path ){
     pathes.setServicerPath( path );
+  } else{
+    pathes.setServicerPath( __dirname + "/services" )
   }
-
-  path = __dirname + "/services";
-
-  pathes.setServicerPath( path );
 }
 
 

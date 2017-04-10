@@ -76,6 +76,11 @@ exports.dispatching = function( req, pathes ){
         if( dispatchedPath === reqPath ){
 
           var controller;
+
+          if( controllerJS == "controller-dispatcher.js" ){
+            controllerPath = "../controller";
+          }
+
           if( controllerPath ){
             controller = require( require("../js/common.js").parsePath(controllerPath + "/" + controllerJS) );
           } else{

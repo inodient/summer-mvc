@@ -4,15 +4,17 @@ var dispatchingInfo;
 
 function setDispatchingInfo( path, file ){
   try{
-    dispatchingInfo = require( "./controller-dispatcher.json" );
+
 
     if( path ){
       if( file ){
         path = path + "/" + file;
       }
-    }
 
-    dispatchingInfo = require( common.parsePath(path) );
+      dispatchingInfo = require( common.parsePath(path) );
+    } else{
+      dispatchingInfo = require( "./controller-dispatcher.json" );
+    }
 
   } catch( e ){
     console.log( e );
