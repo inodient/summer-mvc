@@ -9,15 +9,15 @@ var dispatchingInfo;
 
 exports.setDispatchingInfo = function( path, file ){
   try{
-    dispatchingInfo = require( "./dispatcher.json" );
+    dispatchingInfo = require( "./context-dispatcher.json" );
 
     if( path ){
       if( file ){
         path = path + "/" + file;
       }
-    }
 
-    dispatchingInfo = require( common.parsePath(path) );
+      dispatchingInfo = require( common.parsePath(path) );
+    }
 
   } catch( e ){
     console.log( e );
