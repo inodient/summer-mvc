@@ -57,15 +57,15 @@ Unfortunately, this project has no special docs and communities, yet.
 Please wait until releasing v2.0.0. That time you can see a compact package.  
 
 ### Usage
-The summer-mvc contains two engines for dispatching clients http request.
+The summer-mvc contains two engines for dispatching clients http request.    
 (context-dispatcher.js, controller-dispatcher-js)    
 These engines are embedded on the package you installed, so you don't need to implement these.    
-But you must design a structure of your system using 2 JSON files.
+But you must design a structure of your system using 2 JSON files.    
 (context-dispatcher.json, controller-dispatcher.json)   
 
 1. dispatching Info JSON Files
 
-  1. context-dispatcher.json
+    1. context-dispatcher.json
     context-dispatcher is the engine for dispatching clients http request to controllers.    
     You must to write dispatchingInfo (type : JSON) file and set this file to dispatcher using setContextDispatchingInfo() method.    
 
@@ -111,7 +111,7 @@ But you must design a structure of your system using 2 JSON files.
 
 
 
-  2. controller-dispatcher.json    
+    2. controller-dispatcher.json    
     controller-dispatcher is the engine for dispatching controller's execution request to services.    
     You must to write dispatchingInfo (type : JSON) file and set this file to dispatcher using setControllerDispatchingInfo() method.        
 
@@ -204,17 +204,17 @@ You can use *paths* argument that contains paths used by `summer-mvc`.
   ```
 
 4. Start application
-  1. Init    
-    ```javascript
-    var mvc = require( "summer-mvc" );
-    mvc.init( 3000 );
+    1. Init    
+    ```javascript    
+    var mvc = require( "summer-mvc" );    
+    mvc.init( 3000 );    
     ```
-  2. Set paths
-    ```javascript
-    mvc.setContextDispatchingInfo( __dirname + "/dispatcher", "dispatcher.json" );
-    mvc.setControllerDispatchingInfo( __dirname + "/controller", "controller-dispatcher.json" );
-    mvc.setServicerPath( __dirname + "/services" );
-    mvc.setDefaultViewPath( __dirname + "/views" );
+    2. Set paths
+    ```javascript    
+    mvc.setContextDispatchingInfo( __dirname + "/dispatcher", "dispatcher.json" );    
+    mvc.setControllerDispatchingInfo( __dirname + "/controller", "controller-dispatcher.json" );    
+    mvc.setServicerPath( __dirname + "/services" );    
+    mvc.setDefaultViewPath( __dirname + "/views" );    
     ```
 
 5. Test URLs
