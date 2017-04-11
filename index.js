@@ -13,9 +13,9 @@ exports.setControllerDispatchingInfo = function( path, file ){
 }
 
 exports.setServicerPath = function( path ){
-  was.setServicerPath( path, file );
+  was.setServicerPath( path );
 }
 
 exports.setDefaultViewPath = function( path ){
-  was.setDefaultViewPath( path, file );
+  was.setDefaultViewPath( path );
 }

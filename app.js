@@ -6,7 +6,7 @@ const app = express();
 const bodyParser = require( "body-parser" );
 app.use( bodyParser.urlencoded({extended : true}) );
 
-
+app.use( express.static("js") );
 
 
 // Set default Viewing info
@@ -40,7 +40,7 @@ exports.setContextDispatchingInfo = function( path, file ){
   if( path ){
     pathes.setDispatcherPath( path );
   } else{
-    pathes.setDispatcherPath( __dirname + "/dispatcher" );
+    pathes.setDispatcherPath( common.parsePath(__dirname + "/dispatcher") );
   }
 
   if( file ){
@@ -59,7 +59,7 @@ exports.setControllerDispatchingInfo = function( path, file ){
   if( path ){
     pathes.setControllerDispatcherPath( path );
   } else{
-    pathes.setControllerDispatcherPath( __dirname + "/controller" );
+    pathes.setControllerDispatcherPath( common.parsePath(__dirname + "/controller") );
   }
 
   if( file ){

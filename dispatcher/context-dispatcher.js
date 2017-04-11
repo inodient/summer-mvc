@@ -90,7 +90,13 @@ exports.dispatching = function( req, pathes ){
           var model = controller[ controlFunction ]( req, pathes );
 
           mav.setModel( model );
-          mav.setView( require("../js/common.js").parsePath(viewPath + "/" + view) );
+
+          if( viewPath ){
+            mav.setView( require("../js/common.js").parsePath(viewPath + "/" + view) );
+          } else{
+            mav.setView( require("../js/common.js").parsePath(view) );
+          }
+
           break;
         }
       }
@@ -127,7 +133,13 @@ exports.dispatching = function( req, pathes ){
           var model = controller[ controlFunction ]( req, pathes );
 
           mav.setModel( model );
-          mav.setView( require("../js/common.js").parsePath(viewPath + "/" + view) );
+
+          if( viewPath ){
+            mav.setView( require("../js/common.js").parsePath(viewPath + "/" + view) );
+          } else{
+            mav.setView( require("../js/common.js").parsePath(view) );
+          }
+
           break;
         }
       }
