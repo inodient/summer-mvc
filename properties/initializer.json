@@ -1,0 +1,33 @@
+{
+  "port" : 3000,
+  "context_architecture" : [
+    {
+      "folder" : "dispatcher",
+      "files" : [ "context_dispatcher.json", "controller_dispatcher.json" ]
+    },
+    {
+      "folder" : "controller",
+      "files" : [ "controller_simple.js", "controller_service.js" ]
+    },
+    {
+      "folder" : "service",
+      "files" : [ "service_first.js", "service_last.js" ]
+    },
+    {
+      "folder" : "views",
+      "files" : [ "index.html", "index.ejs", "error.html", "error.ejs" ]
+    },
+    {
+      "folder" : "properties",
+      "files" : [ "initializer.json" ]
+    }
+  ],
+  "options" : {
+    "use_service" : "true",
+    "remove_and_rebuild" : "false"
+  },
+  "views" : {
+    "engine" : "ejs"
+  },
+  "static_folders" : [ "img", "lib", "css" ]
+}

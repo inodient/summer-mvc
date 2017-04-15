@@ -1,0 +1,30 @@
+{
+  "GET" : [
+    {
+      "id": "index",
+      "path": "/",
+      "controllerJS": "controller_simple.js",
+      "controlFunction": "control",
+      "viewPath": "",
+      "view": "index.ejs"
+    },
+    {
+      "id": "index",
+      "path": "/index",
+      "controllerJS": "controller_simple.js",
+      "controlFunction": "control",
+      "viewPath": "",
+      "view": "index.ejs"
+    }
+  ],
+  "POST" : [
+    {
+      "id": "welcomePost",
+      "path": "/welcomePost",
+      "controllerJS": "controller_dispatcher.js",
+      "controlFunction": "dispatching",
+      "viewPath": "default",
+      "view": "welcomePost.ejs"
+    }
+  ]
+}
