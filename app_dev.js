@@ -62,7 +62,7 @@ app.get( "/*", (req, res) => {
   } catch( e ){
     console.log( e );
 
-    res.render( "default/error.html" );
+    res.render( "error.html" );
   }
 
   // res.send( "summer-mvc : " + req.query.toString() );
@@ -79,6 +79,6 @@ app.post( "/*", (req, res) => {
   } catch( e ){
     console.log( e );
 
-    res.render( "default/error.html" );
+    res.render( "error.html" );
   }
 } );

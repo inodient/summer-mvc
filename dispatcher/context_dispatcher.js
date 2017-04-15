@@ -1,4 +1,4 @@
-const dispatchingInfo = require( require("path").join(process.env.PWD, "dispatcher", "context_dispatcher.json") );
+const dispatchingInfo = require( require("path").join(process.cwd(), "dispatcher", "context_dispatcher.json") );
 const ModelAndView = require( "./model_and_view.js" ).ModelAndView;
 
 exports.dispatching = function( req  ){
@@ -75,7 +75,7 @@ function findDispatchingSpec( method, reqPath ){
 }
 
 function setController( controllerJS ){
-  let controller = require( require("path").join(process.env.PWD, "controller", controllerJS) );
+  let controller = require( require("path").join(process.cwd(), "controller", controllerJS) );
 
   return controller
 }
