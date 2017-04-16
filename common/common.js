@@ -55,7 +55,7 @@ exports.buildStructure = function( folder, fileName ){
     fs.accessSync( path.join( destDir, fileName ) );
   } catch( err ){
     console.log( fileName + "disappears. Create File." );
-    this.copyFile( src, path.join( process.env.PWD, destDir, fileName) );
+    this.copyFile( src, path.join( process.cwd(), destDir, fileName) );
   }
 }
 
