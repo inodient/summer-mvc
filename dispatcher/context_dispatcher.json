@@ -15,6 +15,30 @@
       "controlFunction": "control",
       "viewPath": "",
       "view": "index.ejs"
+    },
+    {
+      "id": "indexService",
+      "path": "/indexService",
+      "controllerJS": "controller_service.js",
+      "controlFunction": "control",
+      "viewPath": "",
+      "view": "index.ejs"
+    },
+    {
+      "id": "ajax",
+      "path": "/ajax",
+      "controllerJS": "controller_simple.js",
+      "controlFunction": "control",
+      "viewPath": "",
+      "view": "ajax.ejs"
+    },
+    {
+      "id": "ajaxRequest",
+      "path": "/ajaxRequest",
+      "controllerJS": "controller_ajax.js",
+      "controlFunction": "control",
+      "viewPath": "",
+      "view": "ajax.ejs"
     }
   ],
   "POST" : [

@@ -11,7 +11,7 @@
     },
     {
       "folder" : "service",
-      "files" : [ "service_first.js", "service_last.js" ]
+      "files" : [ "service_first.js", "service_second.js", "service_last.js" ]
     },
     {
       "folder" : "views",

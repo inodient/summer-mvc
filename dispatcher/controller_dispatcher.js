@@ -1,73 +1,96 @@
-var common = require( "../js/common.js" );
+const dispatchingInfo = require( require("path").join(process.cwd(), "dispatcher", "controller_dispatcher.json") );
 
-var dispatchingInfo;
+exports.dispatching = function( req, distributor, useCallChain ){
 
-function setDispatchingInfo( path, file ){
-  try{
-
-
-    if( path ){
-      if( file ){
-        path = path + "/" + file;
-      }
-
-      dispatchingInfo = require( common.parsePath(path) );
-    } else{
-      dispatchingInfo = require( "./controller-dispatcher.json" );
-    }
-
-  } catch( e ){
-    console.log( e );
+  if( useCallChain == undefined || useCallChain == false ){
+    return dispatchingById( req, distributor );
+  } else if( useCallChain == true ){
+    return dispatchingByCallChain( req, distributor );
+  } else{
+    return undefined;
   }
 }
 
-exports.dispatching = function( req, pathes ){
-  setDispatchingInfo( pathes.controllerDispatcherPath, pathes.controllerDispatcherJS );
 
-  // get req specifics
-  var action;
 
-  try{
-    if( req.method.toUpperCase() === "GET" ){
-      action = req.query.action;
-    } else if( req.method.toUpperCase() === "POST" ){
-      action = req.body.action;
-    }
-  } catch( e ){
-    console.log( e );
+
+function dispatchingById( req, id ){
+  let dispatchingSpec = findDispatchingSpecById( id );
+
+  let servicer = setServicer( dispatchingSpec.servicerJS );
+
+  let model = executeServicer( servicer, dispatchingSpec.serviceFunction, req );
+
+  return model;
+}
+
+function dispatchingByCallChain( req, callChain ){
+  let dispatchingSpec = findDispatchingSpecByCallChain( callChain );
+
+  let length = dispatchingSpec.length;
+
+  let model = {};
+
+  for( var i=0; i<length; i++ ){
+
+    let servicer = setServicer( dispatchingSpec[i].servicerJS );
+
+    model = executeServicer( servicer, dispatchingSpec[i].serviceFunction, req, model );
   }
 
-  // get dispatching Info
-  var length;
-  var servicerPath;
-  var servicerJS;
-  var serviceFunction;
+  return model;
+}
 
-  try{
-    var model = {};
-    length = dispatchingInfo.length;
 
-    for( var i=0; i<length; i++ ){
-      // servicerPath = dispatchingInfo[i].servicerPath;
-      servicerPath = pathes.servicerPath;
-      servicerJS = dispatchingInfo[i].servicerJS;
-      serviceFunction = dispatchingInfo[i].serviceFunction;
 
-      if( action === dispatchingInfo[i].action ){
 
-        var servicer;
-        if( servicerPath ){
-          servicer = require( require("../js/common.js").parsePath(servicerPath + "/" + servicerJS) );
-        } else{
-          servicer = require( servicerJS );
-        }
+function findDispatchingSpecById( id ){
+  let dispatchingSpec = {};
+  let length;
 
-        model = servicer[ serviceFunction ]( req, model, pathes );
-      }
+  length = dispatchingInfo.length;
+
+  for( var i=0; i<length; i++ ){
+
+    if( dispatchingInfo[i].id == id ){
+      dispatchingSpec = dispatchingInfo[i];
+      break;
     }
-  } catch( e ){
-    console.log( e );
   }
+
+  return dispatchingSpec;
+}
+
+function findDispatchingSpecByCallChain( callChain ){
+  let dispatchingSpec = [];
+  let length;
+
+  length = dispatchingInfo.length;
+
+  for( var i=0; i<length; i++ ){
+
+    if( dispatchingInfo[i].callChain == callChain ){
+      dispatchingSpec.push( dispatchingInfo[i] );
+    }
+  }
+
+  return dispatchingSpec;
+}
+
+
+
+
+function setServicer( servicerJS ){
+
+  let servicer = require( require("path").join(process.cwd(), "service", servicerJS) );
+
+  return servicer;
+}
+
+function executeServicer( servicer, serviceFunction, req, model ){
+  var mode = {};
+
+  model = servicer[ serviceFunction ]( req, model );
 
   return model;
 }

@@ -1,15 +1,15 @@
 const dispatchingInfo = require( require("path").join(process.cwd(), "dispatcher", "context_dispatcher.json") );
 const ModelAndView = require( "./model_and_view.js" ).ModelAndView;
 
-exports.dispatching = function( req  ){
+exports.dispatching = function( req, controllerDispatcher ){
   let reqMethod = req.method;
 
   switch ( reqMethod.toUpperCase() ){
     case "GET":
-      return dispatchingGet( req );
+      return dispatchingGet( req, controllerDispatcher );
 
     case "POST":
-      return dispatchingPost( req );
+      return dispatchingPost( req, controllerDispatcher );
 
     default:
       break;
@@ -19,14 +19,14 @@ exports.dispatching = function( req  ){
 
 
 
-function dispatchingGet( req ){
+function dispatchingGet( req, controllerDispatcher ){
   let mav = new ModelAndView();
 
   let dispatchingSpec = findDispatchingSpec( "GET", req._parsedUrl.pathname );
 
   let controller = setController( dispatchingSpec.controllerJS );
 
-  let model = executeController( controller, dispatchingSpec.controlFunction, req );
+  let model = executeController( controller, dispatchingSpec.controlFunction, req, controllerDispatcher );
   let view = require("path").join( dispatchingSpec.viewPath, dispatchingSpec.view );
 
   mav.setModel( model );
@@ -35,14 +35,14 @@ function dispatchingGet( req ){
   return mav;
 }
 
-function dispatchingPost( req, paths ){
+function dispatchingPost( req, controllerDispatcher ){
   let mav = new ModelAndView();
 
   let dispatchingSpec = findDispatchingSpec( "GET", req._parsedUrl.pathname );
 
   let controller = setController( dispatchingSpec.controllerJS );
 
-  let model = executeController( controller, dispatchingSpec.controlFunction, req );
+  let model = executeController( controller, dispatchingSpec.controlFunction, req, controllerDispatcher );
   let view = require("path").join( dispatchingSpec.viewPath, dispatchingSpec.view );
 
   mav.setModel( model );
@@ -80,142 +80,10 @@ function setController( controllerJS ){
   return controller
 }
 
-function executeController( controller, controlFunction, req ){
+function executeController( controller, controlFunction, req, controllerDispatcher ){
   var model = {};
 
-  model = controller[ controlFunction ]( req );
+  model = controller[ controlFunction ]( req, controllerDispatcher );
 
   return model;
 }
-
-// var common = require( "../js/common.js" );
-// var ModelAndView = common.ModelAndView;
-
-// exports.getDispatcher = function(){
-//   return dispatchingInfo;
-// }
-//
-//
-//
-// // Execute Dispatching
-// exports.dispatching = function( req, pathes ){
-//
-//   var mav = new ModelAndView();
-//
-//   // get req specifics
-//   try{
-//     var reqMethod = req.method;
-//     var reqPath = req._parsedUrl.pathname;
-//   } catch( e ){
-//     console.log( e );
-//   }
-//
-//   // get dispatchingInfo
-//   var length;
-//   var dispatchingSpec;
-//   var dispatchedPath;
-//   var controllerPath;
-//   var controllerJS;
-//   var controlFunction;
-//   var controllerDispatcherPath;
-//   var controllerDispatcherJSON;
-//   var viewPath;
-//   var view;
-//
-//   if( reqMethod.toUpperCase() === "GET" ){
-//
-//     try{
-//       length = dispatchingInfo.GET.length;
-//
-//       for( var i=0; i<length; i++ ){
-//         dispatchingSpec = dispatchingInfo.GET[i];
-//
-//         dispatchedPath = dispatchingSpec.path;
-//         // controllerPath = dispatchingSpec.controllerPath;
-//         controllerPath = pathes.controllerDispatcherPath;
-//         controllerJS = dispatchingSpec.controllerJS;
-//         controlFunction = dispatchingSpec.controlFunction;
-//         // controllerDispatcherPath = dispatchingSpec.dispatcherPath;
-//         // controllerDispatcherJSON = dispatchingSpec.dispatcherJSON;
-//         viewPath = dispatchingSpec.viewPath;
-//         view = dispatchingSpec.view;
-//
-//         if( dispatchedPath === reqPath ){
-//
-//           var controller;
-//
-//           if( controllerJS == "controller-dispatcher.js" ){
-//             controllerPath = "../controller";
-//           }
-//
-//           if( controllerPath ){
-//             controller = require( require("../js/common.js").parsePath(controllerPath + "/" + controllerJS) );
-//           } else{
-//             controller = require( controllerJS );
-//           }
-//
-//           var model = controller[ controlFunction ]( req, pathes );
-//
-//           mav.setModel( model );
-//
-//           if( viewPath ){
-//             mav.setView( require("../js/common.js").parsePath(viewPath + "/" + view) );
-//           } else{
-//             mav.setView( require("../js/common.js").parsePath(view) );
-//           }
-//
-//           break;
-//         }
-//       }
-//
-//       console.log( "dispatching Succeed... (GET)" );
-//     } catch( e ){
-//       console.log( e );
-//     }
-//   } else if( reqMethod.toUpperCase() === "POST" ){
-//     try{
-//       length = dispatchingInfo.POST.length;
-//
-//       for( var i=0; i<length; i++ ){
-//         dispatchingSpec = dispatchingInfo.POST[i];
-//         dispatchedPath = dispatchingSpec.path;
-//         // controllerPath = dispatchingSpec.controllerPath;
-//         controllerPath = pathes.controllerDispatcherPath;
-//         controllerJS = dispatchingSpec.controllerJS;
-//         controlFunction = dispatchingSpec.controlFunction;
-//         // controllerDispatcherPath = dispatchingSpec.dispatcherPath;
-//         // controllerDispatcherJSON = dispatchingSpec.dispatcherJSON;
-//         viewPath = dispatchingSpec.viewPath;
-//         view = dispatchingSpec.view;
-//
-//         if( dispatchedPath === reqPath ){
-//
-//           var controller;
-//           if( controllerPath ){
-//             controller = require( require("../js/common.js").parsePath(controllerPath + "/" + controllerJS) );
-//           } else{
-//             controller = require( controllerJS );
-//           }
-//
-//           var model = controller[ controlFunction ]( req, pathes );
-//
-//           mav.setModel( model );
-//
-//           if( viewPath ){
-//             mav.setView( require("../js/common.js").parsePath(viewPath + "/" + view) );
-//           } else{
-//             mav.setView( require("../js/common.js").parsePath(view) );
-//           }
-//
-//           break;
-//         }
-//       }
-//
-//       console.log( "dispatching Succeed... (POST)" );
-//     } catch( e ){
-//       console.log( e );
-//     }
-//   }
-//
-//   return mav;
-// }

@@ -67,8 +67,19 @@ exports.getPort = function(){
 
 
 
-exports.getContextDispatcher = function(){
+exports.getContextDispatcherPath = function(){
   let path = require( "path" );
 
   return path.join( __dirname, "../", "dispatcher", "context_dispatcher.js" );
+}
+
+exports.getControllerDispatcherPath = function(){
+  let path = require( "path" );
+  let initializer = require( "../properties/initializer.json" );
+
+  if( initializer[ "options" ].use_service == "true" ){
+    return path.join( __dirname, "../", "dispatcher", "controller_dispatcher.js" );
+  } else{
+    return undefined;
+  }
 }

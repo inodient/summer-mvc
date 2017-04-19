@@ -1,14 +1,20 @@
 [
   {
-    "action": "initial",
+    "callChain": "callServiceChain",
     "id": "service1",
-    "servicerJS": "service1.js",
+    "servicerJS": "service_first.js",
     "serviceFunction": "executeService"
   },
   {
-    "action": "initial",
+    "callChain": "callServiceChain",
     "id": "service2",
-    "servicerJS": "service2.js",
+    "servicerJS": "service_second.js",
+    "serviceFunction": "executeService"
+  },
+  {
+    "callChain": "callServiceChain",
+    "id": "service3",
+    "servicerJS": "service_last.js",
     "serviceFunction": "executeService"
   }
 ]
