@@ -1,4 +1,4 @@
-exports.executeService = function( req, model ){
+exports.executeService = function( req, res, connection, model ){
   console.log( "executeService : service3" );
 
   model.method = req.method;

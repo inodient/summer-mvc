@@ -1,11 +1,11 @@
 const dispatchingInfo = require( require("path").join(process.cwd(), "dispatcher", "controller_dispatcher.json") );
 
-exports.dispatching = function( req, distributor, useCallChain ){
+exports.dispatching = function( req, res, connection, distributor, useCallChain ){
 
   if( useCallChain == undefined || useCallChain == false ){
-    return dispatchingById( req, distributor );
+    return dispatchingById( req, res, connection, distributor );
   } else if( useCallChain == true ){
-    return dispatchingByCallChain( req, distributor );
+    return dispatchingByCallChain( req, res, connection, distributor );
   } else{
     return undefined;
   }
@@ -14,17 +14,17 @@ exports.dispatching = function( req, distributor, useCallChain ){
 
 
 
-function dispatchingById( req, id ){
+function dispatchingById( req, res, connection, id ){
   let dispatchingSpec = findDispatchingSpecById( id );
 
   let servicer = setServicer( dispatchingSpec.servicerJS );
 
-  let model = executeServicer( servicer, dispatchingSpec.serviceFunction, req );
+  let model = executeServicer( servicer, dispatchingSpec.serviceFunction, req, res, connection );
 
   return model;
 }
 
-function dispatchingByCallChain( req, callChain ){
+function dispatchingByCallChain( req, res, connection, callChain ){
   let dispatchingSpec = findDispatchingSpecByCallChain( callChain );
 
   let length = dispatchingSpec.length;
@@ -35,7 +35,7 @@ function dispatchingByCallChain( req, callChain ){
 
     let servicer = setServicer( dispatchingSpec[i].servicerJS );
 
-    model = executeServicer( servicer, dispatchingSpec[i].serviceFunction, req, model );
+    model = executeServicer( servicer, dispatchingSpec[i].serviceFunction, req, res, connection, model );
   }
 
   return model;
@@ -87,10 +87,10 @@ function setServicer( servicerJS ){
   return servicer;
 }
 
-function executeServicer( servicer, serviceFunction, req, model ){
+function executeServicer( servicer, serviceFunction, req, res, connection, model ){
   var mode = {};
 
-  model = servicer[ serviceFunction ]( req, model );
+  model = servicer[ serviceFunction ]( req, res, connection, model );
 
   return model;
 }

@@ -1,15 +1,14 @@
-exports.control = function( req, res, controllerDispatcher  ){
+exports.control = function( req, res, connection, controllerDispatcher  ){
   var model = {};
-
-  connection.destroySession( req );
 
   // Type 01 : call service seperately
   // controllerDispatcher.dispatching( req, "service1" );
 
   // Type 02 : call service flow
-  controllerDispatcher.dispatching( req, "callServiceChain", true );
+  connection.destroySession();
+  connection.clearCookie( "userName" );
 
-
+  // controllerDispatcher.dispatching( req, res, connection, "callServiceChain", true );
 
   model.method = req.method;
   model.path = req._parsedUrl.pathname;;

@@ -1,7 +1,9 @@
 const dispatchingInfo = require( require("path").join(process.cwd(), "dispatcher", "context_dispatcher.json") );
 const ModelAndView = require( "./model_and_view.js" ).ModelAndView;
+const connection = require( "../common/connection.js" ).connection;
 
-global.connection = require( "../common/connection.js" );
+
+
 
 exports.dispatching = function( req, res, controllerDispatcher ){
   let reqMethod = req.method;
@@ -27,8 +29,9 @@ function dispatchingGet( req, res, controllerDispatcher ){
   let dispatchingSpec = findDispatchingSpec( "GET", req._parsedUrl.pathname );
 
   let controller = setController( dispatchingSpec.controllerJS );
+  let connection = getConnection( req, res );
 
-  let model = executeController( controller, dispatchingSpec.controlFunction, req, res, controllerDispatcher );
+  let model = executeController( controller, dispatchingSpec.controlFunction, req, res, connection, controllerDispatcher );
   let view = require("path").join( dispatchingSpec.viewPath, dispatchingSpec.view );
 
   mav.setModel( model );
@@ -43,8 +46,9 @@ function dispatchingPost( req, res, controllerDispatcher ){
   let dispatchingSpec = findDispatchingSpec( "GET", req._parsedUrl.pathname );
 
   let controller = setController( dispatchingSpec.controllerJS );
+  let connection = getConnection( req, res );
 
-  let model = executeController( controller, dispatchingSpec.controlFunction, req, res, controllerDispatcher );
+  let model = executeController( controller, dispatchingSpec.controlFunction, req, res, connection, controllerDispatcher );
   let view = require("path").join( dispatchingSpec.viewPath, dispatchingSpec.view );
 
   mav.setModel( model );
@@ -52,6 +56,9 @@ function dispatchingPost( req, res, controllerDispatcher ){
 
   return mav;
 }
+
+
+
 
 function findDispatchingSpec( method, reqPath ){
   let specifications = {};
@@ -79,13 +86,19 @@ function findDispatchingSpec( method, reqPath ){
 function setController( controllerJS ){
   let controller = require( require("path").join(process.cwd(), "controller", controllerJS) );
 
-  return controller
+  return controller;
 }
 
-function executeController( controller, controlFunction, req, res, controllerDispatcher ){
+function executeController( controller, controlFunction, req, res, connection, controllerDispatcher ){
   var model = {};
 
-  model = controller[ controlFunction ]( req, res, controllerDispatcher );
+  model = controller[ controlFunction ]( req, res, connection, controllerDispatcher );
 
   return model;
+}
+
+function getConnection( req, res ){
+  let conn = new connection( req, res );
+
+  return conn;
 }
