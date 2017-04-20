@@ -4,10 +4,25 @@ const app = express();
 
 
 
-// Init cookie, body parser
+// Init cookie, session
 const cookieParser = require( "cookie-parser" );
 app.use( cookieParser() );
 
+const session = require( "express-session" );
+app.use( session({
+  secret : "aslknq;oiwne;ofuiba;osudbf;uoasdf",
+  resave : false,
+  saveUninitialized : true,
+  cookie : {
+    maxAge: 1000 * 60
+  }
+}) );
+
+
+
+
+
+// Init body Parser
 const bodyParser = require( "body-parser" );
 app.use( bodyParser.urlencoded({ extended : true }) );
 
@@ -61,11 +76,7 @@ app.listen( port, () => {
 // Wait Request
 app.get( "/*", (req, res) => {
   try{
-    // burn cookie
-
-    // make session
-    
-    var mav = contextDispatcher.dispatching( req, controllerDispatcher );
+    var mav = contextDispatcher.dispatching( req, res, controllerDispatcher );
 
     console.log( "view  : " + mav.view );
     console.log( "model : " + JSON.stringify(mav.model) );
@@ -85,7 +96,7 @@ app.get( "/*", (req, res) => {
 
 app.post( "/*", (req, res) => {
   try{
-    var mav = contextDispatcher.dispatching( req, controllerDispatcher );
+    var mav = contextDispatcher.dispatching( req, res, controllerDispatcher );
 
     console.log( "view  : " + mav.view );
     console.log( "model : " + JSON.stringify(mav.model) );

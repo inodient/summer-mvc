@@ -1,5 +1,7 @@
-exports.control = function( req, controllerDispatcher  ){
+exports.control = function( req, res, controllerDispatcher  ){
   var model = {};
+
+  connection.destroySession( req );
 
   // Type 01 : call service seperately
   // controllerDispatcher.dispatching( req, "service1" );
