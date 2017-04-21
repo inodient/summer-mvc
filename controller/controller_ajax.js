@@ -1,7 +1,9 @@
-exports.control = function( req ){
+exports.control = function( req, res, connection, controllerDispatcher, callback ){
   var model = {};
 
   model.contents = "This is ajax test result.";
 
-  return model;
+  callback( null, model );
+
+  // return model;
 }

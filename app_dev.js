@@ -72,21 +72,28 @@ app.listen( port, () => {
 
 
 
-
 // Wait Request
 app.get( "/*", (req, res) => {
   try{
-    var mav = contextDispatcher.dispatching( req, res, controllerDispatcher );
+    var mav;
 
-    console.log( "view  : " + mav.view );
-    console.log( "model : " + JSON.stringify(mav.model) );
+    contextDispatcher.dispatching( req, res, controllerDispatcher, function( err, result ){
+      mav = result;
 
-    if( req.xhr || req.headers.accept.indexOf("json") > -1 ){
-      console.log( "Ajax Called...." );
-      res.send( mav.model );
-    } else{
-      res.render( mav.view, mav.model );
-    }
+      console.log( "app_dev.js : mav" );
+      // console.log( mav );
+      //
+      // console.log( "view  : " + mav.view );
+      // console.log( "model : " + JSON.stringify(mav.model) );
+
+      if( req.xhr || req.headers.accept.indexOf("json") > -1 ){
+        console.log( "Ajax Called...." );
+        res.send( mav.model );
+      } else{
+        res.render( mav.view, mav.model );
+      }
+
+    } );
   } catch( e ){
     console.log( e );
 

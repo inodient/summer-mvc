@@ -5,12 +5,17 @@ const connection = require( "../common/connection.js" ).connection;
 
 
 
-exports.dispatching = function( req, res, controllerDispatcher ){
+exports.dispatching = function( req, res, controllerDispatcher, callback ){
   let reqMethod = req.method;
 
   switch ( reqMethod.toUpperCase() ){
     case "GET":
-      return dispatchingGet( req, res, controllerDispatcher );
+      // return dispatchingGet( req, res, controllerDispatcher );
+      dispatchingGet( req, res, controllerDispatcher, function( err, result ){
+        console.log( "conetext_dispatcher.js : model" );
+
+        callback( err, result );
+      } );
 
     case "POST":
       return dispatchingPost( req, res, controllerDispatcher );
@@ -23,7 +28,7 @@ exports.dispatching = function( req, res, controllerDispatcher ){
 
 
 
-function dispatchingGet( req, res, controllerDispatcher ){
+function dispatchingGet( req, res, controllerDispatcher, callback ){
   let mav = new ModelAndView();
 
   let dispatchingSpec = findDispatchingSpec( "GET", req._parsedUrl.pathname );
@@ -31,13 +36,19 @@ function dispatchingGet( req, res, controllerDispatcher ){
   let controller = setController( dispatchingSpec.controllerJS );
   let connection = getConnection( req, res );
 
-  let model = executeController( controller, dispatchingSpec.controlFunction, req, res, connection, controllerDispatcher );
   let view = require("path").join( dispatchingSpec.viewPath, dispatchingSpec.view );
 
-  mav.setModel( model );
-  mav.setView( view );
+  let model = {};
+  executeController( controller, dispatchingSpec.controlFunction, req, res, connection, controllerDispatcher, function( err, results ){
+    model = results;
 
-  return mav;
+    mav.setModel( model );
+    mav.setView( view );
+
+    callback( null, mav );
+  } );
+
+  //return mav;
 }
 
 function dispatchingPost( req, res, controllerDispatcher ){
@@ -89,12 +100,22 @@ function setController( controllerJS ){
   return controller;
 }
 
-function executeController( controller, controlFunction, req, res, connection, controllerDispatcher ){
-  var model = {};
+function executeController( controller, controlFunction, req, res, connection, controllerDispatcher, callback ){
+  // let model = {};
 
-  model = controller[ controlFunction ]( req, res, connection, controllerDispatcher );
+  // model = controller[ controlFunction ]( req, res, connection, controllerDispatcher, callback );
+  if( callback ){
+    console.log( "callback : executeController" );
+    console.log( callback );
 
-  return model;
+    controller[ controlFunction ]( req, res, connection, controllerDispatcher, function( err, result ){
+      callback( err, result );
+    } );
+  }
+
+
+
+  // return model;
 }
 
 function getConnection( req, res ){

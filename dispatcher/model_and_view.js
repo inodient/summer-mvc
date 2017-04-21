@@ -1,6 +1,6 @@
 exports.ModelAndView = function( model, view ){
-  this.model = model;
-  this.view = view;
+  this.model = {};
+  this.view = {};
   this.setModel = function( m ){
     this.model = m;
   }

@@ -1,0 +1,12 @@
+[
+  {
+    "id" : "getAccessLog",
+    "queryString" : "select * from testAccessLog",
+    "params" : ""
+  },
+  {
+    "id" : "getAccessLogByDate",
+    "queryString" : "select * from testAccessLog where connectedTime > ? and connectedTime < ?",
+    "params" : [ "startDate", "endDate" ]
+  }
+]
