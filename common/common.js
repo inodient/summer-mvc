@@ -8,7 +8,7 @@ exports.buildStructure = function( folder, fileName ){
   try{
     fs.accessSync( destDir );
   } catch( err ){
-    console.log( destDir + " disappears. Create Directory." );
+    console.log( "[" + destDir + "] disappears. Create Directory." );
     fs.mkdirSync( destDir );
   }
 
@@ -16,7 +16,7 @@ exports.buildStructure = function( folder, fileName ){
   try{
     fs.accessSync( path.join( destDir, fileName ) );
   } catch( err ){
-    console.log( fileName + "disappears. Create File." );
+    console.log( "[" + fileName + "] disappears. Create File." );
     this.copyFile( src, path.join( process.cwd(), destDir, fileName) );
   }
 }

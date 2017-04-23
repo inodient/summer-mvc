@@ -14,6 +14,10 @@
                   "controller_db.js"]
     },
     {
+      "folder" : "service",
+      "files" : [ "service_first.js", "service_second.js", "service_last.js" ]
+    },
+    {
       "folder" : "views",
       "files" : [ "index.html", "index.ejs", "error.html", "error.ejs", "ajax.ejs" ]
     },

@@ -8,5 +8,10 @@
     "id" : "getAccessLogByDate",
     "queryString" : "select * from testAccessLog where connectedTime > ? and connectedTime < ?",
     "params" : [ "startDate", "endDate" ]
+  },
+  {
+    "id" : "getMySqlVersion",
+    "queryString" : "select version()",
+    "params" : ""
   }
 ]

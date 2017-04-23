@@ -1,9 +1,10 @@
-exports.control = function( req, res, connection, controllerDispatcher, callback ){
+exports.control = function( req, res, controllerDispatcher, callback ){
   var model = {};
 
-  model.contents = "This is ajax test result.";
-
-  callback( null, model );
-
-  // return model;
+  try{
+    model.ajaxResult = "Called with [" + req.query[ "text" ] + "]";
+    callback( null, model );
+  } catch( err ){
+    callback( err, model );
+  }
 }

@@ -28,6 +28,24 @@
     }
   </style>
 
+  <script>
+    $(document).ready(function(){
+      $("#ajax_request").on( "click", function(){
+          var queryText = $("#AjaxMessage").val();
+
+          $.get( "/ajaxRequest?text=" + queryText, function(data, status){
+            $("#ajaxResult").text( data.ajaxResult.toString() );
+          } );
+      } );
+
+      $("#url_request").on( "click", function(){
+          //window.location.replace("/index");
+          window.location.href = "/";
+      } );
+
+    });
+  </script>
+
   <title>Welcome summer-mvc</title>
 </head>
 <body>
@@ -37,10 +55,12 @@
   </div>
   <div class="container-fluid" style="font-size:15px">
     <div class="row">
-      <!-- <div class="col-sm-3"></div> -->
-      <div class="col-sm-12">
+      <div class="col-sm-1"></div>
+      <div class="col-sm-5">
+        <p><h2>Info.</h2></p>
+        <hr>
         <div class="table-responsive">
-          <table class="table text-center">
+          <table class="table text-center table-bordered">
             <tbody>
               <tr>
                 <td>Method</td>
@@ -51,6 +71,18 @@
                 <td><%= path %></td>
               </tr>
               <tr>
+                <td>Controller Name</td>
+                <td><%= controllerName %></td>
+              </tr>
+              <tr>
+                <td>Control Function</td>
+                <td><%= controlFunction %></td>
+              </tr>
+              <tr>
+                <td>Post Message</td>
+                <td><%= postMessage %></td>
+              </tr>
+              <tr>
                 <td>Query String</td>
                 <td><%= queryString %></td>
               </tr>
@@ -59,26 +91,79 @@
                 <td><%= params %></td>
               </tr>
               <tr>
-                <td>Context Dispatcher</td>
-                <td><%= contextDispatcher %></td>
+                <td>DB res</td>
+                <td><%= dbRes %></td>
               </tr>
               <tr>
-                <td>Controller Dispatcher</td>
-                <td><%= controllerDispatcher %></td>
-              </tr>
-              <tr>
-                <td>Servicer</td>
-                <td><%= servicer %></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
+                <td>Ajax Result</td>
+                <td id="ajaxResult"><%= ajaxResult %></td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-      <!-- <div class="col-sm-3"></div> -->
+      <div class="col-sm-5">
+        <p><h2>Test.</h2></p>
+        <hr>
+        <p><h4>Post Request</h4></p>
+        <div>
+          <form class="form-inline" action="/" method="post">
+            <div class="input-group">
+              <input type="input" class="form-control" size="50" placeholder="Post Message" name="postMessage" required>
+              <div class="input-group-btn">
+                <button type="submit" class="btn btn-default" onclick="submit">Request Post</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <p><h4>Ajax Request</h4></p>
+        <div>
+          <form class="form-inline" action="/welcomePost" method="post">
+            <div class="input-group">
+              <input type="input" class="form-control" size="50" placeholder="Ajax Message" id="AjaxMessage" required>
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default" id="ajax_request">Request Ajax</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <p><h4>Cookie</h4></p>
+        <div>
+          <form class="form-inline" action="/setCookie" method="get">
+            <div class="input-group">
+              <input type="input" class="form-control" size="22" placeholder="Key" name="cookieKey" required>
+            </div>
+            <div class="input-group">
+              <input type="input" class="form-control" size="22" placeholder="Value" name="cookieValue" required>
+            </div>
+            <div class="input-group">
+              <button type="submit" class="btn btn-default" id="setCookie">Set Cookie</button>
+            </div>
+          </form>
+        </div>
+        <p><h4>Session</h4></p>
+        <div>
+          <form class="form-inline" action="/setSession" method="get">
+            <div class="input-group">
+              <input type="input" class="form-control" size="22" placeholder="Key" name="sessionKey" required>
+            </div>
+            <div class="input-group">
+              <input type="input" class="form-control" size="22" placeholder="Value" name="sessionValue" required>
+            </div>
+            <div class="input-group">
+              <button type="submit" class="btn btn-default" id="setSession">Set Session</button>
+            </div>
+          </form>
+        </div>
+        <p><h4>DB</h4></p>
+        <div>
+          <form class="form-inline" action="/getdb" method="get">
+            <div class="input-group">
+              <button type="submit" class="btn btn-default" id="setSession">Get DB Version</button>
+            </div>
+          </form>
+        </div>
+      <div class="col-sm-1"></div>
     </div>
   </div>
 

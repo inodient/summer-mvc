@@ -1,7 +1,7 @@
 const dispatchingInfo = require( require("path").join(process.cwd(), "dispatcher", "context_dispatcher.json") );
 const ModelAndView = require( "./model_and_view.js" ).ModelAndView;
-const connection = require( "../common/connection.js" ).connection;
-
+// const connection = require( "../common/connection.js" ).connection;
+// const db = require( "../common/dbHandler.js" );
 
 
 
@@ -10,15 +10,12 @@ exports.dispatching = function( req, res, controllerDispatcher, callback ){
 
   switch ( reqMethod.toUpperCase() ){
     case "GET":
-      // return dispatchingGet( req, res, controllerDispatcher );
-      dispatchingGet( req, res, controllerDispatcher, function( err, result ){
-        console.log( "conetext_dispatcher.js : model" );
-
-        callback( err, result );
-      } );
+      dispatchingGet( req, res, controllerDispatcher, callback );
+      break;
 
     case "POST":
-      return dispatchingPost( req, res, controllerDispatcher );
+      dispatchingPost( req, res, controllerDispatcher, callback );
+      break;
 
     default:
       break;
@@ -34,38 +31,32 @@ function dispatchingGet( req, res, controllerDispatcher, callback ){
   let dispatchingSpec = findDispatchingSpec( "GET", req._parsedUrl.pathname );
 
   let controller = setController( dispatchingSpec.controllerJS );
-  let connection = getConnection( req, res );
 
   let view = require("path").join( dispatchingSpec.viewPath, dispatchingSpec.view );
 
-  let model = {};
-  executeController( controller, dispatchingSpec.controlFunction, req, res, connection, controllerDispatcher, function( err, results ){
-    model = results;
-
+  executeController( controller, dispatchingSpec.controlFunction, req, res, controllerDispatcher, function( err, model ){
     mav.setModel( model );
     mav.setView( view );
 
-    callback( null, mav );
+    callback( err, mav );
   } );
-
-  //return mav;
 }
 
-function dispatchingPost( req, res, controllerDispatcher ){
+function dispatchingPost( req, res, controllerDispatcher, callback ){
   let mav = new ModelAndView();
 
-  let dispatchingSpec = findDispatchingSpec( "GET", req._parsedUrl.pathname );
+  let dispatchingSpec = findDispatchingSpec( "POST", req._parsedUrl.pathname );
 
   let controller = setController( dispatchingSpec.controllerJS );
-  let connection = getConnection( req, res );
 
-  let model = executeController( controller, dispatchingSpec.controlFunction, req, res, connection, controllerDispatcher );
   let view = require("path").join( dispatchingSpec.viewPath, dispatchingSpec.view );
 
-  mav.setModel( model );
-  mav.setView( view );
+  executeController( controller, dispatchingSpec.controlFunction, req, res, controllerDispatcher, function( err, model ){
+    mav.setModel( model );
+    mav.setView( view );
 
-  return mav;
+    callback( err, mav );
+  } );
 }
 
 
@@ -100,26 +91,8 @@ function setController( controllerJS ){
   return controller;
 }
 
-function executeController( controller, controlFunction, req, res, connection, controllerDispatcher, callback ){
-  // let model = {};
-
-  // model = controller[ controlFunction ]( req, res, connection, controllerDispatcher, callback );
+function executeController( controller, controlFunction, req, res, controllerDispatcher, callback ){
   if( callback ){
-    console.log( "callback : executeController" );
-    console.log( callback );
-
-    controller[ controlFunction ]( req, res, connection, controllerDispatcher, function( err, result ){
-      callback( err, result );
-    } );
+    controller[ controlFunction ]( req, res, controllerDispatcher, callback );
   }
-
-
-
-  // return model;
-}
-
-function getConnection( req, res ){
-  let conn = new connection( req, res );
-
-  return conn;
 }

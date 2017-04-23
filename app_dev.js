@@ -4,6 +4,13 @@ const app = express();
 
 
 
+// Init global module's paths;
+global.dbHandler = require( "./common/dbHandler.js" ).dbHandler;
+global.connectionHandler = require( "./common/connection.js" ).connection;
+
+
+
+
 // Init cookie, session
 const cookieParser = require( "cookie-parser" );
 app.use( cookieParser() );
@@ -75,19 +82,11 @@ app.listen( port, () => {
 // Wait Request
 app.get( "/*", (req, res) => {
   try{
-    var mav;
-
-    contextDispatcher.dispatching( req, res, controllerDispatcher, function( err, result ){
-      mav = result;
-
-      console.log( "app_dev.js : mav" );
-      // console.log( mav );
-      //
-      // console.log( "view  : " + mav.view );
-      // console.log( "model : " + JSON.stringify(mav.model) );
+    contextDispatcher.dispatching( req, res, controllerDispatcher, function( err, mav ){
+      console.log( "view  : " + mav.view );
+      console.log( "model : " + JSON.stringify(mav.model, null, 4) );
 
       if( req.xhr || req.headers.accept.indexOf("json") > -1 ){
-        console.log( "Ajax Called...." );
         res.send( mav.model );
       } else{
         res.render( mav.view, mav.model );
@@ -103,17 +102,17 @@ app.get( "/*", (req, res) => {
 
 app.post( "/*", (req, res) => {
   try{
-    var mav = contextDispatcher.dispatching( req, res, controllerDispatcher );
+    contextDispatcher.dispatching( req, res, controllerDispatcher, function( err, mav ){
+      console.log( "view  : " + mav.view );
+      console.log( "model : " + JSON.stringify(mav.model) );
 
-    console.log( "view  : " + mav.view );
-    console.log( "model : " + JSON.stringify(mav.model) );
+      if( req.xhr || req.headers.accept.indexOf("json") > -1 ){
+        res.send( mav.model );
+      } else{
+        res.render( mav.view, mav.model );
+      }
 
-    if( req.xhr || req.headers.accept.indexOf("json") > -1 ){
-      console.log( "Ajax Called...." );
-      res.send( mav.model );
-    } else{
-      res.render( mav.view, mav.model );
-    }
+    } );
   } catch( e ){
     console.log( e );
 

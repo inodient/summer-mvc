@@ -3,34 +3,18 @@
     {
       "id": "index",
       "path": "/",
-      "controllerJS": "controller_simple.js",
+      "controllerJS": "controller_basic.js",
       "controlFunction": "control",
       "viewPath": "",
       "view": "index.ejs"
     },
     {
-      "id": "index",
-      "path": "/index",
-      "controllerJS": "controller_simple.js",
+      "id": "getdb",
+      "path": "/getdb",
+      "controllerJS": "controller_db.js",
       "controlFunction": "control",
       "viewPath": "",
       "view": "index.ejs"
-    },
-    {
-      "id": "indexService",
-      "path": "/indexService",
-      "controllerJS": "controller_service.js",
-      "controlFunction": "control",
-      "viewPath": "",
-      "view": "index.ejs"
-    },
-    {
-      "id": "ajax",
-      "path": "/ajax",
-      "controllerJS": "controller_simple.js",
-      "controlFunction": "control",
-      "viewPath": "",
-      "view": "ajax.ejs"
     },
     {
       "id": "ajaxRequest",
@@ -39,16 +23,40 @@
       "controlFunction": "control",
       "viewPath": "",
       "view": "ajax.ejs"
+    },
+    {
+      "id": "setCookie",
+      "path": "/setCookie",
+      "controllerJS": "controller_cookie_session.js",
+      "controlFunction": "control",
+      "viewPath": "",
+      "view": "index.ejs"
+    },
+    {
+      "id": "setSession",
+      "path": "/setSession",
+      "controllerJS": "controller_cookie_session.js",
+      "controlFunction": "control",
+      "viewPath": "",
+      "view": "index.ejs"
+    },
+    {
+      "id": "getDB",
+      "path": "/getdb",
+      "controllerJS": "controller_db.js",
+      "controlFunction": "control",
+      "viewPath": "",
+      "view": "index.ejs"
     }
   ],
   "POST" : [
     {
-      "id": "welcomePost",
-      "path": "/welcomePost",
-      "controllerJS": "controller_dispatcher.js",
-      "controlFunction": "dispatching",
-      "viewPath": "default",
-      "view": "welcomePost.ejs"
+      "id": "indexPost",
+      "path": "/",
+      "controllerJS": "controller_post.js",
+      "controlFunction": "control",
+      "viewPath": "",
+      "view": "index.ejs"
     }
   ]
 }
