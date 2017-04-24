@@ -80,6 +80,7 @@ The `summer-mvc` has only one goal to provide very simple way to design web appl
 
 ##### Architecture    
 Consists of 5 parts : **dispatcher, properties, controller, views, queries**    
+    
 | Name | Type | Usage |
 |:----|:----:|:----|
 |  ✚ dispatcher | folder | containing dispatcher json files |    
@@ -89,9 +90,12 @@ Consists of 5 parts : **dispatcher, properties, controller, views, queries**
 |  db.json | file | containing db connection informations (host, user, password etc) |    
 |  ✚ controller | folder | containing controller js files |    
 | ✚ views | folder | containing ejs view files |    
-|  ✚ queries | folder | containing query json files |    
+|  ✚ queries | folder | containing query json files |       
+
+
     
 After initializing, **controller**, **views** and **queries** folder has sample files.    
+    
 | Parent | Name | Type | Usage |
 |:----|:----|:----:|:----|
 | controller | controller_basic.js | file |  sample basic controller |    
