@@ -80,6 +80,18 @@ The `summer-mvc` has only one goal to provide very simple way to design web appl
 
 ##### Architecture    
 Consists of 5 parts : **dispatcher, properties, controller, views, queries**    
+| Name | Type | Usage |
+|:----|:----:|:----|
+|  ✚ dispatcher | folder | containing dispatcher json files |    
+|  context_dispatcher.json | file | containing http req/res paths and assign controller & views |    
+|  ✚ properties | folder | containing defaults setting json files (initializer.json, db.json) |    
+|  initializer.json | file | containing default web application configuration (port, static_folder etc) |    
+|  db.json | file | containing db connection informations (host, user, password etc) |    
+|  ✚ controller | folder | containing controller js files |    
+| ✚ views | folder | containing ejs view files |    
+|  ✚ queries | folder | containing query json files |    
+
+
 | Name    |  Type   |    Usage   |    
 :--------|:--------:|:----------|    
 |  ✚ dispatcher | folder | containing dispatcher json files |    
@@ -91,7 +103,19 @@ Consists of 5 parts : **dispatcher, properties, controller, views, queries**
 | ✚ views | folder | containing ejs view files |    
 |  ✚ queries | folder | containing query json files |    
 
-After initializing, **controller**, **views** and **queries** folder has sample files.
+After initializing, **controller**, **views** and **queries** folder has sample files.    
+| Parent | Name | Type | Usage |
+|:----|:----|:----:|:----|
+| controller | controller_basic.js | file |  sample basic controller |    
+| controller | controller_ajax.js | file |  sample ajax controller |    
+| controller | controller_cookie_session.js | file |  sample cookie, session controller |    
+| controller | controller_db.js | file |  sample db controller |    
+| controller | controller_post.js | file |  sample post controller |    
+| views | index.ejs |file| sample index ejs page |    
+| views | error.html |file| sample error html page |    
+| queries | query.json  | file | sample query information file |
+
+
 |Parent |   Name    |  Type   |    Usage   |   
 |:--------|:--------|:--------:|:----------|    
 | controller | controller_basic.js | file |  sample basic controller |    
