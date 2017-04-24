@@ -164,8 +164,6 @@ v 1.0.0 Initial version
 v 1.0.1 Bug fixed    
 v 1.0.2 Bug fixed    
 **v 1.1.0 Current Version**    
-v 1.2.0 Error Handler    
-...
 
 ## People
 The original author of summer-mvc is Changho Kang.(inodient@gmail.com)  
