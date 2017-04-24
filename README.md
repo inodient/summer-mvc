@@ -80,16 +80,16 @@ The `summer-mvc` has only one goal to provide very simple way to design web appl
 
 ##### Architecture    
 Consists of 5 parts : **dispatcher, properties, controller, views, queries**    
-Name    |  Type   |    Usage   
-:--------|:--------:|:----------
- ✚ dispatcher | folder | containing dispatcher json files
- -- context_dispatcher.json | file | containing http req/res paths and assign controller & views
- ✚ properties | folder | containing defaults setting json files (initializer.json, db.json)
- -- initializer.json | file | containing default web application configuration (port, static_folder etc)
- -- db.json | file | containing db connection informations (host, user, password etc)
- ✚ controller | folder | containing controller js files
- ✚ views | folder | containing ejs view files
- ✚ queries | folder | containing query json files
+| Name    |  Type   |    Usage   |
+:--------|:--------:|:----------|
+|  ✚ dispatcher | folder | containing dispatcher json files |
+|  context_dispatcher.json | file | containing http req/res paths and assign controller & views |
+|  ✚ properties | folder | containing defaults setting json files (initializer.json, db.json) |
+|  initializer.json | file | containing default web application configuration (port, static_folder etc) |
+|  db.json | file | containing db connection informations (host, user, password etc) |
+|  ✚ controller | folder | containing controller js files |
+| ✚ views | folder | containing ejs view files |
+|  ✚ queries | folder | containing query json files |
 
 After initializing, **controller**, **views** and **queries** folder has sample files.
 |Parent |   Name    |  Type   |    Usage   |
