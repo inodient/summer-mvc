@@ -1,124 +1,121 @@
-//Set Default WAS Engine
 const express = require( "express" );
 const app = express();
 
-// Set body Parser
+
+
+
+// Init global module's paths;
+global.dbHandler = require( "./common/dbHandler.js" ).dbHandler;
+global.connectionHandler = require( "./common/connection.js" ).connection;
+
+
+
+
+// Init cookie, session
+const cookieParser = require( "cookie-parser" );
+app.use( cookieParser() );
+
+const session = require( "express-session" );
+app.use( session({
+  secret : "aslknq;oiwne;ofuiba;osudbf;uoasdf",
+  resave : false,
+  saveUninitialized : true,
+  cookie : {
+    maxAge: 1000 * 60 * 60
+  }
+}) );
+
+
+
+
+
+// Init body Parser
 const bodyParser = require( "body-parser" );
-app.use( bodyParser.urlencoded({extended : true}) );
-
-app.use( express.static("js") );
+app.use( bodyParser.urlencoded({ extended : true }) );
 
 
-// Set default Viewing info
-app.set( "view engine", "ejs" );
-app.engine( "html", require("ejs").renderFile );
 
-exports.setDefaultViewPath = function( path ){
 
-  console.log( "setDefaultViewPath" );
+// Init summer-mvc structure
+const initializer = require( "./common/initializer" );
+initializer.initStructure();
 
-  if( path ){
-    app.set( "views", require("./js/common.js").parsePath(path) );
-  } else{
-    app.set( "views", require("./js/common.js").parsePath( __dirname + "/views") );
-  }
+
+
+
+// set View Engine : specific for ejs
+const viewEngine = initializer.getViewEngine();
+
+app.set( "view engine", viewEngine );
+app.engine( "html", require(viewEngine).renderFile );
+app.set( "views", "views" );
+
+
+
+
+// set static Folders
+const staticFolders = initializer.getStaticFolders();
+
+for( var i=0; i<staticFolders.length; i++ ){
+  app.use( express.static(staticFolders[i]) );
 }
 
 
 
-// Set Basic Dispatching Info
-var common = require( "./js/common.js" );
-var Pathes = common.Pathes;
-var pathes = new Pathes();
 
-var dispatcher = require( "./dispatcher/context-dispatcher.js" );
-
-exports.setContextDispatchingInfo = function( path, file ){
-
-  console.log( "setContextDispatchingInfo" );
-
-  if( path ){
-    pathes.setDispatcherPath( path );
-  } else{
-    pathes.setDispatcherPath( common.parsePath(__dirname + "/dispatcher") );
-  }
-
-  if( file ){
-    pathes.setDispatcherJS( file );
-  } else{
-    pathes.setDispatcherJS( "context-dispatcher.json" );
-  }
-
-  dispatcher.setDispatchingInfo( path, file );
-}
-
-exports.setControllerDispatchingInfo = function( path, file ){
-
-  console.log( "setControllerDispatchingInfo" );
-
-  if( path ){
-    pathes.setControllerDispatcherPath( path );
-  } else{
-    pathes.setControllerDispatcherPath( common.parsePath(__dirname + "/controller") );
-  }
-
-  if( file ){
-    pathes.setControllerDispatcherJS( file );
-  } else{
-    pathes.setControllerDispatcherJS( "controller-dispatcher.json" );
-  }
-}
-
-exports.setServicerPath = function( path ){
-
-  console.log( "setServicerPath" );
-
-  if( path ){
-    pathes.setServicerPath( path );
-  } else{
-    pathes.setServicerPath( __dirname + "/services" )
-  }
-}
+// set context Dispatcher
+const contextDispatcher = require( initializer.getContextDispatcherPath() );
+//const controllerDispatcher = ( initializer.getControllerDispatcherPath() === undefined ) ? undefined : require( initializer.getControllerDispatcherPath() );
 
 
 
-// WAS Start
-exports.init = function( port ){
 
-  this.setDefaultViewPath();
-  this.setContextDispatchingInfo();
-  this.setControllerDispatchingInfo();
-  this.setServicerPath();
+// Start WAS
+const port = initializer.getPort();
 
-  app.listen( port, () => {
-    console.log( "listen port : " + port );
-  } );
-}
+app.listen( port, () => {
+  console.log( "Listen Port : " + port );
+} );
 
-app.get( "/*", (req, res, next) => {
+
+
+// Wait Request
+app.get( "/*", (req, res) => {
   try{
-    var mav = dispatcher.dispatching( req, pathes );
+    contextDispatcher.dispatching( req, res, function( err, mav ){
+      console.log( "view  : " + mav.view );
+      console.log( "model : " + JSON.stringify(mav.model, null, 4) );
 
-    console.log( "mav.view : " + mav.view + ", mav.model : " + mav.model );
+      if( req.xhr || req.headers.accept.indexOf("json") > -1 ){
+        res.send( mav.model );
+      } else{
+        res.render( mav.view, mav.model );
+      }
 
-    res.render( mav.view, mav.model );
+    } );
   } catch( e ){
     console.log( e );
 
-    res.render( "default/error.html" );
+    res.render( "error.html" );
   }
 } );
 
 app.post( "/*", (req, res) => {
   try{
-    var mav = dispatcher.dispatching( req, pathes );
+    contextDispatcher.dispatching( req, res, function( err, mav ){
+      console.log( "view  : " + mav.view );
+      console.log( "model : " + JSON.stringify(mav.model) );
 
-    console.log( "mav.view : " + mav.view + ", mav.model : " + mav.model );
+      if( req.xhr || req.headers.accept.indexOf("json") > -1 ){
+        res.send( mav.model );
+      } else{
+        res.render( mav.view, mav.model );
+      }
 
-    res.render( mav.view, mav.model );
+    } );
   } catch( e ){
     console.log( e );
 
-    res.render( "default/error.html" );
+    res.render( "error.html" );
   }
 } );

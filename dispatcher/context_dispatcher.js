@@ -5,16 +5,16 @@ const ModelAndView = require( "./model_and_view.js" ).ModelAndView;
 
 
 
-exports.dispatching = function( req, res, controllerDispatcher, callback ){
+exports.dispatching = function( req, res, callback ){
   let reqMethod = req.method;
 
   switch ( reqMethod.toUpperCase() ){
     case "GET":
-      dispatchingGet( req, res, controllerDispatcher, callback );
+      dispatchingGet( req, res, callback );
       break;
 
     case "POST":
-      dispatchingPost( req, res, controllerDispatcher, callback );
+      dispatchingPost( req, res, callback );
       break;
 
     default:
@@ -25,7 +25,7 @@ exports.dispatching = function( req, res, controllerDispatcher, callback ){
 
 
 
-function dispatchingGet( req, res, controllerDispatcher, callback ){
+function dispatchingGet( req, res, callback ){
   let mav = new ModelAndView();
 
   let dispatchingSpec = findDispatchingSpec( "GET", req._parsedUrl.pathname );
@@ -34,7 +34,7 @@ function dispatchingGet( req, res, controllerDispatcher, callback ){
 
   let view = require("path").join( dispatchingSpec.viewPath, dispatchingSpec.view );
 
-  executeController( controller, dispatchingSpec.controlFunction, req, res, controllerDispatcher, function( err, model ){
+  executeController( controller, dispatchingSpec.controlFunction, req, res, function( err, model ){
     mav.setModel( model );
     mav.setView( view );
 
@@ -42,7 +42,7 @@ function dispatchingGet( req, res, controllerDispatcher, callback ){
   } );
 }
 
-function dispatchingPost( req, res, controllerDispatcher, callback ){
+function dispatchingPost( req, res, callback ){
   let mav = new ModelAndView();
 
   let dispatchingSpec = findDispatchingSpec( "POST", req._parsedUrl.pathname );
@@ -51,7 +51,7 @@ function dispatchingPost( req, res, controllerDispatcher, callback ){
 
   let view = require("path").join( dispatchingSpec.viewPath, dispatchingSpec.view );
 
-  executeController( controller, dispatchingSpec.controlFunction, req, res, controllerDispatcher, function( err, model ){
+  executeController( controller, dispatchingSpec.controlFunction, req, res, function( err, model ){
     mav.setModel( model );
     mav.setView( view );
 
@@ -91,8 +91,8 @@ function setController( controllerJS ){
   return controller;
 }
 
-function executeController( controller, controlFunction, req, res, controllerDispatcher, callback ){
+function executeController( controller, controlFunction, req, res, callback ){
   if( callback ){
-    controller[ controlFunction ]( req, res, controllerDispatcher, callback );
+    controller[ controlFunction ]( req, res, callback );
   }
 }

@@ -1,4 +1,4 @@
-exports.control = function( req, res, controllerDispatcher, callback ){
+exports.control = function( req, res, callback ){
 
   connection = new connectionHandler( req, res );
 
