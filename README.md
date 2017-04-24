@@ -90,19 +90,7 @@ Consists of 5 parts : **dispatcher, properties, controller, views, queries**
 |  ✚ controller | folder | containing controller js files |    
 | ✚ views | folder | containing ejs view files |    
 |  ✚ queries | folder | containing query json files |    
-
-
-| Name    |  Type   |    Usage   |    
-:--------|:--------:|:----------|    
-|  ✚ dispatcher | folder | containing dispatcher json files |    
-|  context_dispatcher.json | file | containing http req/res paths and assign controller & views |    
-|  ✚ properties | folder | containing defaults setting json files (initializer.json, db.json) |    
-|  initializer.json | file | containing default web application configuration (port, static_folder etc) |    
-|  db.json | file | containing db connection informations (host, user, password etc) |    
-|  ✚ controller | folder | containing controller js files |    
-| ✚ views | folder | containing ejs view files |    
-|  ✚ queries | folder | containing query json files |    
-
+    
 After initializing, **controller**, **views** and **queries** folder has sample files.    
 | Parent | Name | Type | Usage |
 |:----|:----|:----:|:----|
@@ -114,19 +102,7 @@ After initializing, **controller**, **views** and **queries** folder has sample 
 | views | index.ejs |file| sample index ejs page |    
 | views | error.html |file| sample error html page |    
 | queries | query.json  | file | sample query information file |
-
-
-|Parent |   Name    |  Type   |    Usage   |   
-|:--------|:--------|:--------:|:----------|    
-| controller | controller_basic.js | file |  sample basic controller |    
-| controller | controller_ajax.js | file |  sample ajax controller |    
-| controller | controller_cookie_session.js | file |  sample cookie, session controller |    
-| controller | controller_db.js | file |  sample db controller |    
-| controller | controller_post.js | file |  sample post controller |    
-| views | index.ejs |file| sample index ejs page |    
-| views | error.html |file| sample error html page |    
-| queries | query.json  | file | sample query information file |    
-
+    
 
 ##### APIs
 `summer-mvc` provides some APIs for web application especailly **cookie, session** and **db**.
@@ -162,9 +138,9 @@ let connection = new connectionHandler( req, res );
 connection.destroySession();    
 ```
 ###### executeQuery( queryId[, params, ...], callback ) : **mysql only**
->> queryId : identifier of query ( queries/query.json's id )    
->> params : prepared statement's empty values
->> callback : contains 3 parameters - err, results(rs), fields(columns)
+> queryId : identifier of query ( queries/query.json's id )    
+> params : prepared statement's empty values
+> callback : contains 3 parameters - err, results(rs), fields(columns)
 ```javascript
 let db = new dbHandler();
 db.executeQuery( "getMySqlVersion", function( err, results, fields ){
@@ -172,8 +148,8 @@ db.executeQuery( "getMySqlVersion", function( err, results, fields ){
 }
 ```    
 ###### getQueryString( queryId[, params] ) : **mysql only**
->> queryId : identifier of query ( queries/query.json's id )     
->> params : prepared statement's empty values    
+> queryId : identifier of query ( queries/query.json's id )     
+> params : prepared statement's empty values    
 ```javascript
 let db = new dbHandler();
 db.executeQuery( "getMySqlVersion" )
