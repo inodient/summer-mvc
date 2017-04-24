@@ -138,9 +138,9 @@ let connection = new connectionHandler( req, res );
 connection.destroySession();    
 ```
 ###### executeQuery( queryId[, params, ...], callback ) : **mysql only**
--- queryId : identifier of query ( queries/query.json's id )    
--- params : prepared statement's empty values
--- callback : contains 3 parameters - err, results(rs), fields(columns)
+>> queryId : identifier of query ( queries/query.json's id )    
+>> params : prepared statement's empty values
+>> callback : contains 3 parameters - err, results(rs), fields(columns)
 ```javascript
 let db = new dbHandler();
 db.executeQuery( "getMySqlVersion", function( err, results, fields ){
@@ -148,19 +148,19 @@ db.executeQuery( "getMySqlVersion", function( err, results, fields ){
 }
 ```    
 ###### getQueryString( queryId[, params] ) : **mysql only**
--- queryId : identifier of query ( queries/query.json's id )     
--- params : prepared statement's empty values    
+>> queryId : identifier of query ( queries/query.json's id )     
+>> params : prepared statement's empty values    
 ```javascript
 let db = new dbHandler();
 db.executeQuery( "getMySqlVersion" )
 ```    
 
 ### History
-v 1.0.0 Initial version
-v 1.0.1 Bug fixed
-v 1.0.2 Bug fixed
-v 1.1.0 Current Version
-v 1.2.0 Error Handler
+v 1.0.0 Initial version    
+v 1.0.1 Bug fixed    
+v 1.0.2 Bug fixed    
+**v 1.1.0 Current Version**    
+v 1.2.0 Error Handler    
 ...
 
 ### People
