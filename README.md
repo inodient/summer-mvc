@@ -1,12 +1,12 @@
 # summer-mvc
 Structured, light, spring-like web application development framework.      
 
-### Installation      
+## Installation      
 ```      
 $ npm install summer-mvc      
 ```      
 
-### Quick Start
+## Quick Start
 In your js file, require module `summer-mvc`. Then `summer-mvc` build architecture, authomatically.     
 ( dispatcher, controller, views, queries etc )     
 ```javascript     
@@ -19,7 +19,7 @@ Default port is 3000. ex) http://localhost:3000
 http://{your-host-name}:{port}    
 ```    
 
-### Features       
+## Features       
 - Focus on fast design & development spped
 - Use `express` for serving http request, response
 - Provide automatic *application-building-machanism*
@@ -28,11 +28,11 @@ http://{your-host-name}:{port}
 - Support 1 view engine (`ejs`), 1 database engine (`mysql`) (v1.1.0)
 - Provide easy cookie, session managing methods and database(mysql) controlling methods    
 
-### Philosophy    
+## Philosophy    
 The `summer-mvc` has only one goal to provide very simple way to design web application. As most developer feel comfortable for using the **spring framework**, the `summer-mvc` provides spring framework - like environment. `summer-mvc` uses small **dispatcher-engine** (like spring's dispatcher-servlet), and it can be controlled by **JSON files**(like spring's xxx-servlet.xml).      
 
-### Manual    
-##### Design & Implement
+## Manual    
+### Design & Implement
 1. Set initial information : **properties/initalizer.json**    
    * port : service port ( default : 3000 )    
    * context_architecture : architecture of web application    
@@ -78,7 +78,7 @@ The `summer-mvc` has only one goal to provide very simple way to design web appl
      </tr>
      ```
 
-##### Architecture    
+### Architecture    
 Consists of 5 parts : **dispatcher, properties, controller, views, queries**    
     
 | Name | Type | Usage |
@@ -108,40 +108,40 @@ After initializing, **controller**, **views** and **queries** folder has sample 
 | queries | query.json  | file | sample query information file |
     
 
-##### APIs
+### APIs
 `summer-mvc` provides some APIs for web application especailly **cookie, session** and **db**.
 ( samples : controller_cookie_session.js / controller_db.js )
-###### setCookie( cookieKey, cookieValue )    
+#### setCookie( cookieKey, cookieValue )    
 ```javascript    
 let connection = new connectionHandler( req, res );    
 connection.setCookie( "cookie_Key", "cookie_Value" );    
 ```
-###### getCookie( cookieKey )    
+#### getCookie( cookieKey )    
 ```javascript    
 let connection = new connectionHandler( req, res );    
 connection.getCookie( "cookie_Key" );    
 ```
-###### clearCookie( cookieKey )    
+#### clearCookie( cookieKey )    
 ```javascript    
 let connection = new connectionHandler( req, res );    
 connection.clearCookie( "cookie_Key" );    
 ```
-###### setSession( sessionKey, sessionValue )    
+#### setSession( sessionKey, sessionValue )    
 ```javascript    
 let connection = new connectionHandler( req, res );    
 connection.setSession( "session_Key", "session_Value" );    
 ```
-###### getSession( sessionKey )
+#### getSession( sessionKey )
 ```javascript    
 let connection = new connectionHandler( req, res );    
 connection.getSession( "session_Key" );    
 ```
-###### destroySession()
+#### destroySession()
 ```javascript    
 let connection = new connectionHandler( req, res );    
 connection.destroySession();    
 ```
-###### executeQuery( queryId[, params, ...], callback ) : **mysql only**
+#### executeQuery( queryId[, params, ...], callback ) : **mysql only**
 > queryId : identifier of query ( queries/query.json's id )    
 > params : prepared statement's empty values
 > callback : contains 3 parameters - err, results(rs), fields(columns)
@@ -151,7 +151,7 @@ db.executeQuery( "getMySqlVersion", function( err, results, fields ){
     console.log( results );
 }
 ```    
-###### getQueryString( queryId[, params] ) : **mysql only**
+#### getQueryString( queryId[, params] ) : **mysql only**
 > queryId : identifier of query ( queries/query.json's id )     
 > params : prepared statement's empty values    
 ```javascript
@@ -159,7 +159,7 @@ let db = new dbHandler();
 db.executeQuery( "getMySqlVersion" )
 ```    
 
-### History
+## History
 v 1.0.0 Initial version    
 v 1.0.1 Bug fixed    
 v 1.0.2 Bug fixed    
@@ -167,8 +167,8 @@ v 1.0.2 Bug fixed
 v 1.2.0 Error Handler    
 ...
 
-### People
+## People
 The original author of summer-mvc is Changho Kang.(inodient@gmail.com)  
 
-### License
+## License
 [MIT Licensed](https://github.com/inodient/summer-mvc/blob/master/LICENSE)  
