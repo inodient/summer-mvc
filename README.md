@@ -1,240 +1,170 @@
 # summer-mvc
-Structural, Light, Spring-like web application development framework.
+Structured, light, spring-like web application development framework.      
 
-### Installation
-```
-$ npm install summer-mvc
-```
-
-### Features
-- Focus on fast design & development speed
-- Control with / using JSON file
-- View system supporting 1+ template engines
-- Looks like spring framework
-
-### Philosophy
-The summer-mvc has only one goal to provide very simple way to design web application.  
-As most developer feel comfortable for using the spring framework, the summer-mvc looks like the spring framework.  
-It use small dispatcher-engine (like spring's dispatcher-servlet), and it can be controlled by JSON files(like spring's xxx-servlet.xml).  
+### Installation      
+```      
+$ npm install summer-mvc      
+```      
 
 ### Quick Start
-The quickest way to get started with summer-mvc is to utilize the executable `summer-mvc` to generate an application as shown below:  
+In your js file, require module `summer-mvc`. Then `summer-mvc` build architecture, authomatically.     
+( dispatcher, controller, views, queries etc )     
+```javascript     
+const mvc = require( "summer-mvc" );    
+```    
 
-Install the executable module:  
+After building, call `basic http request` in your browser.
+Default port is 3000. ex) http://localhost:3000    
 ```
-$ npm install summer-mvc
-```
+http://{your-host-name}:{port}    
+```    
 
-Create the js file and require summer-mvc module:  
+### Features       
+- Focus on fast design & development spped
+- Use `express` for serving http request, response
+- Provide automatic *application-building-machanism*
+- Provide structural degigning method using **json** file format
+- Simular architecture with spring framework
+- Support 1 view engine (`ejs`), 1 database engine (`mysql`) (v1.1.0)
+- Provide easy cookie, session managing methods and database(mysql) controlling methods    
+
+### Philosophy    
+The `summer-mvc` has only one goal to provide very simple way to design web application. As most developer feel comfortable for using the **spring framework**, the `summer-mvc` provides spring framework - like environment. `summer-mvc` uses small **dispatcher-engine** (like spring's dispatcher-servlet), and it can be controlled by **JSON files**(like spring's xxx-servlet.xml).      
+
+### Manual    
+##### Design & Implement
+1. Set initial information : **properties/initalizer.json**    
+   * port : service port ( default : 3000 )    
+   * context_architecture : architecture of web application    
+   * views / options : defaults view engine and options. (**Please don't change**)    
+   * statis_folders : defaults express static folders ( *__app.use( express.static( *** ) );__* )    
+
+
+2. Set initial dispatcher : **dispatcher/context-dispatcher.json**    
+   * "GET", "POST" : method of http request
+   * Array of dispatching info
+      * id : identifier ( doesn't use for system but fill in )
+      * path : URI's resource paths
+      * controllerJS : indicate controller js file (../controller)
+      * controlFunction : name of control function in controllerJS file
+      * view : indicate ejs view file (../views)
+
+
+3. Implement Controller : **controller/controller_xxx.js**    
+   * The only one rule is that controller must return object named **model** using callback function.    
+   * `summer-mvc` call controller function automatically, but contol function has 3 mandatory parameters.    
+      * req : request object comes from client    
+      * res : response object send to client (managed by `your application`)
+      * callback : **1st param - err, 2nd param - model object**
+   * Sample
+      ```javascript
+      exports.control = function( req, res, callback ){
+        var model = {};
+        callback( null, model );
+      }
+      ```    
+
+
+
+4. Design view : **views/xxx.ejs**    
+   * `summer-mvc`'s default view engine is [*`ejs`*](https://www.npmjs.com/package/ejs)
+   * If controller return model object using callback, `summer-mvc` send it to *ejs*.
+      So ejs viewing file can use model object's elements.
+   * Sample
+     ```html
+     <tr>
+        <td>Method</td>
+        <td><%= method %></td>
+     </tr>
+     ```
+
+##### Architecture    
+Consists of 5 parts : **dispatcher, properties, controller, views, queries**    
+|Name    |  Type   |    Usage   |
+|:--------|:--------:|:----------|
+| ✚ dispatcher | folder | containing dispatcher json files |
+| -- context_dispatcher.json | file | containing http req/res paths and assign controller & views |
+| ✚ properties | folder | containing defaults setting json files (initializer.json, db.json) |
+| -- initializer.json | file | containing default web application configuration (port, static_folder etc) |
+| -- db.json | file | containing db connection informations (host, user, password etc) |
+| ✚ controller | folder | containing controller js files|
+| ✚ views | folder | containing ejs view files|
+| ✚ queries | folder | containing query json files|
+
+After initializing, **controller**, **views** and **queries** folder has sample files.
+|Parent |   Name    |  Type   |    Usage   |
+|:--------|:--------|:--------:|:----------|
+| controller | controller_basic.js | file |  sample basic controller |
+| controller | controller_ajax.js | file |  sample ajax controller |
+| controller | controller_cookie_session.js | file |  sample cookie, session controller |
+| controller | controller_db.js | file |  sample db controller |
+| controller | controller_post.js | file |  sample post controller |
+| views | index.ejs |file| sample index ejs page |
+| views | error.html |file| sample error html page |
+| queries | query.json  | file | sample query information file |
+
+
+##### APIs
+`summer-mvc` provides some APIs for web application especailly **cookie, session** and **db**.
+( samples : controller_cookie_session.js / controller_db.js )
+###### setCookie( cookieKey, cookieValue )    
+```javascript    
+let connection = new connectionHandler( req, res );    
+connection.setCookie( "cookie_Key", "cookie_Value" );    
+```
+###### getCookie( cookieKey )    
+```javascript    
+let connection = new connectionHandler( req, res );    
+connection.getCookie( "cookie_Key" );    
+```
+###### clearCookie( cookieKey )    
+```javascript    
+let connection = new connectionHandler( req, res );    
+connection.clearCookie( "cookie_Key" );    
+```
+###### setSession( sessionKey, sessionValue )    
+```javascript    
+let connection = new connectionHandler( req, res );    
+connection.setSession( "session_Key", "session_Value" );    
+```
+###### getSession( sessionKey )
+```javascript    
+let connection = new connectionHandler( req, res );    
+connection.getSession( "session_Key" );    
+```
+###### destroySession()
+```javascript    
+let connection = new connectionHandler( req, res );    
+connection.destroySession();    
+```
+###### executeQuery( queryId[, params, ...], callback ) : **mysql only**
+-- queryId : identifier of query ( queries/query.json's id )    
+-- params : prepared statement's empty values
+-- callback : contains 3 parameters - err, results(rs), fields(columns)
 ```javascript
-var mvc = require( "summer-mvc" );
-```
-
-Init the app. You can assign any network ports you want. The default is 3000.  
+let db = new dbHandler();
+db.executeQuery( "getMySqlVersion", function( err, results, fields ){
+    console.log( results );
+}
+```    
+###### getQueryString( queryId[, params] ) : **mysql only**
+-- queryId : identifier of query ( queries/query.json's id )     
+-- params : prepared statement's empty values    
 ```javascript
-mvc.init( 3000 );
-```
+let db = new dbHandler();
+db.executeQuery( "getMySqlVersion" )
+```    
 
-Start the app. And you can see the log as follow:  
-```
-$ node app.js
-```
-```
-setDefaultViewPath
-setContextDispatchingInfo
-setControllerDispatchingInfo
-setServicerPath
-listen port : 3000
-```
-
-Preparation Completed. Please call URL like <http://localhost:3000/> (http://{user_hostname}:{port}/).  
-##### Welcome summer-mvc!  
-![Welcome Page](https://github.com/inodient/summer-mvc/blob/master/img/welcome.png)  
-
-
-### Docs & Community
-Unfortunately, this project has no special docs and communities, yet.  
-Please wait until releasing v2.0.0. That time you can see a compact package.  
-
-### Usage
-The summer-mvc contains two engines for dispatching clients http request.    
-(context-dispatcher.js, controller-dispatcher-js)    
-These engines are embedded on the package you installed, so you don't need to implement these.    
-But you must design a structure of your system using 2 JSON files.    
-(context-dispatcher.json, controller-dispatcher.json)   
-
-1. dispatching Info JSON Files
-
-    1. context-dispatcher.json
-    context-dispatcher is the engine for dispatching clients http request to controllers.    
-    You must to write dispatchingInfo (type : JSON) file and set this file to dispatcher using setContextDispatchingInfo() method.    
-
-
-
-
-    DispatchingInfo File consists of JSON Object arrays "GET" and "POST".    
-    > {    
-    >   "GET" : [    
-    >     {    
-    >       "id": "index",    
-    >       "path": "/",    
-    >       "controllerJS": "controller.js",    
-    >       "controlFunction": "control",    
-    >       "viewPath": "default",    
-    >       "view": "welcome.ejs"    
-    >     }    
-    >   ]    
-    >   "POST" : [    
-    >     {    
-    >       "id": "welcomePost",    
-    >       "path": "/welcomePost",    
-    >       "controllerJS": "controller-dispatcher.js",    
-    >       "controlFunction": "dispatching",    
-    >       "viewPath": "default",    
-    >       "view": "welcomePost.ejs"    
-    >     }    
-    >   ]    
-    > }    
-
-
-
-
-    Each method has at least 6 objects id, path, controllerJS, controlFunction, viewPath and view.    
-    Objects specifics as follow:    
-    > - id : identification for dispatching info. It does not use for summer-mvc, but can a way to design the system sharply.    
-    > - path : http request path ( ex : http://{user_hostname}:{port}/**path**)    
-    > - controllerJS : handler javascript file when client request **path**    
-    > - controlFunction : control function that is implemented in **controllerJS**. It must be wrapped by exports keyword (ex: exports.control = function(){} );    
-    > - viewPath : path of rendering view files under view engine's default path. You can set view engine's default path using setDefaultViewPath() method.    
-    > - view : name of view file. Currently, `summer-mvc` only support ejs view engine.    
-
-
-
-
-    2. controller-dispatcher.json    
-    controller-dispatcher is the engine for dispatching controller's execution request to services.    
-    You must to write dispatchingInfo (type : JSON) file and set this file to dispatcher using setControllerDispatchingInfo() method.        
-
-    If you don't want to use this, you can use *context-dispatcher* singly.    
-    If you want to use this, you must set *controllerJS* as **controller-dispatcher.js** and *controlFunction* as *dispatching* (Very important).    
-    Actually, it desn't need to use these objects but that is very clear use these.    
-
-
-    For control dispatching, client(view file) must send *action* information to **summer-mvc**.
-    ```
-    http://localhost:3000/post?action=initial
-    ```    
-    Or set html form name as 'action'
-    ```html
-    <input type="textbox" name="action">
-    ```
-
-
-
-    controller-dispatcher 4 objects as follow:
-    > [    
-    >   {    
-    >     "action": "initial",    
-    >     "id": "service1",    
-    >     "servicerJS": "service1.js",    
-    >     "serviceFunction": "executeService"    
-    >   },    
-    >   {    
-    >     "action": "initial",    
-    >     "id": "service2",    
-    >     "servicerJS": "service2.js",    
-    >     "serviceFunction": "executeService"    
-    >   }    
-    > ]      
-
-    > - action : indicate service matched with client's request    
-    > - id : identification for dispatching info. It does not use for summer-mvc, but can a way to design the system sharply.   
-    > - servicerJS : servicer javascript file when controller need to **action**    
-    > - serviceFunction : service function that is implemented in **servicerJS**. It must be wrapped by exports keyword (ex: exports.executeService = function(){} );    
-
-
-
-2. Folder Design and set Paths    
-> *Generally*, context-dispatcher.json located in *dispatcher* folder.    
-> *Generally*, controller-dispatcher.json located in *controller* folder.    
-> *Generally*, controller.js located in *controller* folder, too.    
-> *Generally*, service.js located in *services* folder.       
-> *Generally*, ejs view folder named as *views*.    
-> (You can see these folder structure in `summer-mvc` module folders. /node-modules/summer-mvc)    
-
-And you must set path and file's location information using `summer-mvc` APIs.    
-
-### __setContextDispatchingInfo( path[, file] )__      
-Set context-dispatcher information JSON file.    
-Path contains filename. So file is not mandatory.    
-
-### __setControllerDispatchingInfo( path[, file] )__     
-Set controller-dispatcher information JSON file.    
-Path contains filename. So file is not mandatory.    
-
-### __setServicerPath( path[, file] )__    
-Set services folder path.    
-
-### __setDefaultViewPath( path )__   
-Set ejs view folder path.     
-
-**Important! It is efficient way that set paths with physical full path (ex:/usr/nodejs/project/summer-mvc)**
-
-
-
-
-3. Implement Controller and services
-- For ejs render view file dynamically, controller must be return JSON object named **model**.    
-And control function must be wrapped *exports* keyword. You can use *paths* argument that contains paths used by `summer-mvc`.
-  ```javascript
-  exports.control = function( req, paths ){
-    var model = {};
-    ....
-    return model;
-  }
-  ```
-- For controller send **model** object to ejs, service method receive already-defined-model object and return **model** .
-And service function must be wrapped *exports* keyword.
-You can use *paths* argument that contains paths used by `summer-mvc`.
-  ```javascript
-  exports.executeService = function( req, model, paths ){
-    .....
-    return model;
-  }
-  ```
-
-4. Start application
-    1. Init    
-    ```javascript    
-    var mvc = require( "summer-mvc" );    
-    mvc.init( 3000 );    
-    ```
-    2. Set paths
-    ```javascript    
-    mvc.setContextDispatchingInfo( __dirname + "/dispatcher", "dispatcher.json" );    
-    mvc.setControllerDispatchingInfo( __dirname + "/controller", "controller-dispatcher.json" );    
-    mvc.setServicerPath( __dirname + "/services" );    
-    mvc.setDefaultViewPath( __dirname + "/views" );    
-    ```
-
-5. Test URLs
-- HTTP GET : http://{user_hostname}:{port}/
-- HTTP GET : http://{user_hostname}:{port}/index
-- HTTP GET : http://{user_hostname}:{port}/welcome
-
-- HTTP POST :
-  - HTTP GET : http://{user_hostname}:{port}/post?action=initial
-  - Type "initial" and Submit
-  - HTTP POST called and send HTTP GET http://{user_hostname}:{port}/welcomePost
-
-
-##### If you install `summer-mvc`, you can see some example codes in module folders. (/node-modules/summer-mvc.)
-
-<!-- ### Tests -->
+### History
+v 1.0.0 Initial version
+v 1.0.1 Bug fixed
+v 1.0.2 Bug fixed
+v 1.1.0 Current Version
+v 1.2.0 Error Handler
+...
 
 ### People
-The original author of summer-mvc is Changho Kang(inodient@gmail.com)  
-If you want to contact or have any question, we can use email as below.    
+The original author of summer-mvc is Changho Kang.(inodient@gmail.com)  
 
 ### License
-[MIT Licensed](https://github.com/inodient/summer-mvc/blob/master/LICENSE)
+[MIT Licensed](https://github.com/inodient/summer-mvc/blob/master/LICENSE)  

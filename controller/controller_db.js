@@ -4,6 +4,8 @@ exports.control = function( req, res, callback ){
 
   if( callback ){
 
+    console.log( db.getQueryString( "getMySqlVersion" ) );
+
     db.executeQuery( "getMySqlVersion", function( err, results, fields ){
       setModel( req, res, results, fields, callback );
     } );
