@@ -31,6 +31,9 @@ http://{your-host-name}:{port}
 ## Philosophy    
 The `summer-mvc` has only one goal to provide very simple way to design web application. As most developer feel comfortable for using the **spring framework**, the `summer-mvc` provides spring framework - like environment. `summer-mvc` uses small **dispatcher-engine** (like spring's dispatcher-servlet), and it can be controlled by **JSON files**(like spring's xxx-servlet.xml).      
 
+## DOCs    
+`summer-mvc`'s [DOC.pdf](https://github.com/inodient/summer-mvc/blob/master/DOC.pdf)    
+    
 ## Manual    
 ### Design & Implement
 1. Set initial information : **properties/initalizer.json**    
@@ -110,7 +113,7 @@ After initializing, **controller**, **views** and **queries** folder has sample 
 
 ### APIs
 `summer-mvc` provides some APIs for web application especailly **cookie, session** and **db**.
-( samples : controller_cookie_session.js / controller_db.js )
+( samples : controller_cookie_session.js / controller_db.js )    
 #### setCookie( cookieKey, cookieValue )    
 ```javascript    
 let connection = new connectionHandler( req, res );    
