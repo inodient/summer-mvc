@@ -86,7 +86,7 @@ app.get( "/*", (req, res) => {
       console.log( "view  : " + mav.view );
       console.log( "model : " + JSON.stringify(mav.model, null, 4) );
 
-      if( req.xhr || req.headers.accept.indexOf("json") > -1 ){
+      if( req.xhr ){
         res.send( mav.model );
       } else{
         res.render( mav.view, mav.model );

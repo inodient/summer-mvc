@@ -3,10 +3,20 @@
   "version": "1.1.0",
   "description": "Structured, Light, Spring-like Web Application Development Framework",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [
-    "summer-mvc", "mvc", "web", "web application", "http", "server", "was", "spring", "cookie", "session", "ejs", "express"
+    "summer-mvc",
+    "mvc",
+    "web",
+    "web application",
+    "http",
+    "server",
+    "was",
+    "spring",
+    "cookie",
+    "session",
+    "ejs",
+    "express"
   ],
   "author": "inodient",
   "license": "ISC",

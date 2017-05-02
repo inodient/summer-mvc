@@ -20,13 +20,13 @@ http://{your-host-name}:{port}
 ```    
 
 ## Features       
-- Focus on fast design & development spped
+- Focus on fast design & development speed
 - Use `express` for serving http request, response
 - Provide automatic *application-building-machanism*
-- Provide structural degigning method using **json** file format
+- Provide structural designing method using **JSON** file format
 - Simular architecture with spring framework
 - Support 1 view engine (`ejs`), 1 database engine (`mysql`) (v1.1.0)
-- Provide easy cookie, session managing methods and database(mysql) controlling methods    
+- Provide easy way to manage cookie, session and database(mysql) 
 
 ## Philosophy    
 The `summer-mvc` has only one goal to provide very simple way to design web application. As most developer feel comfortable for using the **spring framework**, the `summer-mvc` provides spring framework - like environment. `summer-mvc` uses small **dispatcher-engine** (like spring's dispatcher-servlet), and it can be controlled by **JSON files**(like spring's xxx-servlet.xml).      
@@ -80,7 +80,7 @@ The `summer-mvc` has only one goal to provide very simple way to design web appl
 
 ### Architecture    
 Consists of 5 parts : **dispatcher, properties, controller, views, queries**    
-    
+
 | Name | Type | Usage |
 |:----|:----:|:----|
 |  ✚ dispatcher | folder | containing dispatcher json files |    
@@ -93,9 +93,9 @@ Consists of 5 parts : **dispatcher, properties, controller, views, queries**
 |  ✚ queries | folder | containing query json files |       
 
 
-    
+
 After initializing, **controller**, **views** and **queries** folder has sample files.    
-    
+
 | Parent | Name | Type | Usage |
 |:----|:----|:----:|:----|
 | controller | controller_basic.js | file |  sample basic controller |    
@@ -106,7 +106,7 @@ After initializing, **controller**, **views** and **queries** folder has sample 
 | views | index.ejs |file| sample index ejs page |    
 | views | error.html |file| sample error html page |    
 | queries | query.json  | file | sample query information file |
-    
+
 
 ### APIs
 `summer-mvc` provides some APIs for web application especailly **cookie, session** and **db**.
