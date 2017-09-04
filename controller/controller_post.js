@@ -1,9 +1,9 @@
-exports.control = function( req, res, callback ){
+exports.control = function( req, res ){
 
-  setModel( req, res, callback );
+  return setModel( req, res );
 }
 
-function setModel( req, res, callback ){
+function setModel( req, res ){
   var model = {};
 
   try{
@@ -17,9 +17,8 @@ function setModel( req, res, callback ){
     model.dbRes = "-";
     model.ajaxResult = "-";
 
-    callback( null, model );
+    return model;
   } catch( err ){
-    callback( err, model );
+    throw err;
   }
-
 }

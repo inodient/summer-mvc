@@ -7,24 +7,29 @@ exports.dbHandler = function(){
 
 
 
-
   const pool = mysql.createPool( connectionInfo );
 
   this.executeQuery = function(){
 
-    let queryValues = [];
-    let callback = arguments[ arguments.length - 1 ];
+    return new Promise( function(resolve, reject){
+      let queryValues = [];
+      let callback = arguments[ arguments.length - 1 ];
 
-    for( var i=1; i<arguments.length-1; i++ ){
-      queryValues.push( arguments[i] );
-    }
+      for( var i=1; i<arguments.length-1; i++ ){
+        queryValues.push( arguments[i] );
+      }
 
-    let queryString = this.getQueryString( arguments[0], queryValues );
+      // let queryString = this.getQueryString( arguments[0], queryValues );
 
-    pool.query( queryString, function (error, results, fields) {
-      if (error) throw error;
-      callback( error, results, fields );
-    });
+      queryString = "select Version()";
+
+      pool.query( queryString, function (error, results, fields) {
+        if (error) throw error;
+        // callback( error, results, fields );
+        console.log( results );
+        resolve( results );
+      });
+    } );
   }
 
   this.getQueryString = function( queryId ){

@@ -47,6 +47,22 @@
       "controlFunction": "control",
       "viewPath": "",
       "view": "index.ejs"
+    },
+    {
+      "id": "file",
+      "path": "/file",
+      "controllerJS": "controller_file.js",
+      "controlFunction": "control_get",
+      "viewPath": "",
+      "view": "upload.ejs"
+    },
+    {
+      "id": "download",
+      "path": "/download",
+      "controllerJS": "controller_file.js",
+      "controlFunction": "control_download",
+      "viewPath": "",
+      "view": "upload.ejs"
     }
   ],
   "POST" : [
@@ -57,6 +73,14 @@
       "controlFunction": "control",
       "viewPath": "",
       "view": "index.ejs"
+    },
+    {
+      "id": "upload",
+      "path": "/upload",
+      "controllerJS": "controller_file.js",
+      "controlFunction": "control",
+      "viewPath": "",
+      "view": "upload.ejs"
     }
   ]
 }

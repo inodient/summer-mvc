@@ -1,27 +1,30 @@
 exports.initStructure = function(){
   let common = require( "../common/common.js" );
 
-  let initializer = require( "../properties/initializer.json" );
+  let initializer = require( require("path").join(process.cwd(), "properties", "initializer.json") );
   let architecture = initializer[ "context_architecture" ];
 
-  for( var i=0; i<architecture.length; i++ ){
-    let folder = architecture[i].folder;
+  if( getInitOption( "auto_structure_creation" ) == "true" ){
 
-    if( getInitOption( "remove_and_rebuild" ) == "true" ){
-        //makeBackup( folder );
-        console.log( "remove_and_rebuild" );
-    }
+    for( var i=0; i<architecture.length; i++ ){
+      let folder = architecture[i].folder;
 
-    for( var j=0; j<architecture[i].files.length; j++ ){
-      let fileName = architecture[i].files[j];
+      if( getInitOption( "remove_and_rebuild" ) == "true" ){
+          //makeBackup( folder );
+          console.log( "remove_and_rebuild" );
+      }
 
-      common.buildStructure( folder, fileName );
+      for( var j=0; j<architecture[i].files.length; j++ ){
+        let fileName = architecture[i].files[j];
+
+        common.buildStructure( folder, fileName );
+      }
     }
   }
 }
 
 function getInitOption( option ){
-  let initializer = require( "../properties/initializer.json" );
+  let initializer = require( require("path").join( process.cwd(), "properties", "initializer.json" ) );
   let options = initializer[ "options" ];
 
   switch( option ) {
@@ -29,6 +32,8 @@ function getInitOption( option ){
       return String( options.use_service );
     case "remove_and_rebuild" :
       return String( options.remove_and_rebuild );
+    case "auto_structure_creation" :
+      return String( options.auto_structure_creation );
     default:
       return undefined;
   }
@@ -44,13 +49,13 @@ function makeBackup( folderName ){
 
 
 exports.getViewEngine = function(){
-  let initializer = require( "../properties/initializer.json" );
+  let initializer = require( require("path").join( process.cwd(), "properties", "initializer.json" ) );
 
   return initializer[ "views" ].engine;
 }
 
 exports.getStaticFolders = function(){
-  let initializer = require( "../properties/initializer.json" );
+  let initializer = require( require("path").join( process.cwd(), "properties", "initializer.json" ) );
 
   return initializer[ "static_folders" ];
 }
@@ -59,9 +64,18 @@ exports.getStaticFolders = function(){
 
 
 exports.getPort = function(){
-  let initializer = require( "../properties/initializer.json" );
+  let initializer = require( require("path").join( process.cwd(), "properties", "initializer.json" ) );
 
   return initializer[ "port" ];
+}
+
+
+
+
+exports.getDefaultExtraction = function(){
+  let initializer = require( require("path").join( process.cwd(), "properties", "initializer.json" ) );
+
+  return initializer[ "default_extraction" ];
 }
 
 
@@ -75,11 +89,19 @@ exports.getContextDispatcherPath = function(){
 
 exports.getControllerDispatcherPath = function(){
   let path = require( "path" );
-  let initializer = require( "../properties/initializer.json" );
+  let initializer = require( require("path").join( process.cwd(), "properties", "initializer.json" ) );
 
   if( initializer[ "options" ].use_service == "true" ){
     return path.join( __dirname, "../", "dispatcher", "controller_dispatcher.js" );
   } else{
     return undefined;
+  }
+}
+
+exports.getDefaultErrorHandler = function(){
+  let initializer = require( require("path").join(process.cwd(), "properties", "initializer.json") );
+
+  if( initializer[ "error_handler" ] ){
+    return require("path").join( process.cwd(), (initializer["error_handler"]).folder, (initializer["error_handler"]).files );
   }
 }

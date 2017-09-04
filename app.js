@@ -4,9 +4,19 @@ const app = express();
 
 
 
+
 // Init global module's paths;
 global.dbHandler = require( "./common/dbHandler.js" ).dbHandler;
 global.connectionHandler = require( "./common/connection.js" ).connection;
+global.fileHandler = require( "./common/fileHandler.js" ).fileHandler;
+global.Promise = require( "bluebird" );
+global.Busboy = require( "busboy" );
+global.path = require( "path" );
+global.fs = require( "fs" );
+global.mime = require( "mime" );
+
+global.mysql = require( "mysql" );
+global.pool = mysql.createPool( require(require("path").join(process.cwd(), "properties", "db.json") ) );
 
 
 
@@ -72,50 +82,106 @@ const contextDispatcher = require( initializer.getContextDispatcherPath() );
 
 // Start WAS
 const port = initializer.getPort();
+app.set('port', (process.env.PORT || port)); // 3000 was my original port
 
-app.listen( port, () => {
-  console.log( "Listen Port : " + port );
+app.listen( app.get('port'), () => {
+  console.log( "Listen Port : " + app.get('port') );
 } );
 
 
 
-// Wait Request
-app.get( "/*", (req, res) => {
-  try{
-    contextDispatcher.dispatching( req, res, function( err, mav ){
-      console.log( "view  : " + mav.view );
-      console.log( "model : " + JSON.stringify(mav.model, null, 4) );
 
-      if( req.xhr ){
+const Promise = require( "bluebird" );
+
+
+
+
+app.get( "/*", (req, res, next) => {
+
+  console.log( req.headers["accept-language"] );
+  console.log( req.path );
+
+  // 2. Dispatcher
+  contextDispatcher.dispatching( req, res, next )
+  .then( function( mav ){
+
+    try{
+      // 2-1. Ajax
+      if( req.xhr || req.headers.accept.indexOf("json") > -1 ){
         res.send( mav.model );
-      } else{
-        res.render( mav.view, mav.model );
       }
+      // 2-2. With View
+      else{
+        let contentDisposition = res._headers[ "content-disposition" ];
 
-    } );
-  } catch( e ){
-    console.log( e );
+        // 2-2-1. Render View
+        if( !contentDisposition ){
+          res.render( mav.view, mav.model );
+        }
+        // 2-2-2. File Download
+        else{
+          res.download( require("path").join(mav.model.savedPath, mav.model.savedFileName), mav.model.originalFileName );
+        }
 
-    res.render( "error.html" );
-  }
+      }
+    } catch( err ){
+      console.log( "Error occured while res rendering : app.get" );
+      res.status(404);
+      next( err );
+    }
+  } )
+  .catch( function(err){
+    console.log( "Error catched in app.get method..." );
+    res.status(500);
+    next( err );
+  } );
 } );
 
 app.post( "/*", (req, res) => {
-  try{
-    contextDispatcher.dispatching( req, res, function( err, mav ){
-      console.log( "view  : " + mav.view );
-      console.log( "model : " + JSON.stringify(mav.model) );
 
+  console.log( req.headers["accept-language"] );
+  console.log( req.path );
+
+  // 2. Dispatcher
+  contextDispatcher.dispatching( req, res )
+  .then( function( mav ){
+    // 2-1. Ajax
+    try{
       if( req.xhr || req.headers.accept.indexOf("json") > -1 ){
         res.send( mav.model );
-      } else{
-        res.render( mav.view, mav.model );
       }
+      // 2-2. With View
+      else{
+        let contentDisposition = res._headers[ "content-disposition" ];
 
-    } );
-  } catch( e ){
-    console.log( e );
-
-    res.render( "error.html" );
-  }
+        // 2-2-1. Render View
+        if( !contentDisposition ){
+          res.render( mav.view, mav.model );
+        }
+        // 2-2-2. File Download
+        else{
+          res.download( require("path").join(mav.model.savedPath, mav.model.savedFileName), mav.model.originalFileName );
+        }
+      }
+    } catch( err ){
+      console.log( "Error occured while res rendering : app.post" );
+      res.status(404);
+      next( err );
+    }
+  } )
+  .catch( function(err){
+    console.log( "Error catched in app.post method..." );
+    res.status(500);
+    next( err );
+  } );
 } );
+
+
+
+
+
+// set error handler
+const errorHandler = require( initializer.getDefaultErrorHandler() );
+// app.use( logErrors );
+// app.use( clientErrorHandler );
+app.use( errorHandler );

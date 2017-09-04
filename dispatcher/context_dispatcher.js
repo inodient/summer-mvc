@@ -1,68 +1,35 @@
 const dispatchingInfo = require( require("path").join(process.cwd(), "dispatcher", "context_dispatcher.json") );
 const ModelAndView = require( "./model_and_view.js" ).ModelAndView;
-// const connection = require( "../common/connection.js" ).connection;
-// const db = require( "../common/dbHandler.js" );
-
-
-
-exports.dispatching = function( req, res, callback ){
-  let reqMethod = req.method;
-
-  switch ( reqMethod.toUpperCase() ){
-    case "GET":
-      dispatchingGet( req, res, callback );
-      break;
-
-    case "POST":
-      dispatchingPost( req, res, callback );
-      break;
-
-    default:
-      break;
-  }
-}
 
 
 
 
-function dispatchingGet( req, res, callback ){
-  let mav = new ModelAndView();
+exports.dispatching = function( req, res, next ){
 
-  let dispatchingSpec = findDispatchingSpec( "GET", req._parsedUrl.pathname );
+  return new Promise( function(resolve, reject){
+    let mav = new ModelAndView();
+    let method = req.method.toUpperCase();
 
-  let controller = setController( dispatchingSpec.controllerJS );
+    let dispatchingSpec = getDispatchingSpec( method, req._parsedUrl.pathname );
 
-  let view = require("path").join( dispatchingSpec.viewPath, dispatchingSpec.view );
+    let view = require("path").join( dispatchingSpec.viewPath, dispatchingSpec.view );
 
-  executeController( controller, dispatchingSpec.controlFunction, req, res, function( err, model ){
-    mav.setModel( model );
-    mav.setView( view );
-
-    callback( err, mav );
-  } );
-}
-
-function dispatchingPost( req, res, callback ){
-  let mav = new ModelAndView();
-
-  let dispatchingSpec = findDispatchingSpec( "POST", req._parsedUrl.pathname );
-
-  let controller = setController( dispatchingSpec.controllerJS );
-
-  let view = require("path").join( dispatchingSpec.viewPath, dispatchingSpec.view );
-
-  executeController( controller, dispatchingSpec.controlFunction, req, res, function( err, model ){
-    mav.setModel( model );
-    mav.setView( view );
-
-    callback( err, mav );
+    getController( dispatchingSpec.controllerJS )
+    .then( executeController.bind( null, dispatchingSpec.controlFunction, req, res, next ) )
+    .then( makeModelAndView.bind( null, mav, view, next ) )
+    .then( function( mav ){
+      resolve( mav );
+    } )
+    .catch( function(err){
+      reject( err );
+    } );
   } );
 }
 
 
 
 
-function findDispatchingSpec( method, reqPath ){
+function getDispatchingSpec( method, reqPath ){
   let specifications = {};
   let dispatchingSpec = {};
   let length;
@@ -85,14 +52,33 @@ function findDispatchingSpec( method, reqPath ){
   return dispatchingSpec;
 }
 
-function setController( controllerJS ){
+function getController( controllerJS ){
   let controller = require( require("path").join(process.cwd(), "controller", controllerJS) );
 
-  return controller;
+  return Promise.resolve( controller );
 }
 
-function executeController( controller, controlFunction, req, res, callback ){
-  if( callback ){
-    controller[ controlFunction ]( req, res, callback );
+function executeController( controlFunction, req, res, next, controller ){
+  // return new Promise( function(resolve, reject){
+  //   ( controller[ controlFunction ] )( req, res, next )
+  //   .then( function(model){
+  //     resolve( model );
+  //   } )
+  //   .catch( function(err){
+  //     reject( err );
+  //   } );
+  // } );
+
+  return Promise.resolve( controller[ controlFunction ]( req, res, next ) );
+}
+
+function makeModelAndView( mav, view, next, model ){
+  try{
+    mav.model = model;
+    mav.view = view;
+
+    return Promise.resolve( mav, next );
+  } catch( err ){
+    return Promise.reject( err );
   }
 }
