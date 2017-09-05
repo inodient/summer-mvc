@@ -29,7 +29,8 @@
     "express": "^4.15.2",
     "express-session": "^1.15.2",
     "express_logger": "0.0.4",
-    "mssql": "^4.0.2"
+    "mssql": "^4.0.2",
+    "mysql": "^2.14.1"
   },
   "repository": {
     "type": "git",

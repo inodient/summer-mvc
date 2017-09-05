@@ -73,6 +73,12 @@ for( var i=0; i<staticFolders.length; i++ ){
 
 
 
+//Set Default Logger
+const logger = require( require("path").join( process.cwd(), "common", "logger.js") );
+
+
+
+
 // set context Dispatcher
 const contextDispatcher = require( initializer.getContextDispatcherPath() );
 //const controllerDispatcher = ( initializer.getControllerDispatcherPath() === undefined ) ? undefined : require( initializer.getControllerDispatcherPath() );
@@ -127,11 +133,17 @@ app.get( "/*", (req, res, next) => {
     } catch( err ){
       console.log( "Error occured while res rendering : app.get" );
       res.status(404);
+      logger.log( "controller/controller_ajax.js", "ERROR", err );
       next( err );
     }
   } )
   .catch( function(err){
     console.log( "Error catched in app.get method..." );
+    console.dir( err );
+    
+    console.log( typeof err );
+    
+    logger.log( "controller/controller_ajax.js", "ERROR", err.stack );
     res.status(500);
     next( err );
   } );

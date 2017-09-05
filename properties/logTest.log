@@ -1,0 +1,34 @@
+[controller/controller_ajax.js - 2017-09-05T07:47:10.921Z] - [ERROR] - [TypeError: Path must be a string. Received undefined
+    at assertPath (path.js:7:11)
+    at Object.join (path.js:468:7)
+    at C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\dispatcher\context_dispatcher.js:15:32
+    at Promise._execute (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\bluebird\js\release\debuggability.js:300:9)
+    at Promise._resolveFromExecutor (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\bluebird\js\release\promise.js:483:18)
+    at new Promise (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\bluebird\js\release\promise.js:79:10)
+    at Object.exports.dispatching (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\dispatcher\context_dispatcher.js:9:10)
+    at app.get (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\app.js:111:21)
+    at Layer.handle [as handle_request] (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\express\lib\router\layer.js:95:5)
+    at C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\express\lib\router\index.js:281:22
+    at param (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\express\lib\router\index.js:354:14)
+    at param (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\express\lib\router\index.js:365:14)
+    at Function.process_params (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\express\lib\router\index.js:410:3)]
+[controller/controller_ajax.js - 2017-09-05T07:47:14.611Z] - [ERROR] - [TypeError: Path must be a string. Received undefined
+    at assertPath (path.js:7:11)
+    at Object.join (path.js:468:7)
+    at C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\dispatcher\context_dispatcher.js:15:32
+    at Promise._execute (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\bluebird\js\release\debuggability.js:300:9)
+    at Promise._resolveFromExecutor (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\bluebird\js\release\promise.js:483:18)
+    at new Promise (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\bluebird\js\release\promise.js:79:10)
+    at Object.exports.dispatching (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\dispatcher\context_dispatcher.js:9:10)
+    at app.get (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\app.js:111:21)
+    at Layer.handle [as handle_request] (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\express\lib\router\layer.js:95:5)
+    at C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\express\lib\router\index.js:281:22
+    at param (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\express\lib\router\index.js:354:14)
+    at param (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\express\lib\router\index.js:365:14)
+    at Function.process_params (C:\__Repo.Workspace\12. INO_Nodejs\summer-mvc\node_modules\express\lib\router\index.js:410:3)]
