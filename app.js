@@ -18,6 +18,9 @@ global.mime = require( "mime" );
 global.mysql = require( "mysql" );
 global.pool = mysql.createPool( require(require("path").join(process.cwd(), "properties", "db.json") ) );
 
+//Set Default Logger
+global.logger = require( require("path").join( process.cwd(), "common", "logger.js") );
+// logger.initLogger();
 
 
 
@@ -69,12 +72,6 @@ const staticFolders = initializer.getStaticFolders();
 for( var i=0; i<staticFolders.length; i++ ){
   app.use( express.static(staticFolders[i]) );
 }
-
-
-
-
-//Set Default Logger
-const logger = require( require("path").join( process.cwd(), "common", "logger.js") );
 
 
 
@@ -140,9 +137,9 @@ app.get( "/*", (req, res, next) => {
   .catch( function(err){
     console.log( "Error catched in app.get method..." );
     console.dir( err );
-    
+
     console.log( typeof err );
-    
+
     logger.log( "controller/controller_ajax.js", "ERROR", err.stack );
     res.status(500);
     next( err );

@@ -23,7 +23,11 @@ exports.control = function( req, res, next ){
 // @controller
 // @RequestMapping '/'
 function setModel( req, res, next ){
+  logger.initLogger();
+
+
   return new Promise( function(resolve, reject){
+
     var model = {};
 
     try{
