@@ -2,11 +2,11 @@
   "port" : 3000,
   "context_architecture" : [
     {
-      "folder" : "dispatcher",
+      "folder" : "/core-properties",
       "files" : [ "context_dispatcher.json" ]
     },
     {
-      "folder" : "controller",
+      "folder" : "/application/controllers",
       "files" : [ "controller_basic.js",
                   "controller_post.js",
                   "controller_ajax.js",
@@ -14,33 +14,29 @@
                   "controller_db.js" ]
     },
     {
-      "folder" : "views",
+      "folder" : "/application/views",
       "files" : [ "index.ejs", "error.html" ]
     },
     {
-      "folder" : "upload",
+      "folder" : "/static/upload",
       "files" : []
     },
     {
-      "folder" : "properties",
-      "files" : [ "initializer.json", "db.json" ]
+      "folder" : "/core-properties",
+      "files" : [ "initializer.json" ]
     },
     {
-      "folder" : "queries",
-      "files" : [ "query.json" ]
+      "folder" : "/tools-properties",
+      "files" : [ "db.json" ]
     }
   ],
   "options" : {
     "use_service" : "false",
     "remove_and_rebuild" : "false",
-    "auto_structure_creation" : "false"
+    "auto_structure_creation" : "true"
   },
   "views" : {
     "engine" : "ejs"
   },
-  "static_folders" : [ "upload_temp", "images", "lib", "css", "js", "upload", "upload/thumbnailRectangle", "upload/thumbnailWithRatio" ],
-  "error_handler" : {
-    "folder" : "common",
-    "files" : "errorHandler.js"
-  }
+  "static_folders" : [ "/static/*" ]
 }

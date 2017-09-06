@@ -5,52 +5,69 @@ const app = express();
 
 
 
-// Init global module's paths;
-global.dbHandler = require( "./common/dbHandler.js" ).dbHandler;
-global.connectionHandler = require( "./common/connection.js" ).connection;
-global.fileHandler = require( "./common/fileHandler.js" ).fileHandler;
-global.Promise = require( "bluebird" );
-global.Busboy = require( "busboy" );
-global.path = require( "path" );
-global.fs = require( "fs" );
-global.mime = require( "mime" );
+// redefined Global Values
+const defined = require( "./tools/common/defined.js" );
 
-global.mysql = require( "mysql" );
-global.pool = mysql.createPool( require(require("path").join(process.cwd(), "properties", "db.json") ) );
+// Logger
+global.logger = require( __logger );
+logger.initLogger();
+logger.log();
+logger.log();
+logger.log();
+logger.log();
+logger.log();
+logger.log();
+logger.log();
+logger.log();
+logger.log();
+logger.log();
+logger.log();
 
-//Set Default Logger
-global.logger = require( require("path").join( process.cwd(), "common", "logger.js") );
-// logger.initLogger();
-
-
-
-// Init cookie, session
-const cookieParser = require( "cookie-parser" );
-app.use( cookieParser() );
-
-const session = require( "express-session" );
-app.use( session({
-  secret : "aslknq;oiwne;ofuiba;osudbf;uoasdf",
-  resave : false,
-  saveUninitialized : true,
-  cookie : {
-    maxAge: 1000 * 60 * 60
-  }
-}) );
-
-
-
-
-
+//// Init global module's paths;
+//global.dbHandler = require( "./common/dbHandler.js" ).dbHandler;
+//global.connectionHandler = require( "./common/connection.js" ).connection;
+//global.fileHandler = require( "./common/fileHandler.js" ).fileHandler;
+//global.Promise = require( "bluebird" );
+//global.Busboy = require( "busboy" );
+//global.path = require( "path" );
+//global.fs = require( "fs" );
+//global.mime = require( "mime" );
+//
+//global.mysql = require( "mysql" );
+//global.pool = mysql.createPool( require(require("path").join(process.cwd(), "properties", "db.json") ) );
+//
+////Set Default Logger
+//global.logger = require( require("path").join( process.cwd(), "common", "logger.js") );
+//// logger.initLogger();
+//
+//
+//
+//// Init cookie, session
+//const cookieParser = require( "cookie-parser" );
+//app.use( cookieParser() );
+//
+//const session = require( "express-session" );
+//app.use( session({
+//  secret : "aslknq;oiwne;ofuiba;osudbf;uoasdf",
+//  resave : false,
+//  saveUninitialized : true,
+//  cookie : {
+//    maxAge: 1000 * 60 * 60
+//  }
+//}) );
+//
+//
+//
+//
+//
 // Init body Parser
 const bodyParser = require( "body-parser" );
 app.use( bodyParser.urlencoded({ extended : true }) );
 
 
 
-
 // Init summer-mvc structure
-const initializer = require( "./common/initializer" );
+const initializer = require( __initializer );
 initializer.initStructure();
 
 
@@ -61,7 +78,7 @@ const viewEngine = initializer.getViewEngine();
 
 app.set( "view engine", viewEngine );
 app.engine( "html", require(viewEngine).renderFile );
-app.set( "views", "views" );
+app.set( "views", __viewsRunningPath );
 
 
 
@@ -77,8 +94,7 @@ for( var i=0; i<staticFolders.length; i++ ){
 
 
 // set context Dispatcher
-const contextDispatcher = require( initializer.getContextDispatcherPath() );
-//const controllerDispatcher = ( initializer.getControllerDispatcherPath() === undefined ) ? undefined : require( initializer.getControllerDispatcherPath() );
+const contextDispatcher = require( __contextDispatcher );
 
 
 
@@ -94,7 +110,7 @@ app.listen( app.get('port'), () => {
 
 
 
-const Promise = require( "bluebird" );
+//const Promise = require( "bluebird" );
 
 
 
@@ -146,13 +162,13 @@ app.get( "/*", (req, res, next) => {
   } );
 } );
 
-app.post( "/*", (req, res) => {
+app.post( "/*", (req, res, next) => {
 
   console.log( req.headers["accept-language"] );
   console.log( req.path );
 
   // 2. Dispatcher
-  contextDispatcher.dispatching( req, res )
+  contextDispatcher.dispatching( req, res, next )
   .then( function( mav ){
     // 2-1. Ajax
     try{
@@ -189,8 +205,8 @@ app.post( "/*", (req, res) => {
 
 
 
-// set error handler
-const errorHandler = require( initializer.getDefaultErrorHandler() );
-// app.use( logErrors );
-// app.use( clientErrorHandler );
-app.use( errorHandler );
+//// set error handler
+//const errorHandler = require( initializer.getDefaultErrorHandler() );
+//// app.use( logErrors );
+//// app.use( clientErrorHandler );
+//app.use( errorHandler );

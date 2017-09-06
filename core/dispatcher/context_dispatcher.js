@@ -1,12 +1,8 @@
-const dispatchingInfo = require( require("path").join(process.cwd(), "dispatcher", "context_dispatcher.json") );
-const ModelAndView = require( "./model_and_view.js" ).ModelAndView;
-
-
-
-
 exports.dispatching = function( req, res, next ){
-
   return new Promise( function(resolve, reject){
+	let ModelAndView = require( __mav );
+
+	  
     let mav = new ModelAndView();
     let method = req.method.toUpperCase();
 
@@ -30,8 +26,11 @@ exports.dispatching = function( req, res, next ){
 
 
 function getDispatchingSpec( method, reqPath ){
+  let dispatchingInfo = require( __contextDispatchingInfo );
+	
   let specifications = {};
   let dispatchingSpec = {};
+  
   let length;
 
   if( method === "GET" ){
@@ -53,7 +52,8 @@ function getDispatchingSpec( method, reqPath ){
 }
 
 function getController( controllerJS ){
-  let controller = require( require("path").join(process.cwd(), "controller", controllerJS) );
+  let path = require("path");
+  let controller = require( path.join( __runningPath, __controllerPath, controllerJS) );
 
   return Promise.resolve( controller );
 }

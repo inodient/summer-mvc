@@ -1,4 +1,6 @@
-exports.ModelAndView = function( model, view ){
+module.exports = modelAndView;
+
+function modelAndView( model, view ){
   this.model = {};
   this.view = {};
   this.setModel = function( m ){

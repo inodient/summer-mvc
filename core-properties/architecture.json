@@ -1,0 +1,24 @@
+{
+	"application" : {
+		"controllers" : "/application/controllers",
+		"services" : "/application/services",
+		"views" : "/application/views"
+	},
+	"model_and_view" : "/application",
+	"core" : {
+		"dispatcher" : "/core/dispatcher",
+		"initializer" : "/core/initializer"
+	},
+	"core-properties" : "/core-properties",
+	"tools" : {
+		"common" : "/tools/common",
+		"connection" : "/tools/connection",
+		"db" : "/tools/db",
+		"error" : "/tools/error",
+		"file" : "/tools/file",
+		"log" : "/tools/log"
+	},
+	"tools-properties" : "/tools-properties",
+	"tools-submodules" : "/tools-submodules",
+	"logs" : "/logs"
+}
