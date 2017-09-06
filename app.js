@@ -8,20 +8,9 @@ const app = express();
 // redefined Global Values
 const defined = require( "./tools/common/defined.js" );
 
-// Logger
+// Set Default Logger
 global.logger = require( __logger );
 logger.initLogger();
-logger.log();
-logger.log();
-logger.log();
-logger.log();
-logger.log();
-logger.log();
-logger.log();
-logger.log();
-logger.log();
-logger.log();
-logger.log();
 
 //// Init global module's paths;
 //global.dbHandler = require( "./common/dbHandler.js" ).dbHandler;
@@ -35,10 +24,6 @@ logger.log();
 //
 //global.mysql = require( "mysql" );
 //global.pool = mysql.createPool( require(require("path").join(process.cwd(), "properties", "db.json") ) );
-//
-////Set Default Logger
-//global.logger = require( require("path").join( process.cwd(), "common", "logger.js") );
-//// logger.initLogger();
 //
 //
 //
@@ -205,8 +190,8 @@ app.post( "/*", (req, res, next) => {
 
 
 
-//// set error handler
-//const errorHandler = require( initializer.getDefaultErrorHandler() );
-//// app.use( logErrors );
-//// app.use( clientErrorHandler );
-//app.use( errorHandler );
+// // set error handler
+// const errorHandler = require( initializer.getDefaultErrorHandler() );
+// // app.use( logErrors );
+// // app.use( clientErrorHandler );
+// app.use( errorHandler );

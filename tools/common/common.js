@@ -6,7 +6,7 @@ exports.buildStructure = function( folder, fileName ){
   // __runningPath : ......../{user-project-name}/....
   let src = path.join( __staticPath, folder, fileName );
   let destDir = path.join( __runningPath, folder );
-  
+
   try{
     fs.accessSync( destDir );
   } catch( err ){
@@ -19,7 +19,7 @@ exports.buildStructure = function( folder, fileName ){
     fs.accessSync( path.join( destDir, fileName ) );
   } catch( err ){
     console.log( "[" + fileName + "] disappears. Copy File." );
-    this.copyFile( src, path.join( __runningPath, destDir, fileName) );
+    this.copyFile( src, path.join( destDir, fileName) );
   }
 }
 
@@ -38,18 +38,6 @@ exports.copyFile = function(src, dest) {
     fs.writeFileSync( dest, data );
   } catch( err ){
     throw err;
-  }
-}
-
-exports.createAndOpenFile = function( destDir, fileName ){
-  let fs = require( "fs" );
-  let path = require( "path" );
-	
-  try{
-    fs.accessSync( path.join( destDir, fileName ) );
-  } catch( err ){
-    console.log( "[" + fileName + "] disappears. Create File." );
-    fs.openSync( path.join(destDir, fileName), "w" );
   }
 }
 

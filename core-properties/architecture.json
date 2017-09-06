@@ -20,5 +20,5 @@
 	},
 	"tools-properties" : "/tools-properties",
 	"tools-submodules" : "/tools-submodules",
-	"logs" : "/logs"
+	"logs" : "/__logs"
 }

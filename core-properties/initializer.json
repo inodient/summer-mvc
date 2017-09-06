@@ -3,7 +3,7 @@
   "context_architecture" : [
     {
       "folder" : "/core-properties",
-      "files" : [ "context_dispatcher.json" ]
+      "files" : [ "context_dispatcher.json", "initializer.json" ]
     },
     {
       "folder" : "/application/controllers",
@@ -11,23 +11,20 @@
                   "controller_post.js",
                   "controller_ajax.js",
                   "controller_cookie_session.js",
-                  "controller_db.js" ]
+                  "controller_db.js",
+                  "controller_file.js" ]
     },
     {
       "folder" : "/application/views",
-      "files" : [ "index.ejs", "error.html" ]
+      "files" : [ "index.ejs", "upload.ejs","error.html" ]
     },
     {
       "folder" : "/static/upload",
       "files" : []
     },
     {
-      "folder" : "/core-properties",
-      "files" : [ "initializer.json" ]
-    },
-    {
       "folder" : "/tools-properties",
-      "files" : [ "db.json" ]
+      "files" : [ "logger.json", "db.json" ]
     }
   ],
   "options" : {
@@ -38,5 +35,5 @@
   "views" : {
     "engine" : "ejs"
   },
-  "static_folders" : [ "/static/*" ]
+  "static_folders" : [ "/static", "/static/upload", "static/img" ]
 }

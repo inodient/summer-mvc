@@ -180,6 +180,16 @@ Object.defineProperty(global, "__staticPath", {
 	}
 } );
 
+Object.defineProperty(global, "__loggerInfo", {
+	get : function(){
+		try{
+			return path.join( process.cwd(), architecture[ "tools-properties" ], "logger.json" );
+		} catch(err){
+			throw err;
+		}
+	}
+} );
+
 Object.defineProperty(global, "__defaultLogFilePath", {
 	get : function(){
 		try{

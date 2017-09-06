@@ -8,7 +8,6 @@
 */
 exports.control = function( req, res, next ){
   return new Promise( function(resolve, reject){
-
     setModel( req, res, next )
     .then( function(model){
       resolve( model );
