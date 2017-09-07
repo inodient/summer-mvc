@@ -4,13 +4,34 @@ const app = express();
 
 
 
+// ***************************************************
+// ** Prepare Controller
+// ***************************************************
+if( __annotationParserUsage ){
+	annotationParser = require( __annotationParser );
+}
 
-// redefined Global Values
-const defined = require( "./tools/common/defined.js" );
 
-// Set Default Logger
-global.logger = require( __logger );
-logger.initLogger();
+
+
+
+
+// ***************************************************
+// ** Prepare view
+// ***************************************************
+// 1. set View Engine : specific for ejs
+if( __viewEngine == "ejs" ){
+	app.set( "view engine", __viewEngine );
+	app.engine( "html", require(__viewEngine).renderFile );
+	app.set( "views", __viewsRunningPath );
+}
+// 2. set static Folders
+for( var i=0; i<__staticFolders.length; i++ ){
+  app.use( express.static(__staticFolders[i]) );
+}
+
+
+
 
 //// Init global module's paths;
 //global.dbHandler = require( "./common/dbHandler.js" ).dbHandler;
@@ -18,8 +39,6 @@ logger.initLogger();
 //global.fileHandler = require( "./common/fileHandler.js" ).fileHandler;
 //global.Promise = require( "bluebird" );
 //global.Busboy = require( "busboy" );
-//global.path = require( "path" );
-//global.fs = require( "fs" );
 //global.mime = require( "mime" );
 //
 //global.mysql = require( "mysql" );
@@ -51,30 +70,6 @@ app.use( bodyParser.urlencoded({ extended : true }) );
 
 
 
-// Init summer-mvc structure
-const initializer = require( __initializer );
-initializer.initStructure();
-
-
-
-
-// set View Engine : specific for ejs
-const viewEngine = initializer.getViewEngine();
-
-app.set( "view engine", viewEngine );
-app.engine( "html", require(viewEngine).renderFile );
-app.set( "views", __viewsRunningPath );
-
-
-
-
-// set static Folders
-const staticFolders = initializer.getStaticFolders();
-
-for( var i=0; i<staticFolders.length; i++ ){
-  app.use( express.static(staticFolders[i]) );
-}
-
 
 
 
@@ -85,8 +80,7 @@ const contextDispatcher = require( __contextDispatcher );
 
 
 // Start WAS
-const port = initializer.getPort();
-app.set('port', (process.env.PORT || port)); // 3000 was my original port
+app.set('port', (process.env.PORT || __defaultPort)); // 3000 was my original port
 
 app.listen( app.get('port'), () => {
   console.log( "Listen Port : " + app.get('port') );
@@ -112,6 +106,7 @@ app.get( "/*", (req, res, next) => {
     try{
       // 2-1. Ajax
       if( req.xhr || req.headers.accept.indexOf("json") > -1 ){
+    	res.status(200);
         res.send( mav.model );
       }
       // 2-2. With View
@@ -120,10 +115,12 @@ app.get( "/*", (req, res, next) => {
 
         // 2-2-1. Render View
         if( !contentDisposition ){
+          res.status(200);
           res.render( mav.view, mav.model );
         }
         // 2-2-2. File Download
         else{
+          res.status(200);
           res.download( require("path").join(mav.model.savedPath, mav.model.savedFileName), mav.model.originalFileName );
         }
 
@@ -131,17 +128,10 @@ app.get( "/*", (req, res, next) => {
     } catch( err ){
       console.log( "Error occured while res rendering : app.get" );
       res.status(404);
-      logger.log( "controller/controller_ajax.js", "ERROR", err );
       next( err );
     }
   } )
   .catch( function(err){
-    console.log( "Error catched in app.get method..." );
-    console.dir( err );
-
-    console.log( typeof err );
-
-    logger.log( "controller/controller_ajax.js", "ERROR", err.stack );
     res.status(500);
     next( err );
   } );
@@ -158,7 +148,8 @@ app.post( "/*", (req, res, next) => {
     // 2-1. Ajax
     try{
       if( req.xhr || req.headers.accept.indexOf("json") > -1 ){
-        res.send( mav.model );
+    	  res.status(200);
+    	  res.send( mav.model );
       }
       // 2-2. With View
       else{
@@ -166,11 +157,13 @@ app.post( "/*", (req, res, next) => {
 
         // 2-2-1. Render View
         if( !contentDisposition ){
-          res.render( mav.view, mav.model );
+        	res.status(200);
+        	res.render( mav.view, mav.model );
         }
         // 2-2-2. File Download
         else{
-          res.download( require("path").join(mav.model.savedPath, mav.model.savedFileName), mav.model.originalFileName );
+        	res.status(200);
+        	res.download( require("path").join(mav.model.savedPath, mav.model.savedFileName), mav.model.originalFileName );
         }
       }
     } catch( err ){
@@ -190,8 +183,10 @@ app.post( "/*", (req, res, next) => {
 
 
 
-// // set error handler
-// const errorHandler = require( initializer.getDefaultErrorHandler() );
-// // app.use( logErrors );
-// // app.use( clientErrorHandler );
-// app.use( errorHandler );
+// set error handler
+if( __errorHandlerUsage ){
+	var errorHandler = require( __errorHandler );
+	app.use( errorHandler.logErrors );
+	app.use( errorHandler.clientErrorHandler );
+	app.use( errorHandler.defaultLogHandler );
+}

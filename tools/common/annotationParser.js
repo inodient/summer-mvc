@@ -1,3 +1,10 @@
+module.exports.parseController = parseController;
+
+function parseController(){
+	
+}
+
+
 /////////////////////////////////////////////////////////////////////
 // read controller - start
 //// fs.readFile( require("path").join( process.cwd(), "controller", "controller_basic.js" ), "utf8", function(err, data){

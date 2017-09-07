@@ -1,28 +1,56 @@
 exports.initStructure = function(){
   let common = require( __common );
-
-  
   let initInfo = require( __initInfo );
   
-  let architecture = initInfo[ "context_architecture" ];
+  initContextArchitecture( common, initInfo );
+  initTools( common, initInfo );
+}
 
-  if( getInitOption( initInfo, "auto_structure_creation" ) == "true" ){
+function initContextArchitecture( common, initInfo ){
+	let architecture = initInfo[ "context_architecture" ];
 
-    for( var i=0; i<architecture.length; i++ ){
-      let folder = architecture[i].folder;
+	  if( getInitOption( initInfo, "auto_structure_creation" ) == "true" ){
 
-      if( getInitOption( "remove_and_rebuild" ) == "true" ){
-          //makeBackup( folder );
-          console.log( "remove_and_rebuild" );
-      }
+	    for( var i=0; i<architecture.length; i++ ){
+	      let folder = architecture[i].folder;
 
-      for( var j=0; j<architecture[i].files.length; j++ ){
-        let fileName = architecture[i].files[j];
+	      if( getInitOption( "remove_and_rebuild" ) == "true" ){
+	          // makeBackup( folder );
+	          console.log( "remove_and_rebuild" );
+	      }
 
-        common.buildStructure( folder, fileName );
-      }
-    }
-  }
+	      for( var j=0; j<architecture[i].files.length; j++ ){
+	        let fileName = architecture[i].files[j];
+
+	        common.buildStructure( folder, fileName );
+	      }
+	    }
+	  }
+}
+
+function initTools( common, initInfo ){
+	let architecture = initInfo[ "tools" ];
+
+	  if( getInitOption( initInfo, "auto_structure_creation" ) == "true" ){
+
+		  for( var i=0; i<architecture.length; i++ ){
+			  
+			  if( architecture[i].enable ){
+				  let toolFiles = architecture[i].toolFiles;
+				  
+				  for( var j=0; j<toolFiles.length; j++ ){
+					  let folder = toolFiles[j].folder;
+					  let files = toolFiles[j].files;
+					  
+					  for( var k=0; k<files.length; k++ ){
+				    	  let fileName = files[k];
+				
+					      common.buildStructure( folder, fileName );
+					  }
+				  }
+			  }
+		   }
+	  }
 }
 
 function getInitOption( initInfo, option ){
@@ -40,64 +68,36 @@ function getInitOption( initInfo, option ){
   }
 }
 
-//function makeBackup( folderName ){
-//  let common = require( "../common/common.js" );
+// function makeBackup( folderName ){
+// let common = require( "../common/common.js" );
 //
-//  common.renameFolder( folderName );
-//}
-//
-//
+// common.renameFolder( folderName );
+// }
 //
 //
-exports.getViewEngine = function(){
-  let initializer = require( __initInfo );
-
-  return initializer[ "views" ].engine;
-}
-
-exports.getStaticFolders = function(){
-  let initializer = require( __initInfo );
-
-  return initializer[ "static_folders" ];
-}
-
-
-
-
-exports.getPort = function(){
-  let initializer = require( __initInfo );
-
-  return initializer[ "port" ];
-}
-
-
-
-
-//exports.getDefaultExtraction = function(){
-//  let initializer = require( require("path").join( process.cwd(), "properties", "initializer.json" ) );
 //
-//  return initializer[ "default_extraction" ];
-//}
-
-
-
-
-
-//exports.getControllerDispatcherPath = function(){
-//  let path = require( "path" );
-//  let initializer = require( require("path").join( process.cwd(), "properties", "initializer.json" ) );
 //
-//  if( initializer[ "options" ].use_service == "true" ){
-//    return path.join( __dirname, "../", "dispatcher", "controller_dispatcher.js" );
-//  } else{
-//    return undefined;
-//  }
-//}
+
+// exports.getDefaultExtraction = function(){
+// let initializer = require( require("path").join( process.cwd(), "properties",
+// "initializer.json" ) );
 //
-//exports.getDefaultErrorHandler = function(){
-//  let initializer = require( require("path").join(process.cwd(), "properties", "initializer.json") );
+// return initializer[ "default_extraction" ];
+// }
+
+
+
+
+
+// exports.getControllerDispatcherPath = function(){
+// let path = require( "path" );
+// let initializer = require( require("path").join( process.cwd(), "properties",
+// "initializer.json" ) );
 //
-//  if( initializer[ "error_handler" ] ){
-//    return require("path").join( process.cwd(), (initializer["error_handler"]).folder, (initializer["error_handler"]).files );
-//  }
-//}
+// if( initializer[ "options" ].use_service == "true" ){
+// return path.join( __dirname, "../", "dispatcher", "controller_dispatcher.js"
+// );
+// } else{
+// return undefined;
+// }
+// }

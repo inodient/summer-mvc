@@ -2,16 +2,24 @@ exports.buildStructure = function( folder, fileName ){
   let fs = require('fs');
   let path = require('path');
 
-  // __staticPath : ......../node-modules/summer-mvc/.....
-  // __runningPath : ......../{user-project-name}/....
   let src = path.join( __staticPath, folder, fileName );
   let destDir = path.join( __runningPath, folder );
 
-  try{
-    fs.accessSync( destDir );
-  } catch( err ){
-    console.log( "[" + destDir + "] disappears. Create Directory." );
-    fs.mkdirSync( destDir );
+  let folderHierarchy = path.join(folder).split( path.sep );
+
+  let currentPath = __runningPath;
+  
+  for( var i=0; i<folderHierarchy.length; i++ ){
+	  if( folderHierarchy[i] != "" ){
+			currentPath = path.join( currentPath, folderHierarchy[i] )
+			
+			try{
+			    fs.accessSync( currentPath );
+			  } catch( err ){
+			    console.log( "[" + currentPath + "] disappears. Create Directory." );
+			    fs.mkdirSync( currentPath );
+			  }
+	  }  
   }
 
 

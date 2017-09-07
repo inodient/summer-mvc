@@ -1,32 +1,30 @@
-module.exports = errorHandler;
+module.exports.logErrors = logErrors;
+module.exports.clientErrorHandler = require( __clientErrorHandler );
+module.exports.defaultLogHandler = defaultLogHandler;
 
-function errorHandler(err, req, res, next) {
 
-  console.log( res.statusCode );
+
+
+
+function logErrors(err, req, res, next){
+	logger.error( "Error Occured when [" + req.path + "] called.\n" + err.stack );
+	next(err);
+}
+
+function defaultLogHandler(err, req, res, next) {
 
   if (res.headersSent) {
     console.log( "Already Header Sent" );
     return next(err);
   }
 
-  console.log( "Default Error Handler Occured : Message is ..... " );
-  console.log( "------------------" );
-  console.log( err );
-  console.log( "------------------" );
-
-  // res.status(404);
-  res.render( "error.html" );
-  // res.render('error', { error: err });
-
-  if( 1 ){
-    res.status(100);
-  } else if( 2 ){
-    res.status(200);
-  } else if( 3 ){
-    res.status(300);
-  } else if( 4 ){
-    res.status(400);
-  } else if( 5 ){
-    res.status(500);
+  var statusCode = res.statusCode;
+  
+  if( statusCode == "404" ){
+	  res.render( "error.html" );  
+  } else if( statusCode == "500" ){
+	  res.render( "error.html" );
+  } else if( statusCode == "200" ){
+	  res.status( 404 );
   }
 }

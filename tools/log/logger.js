@@ -58,8 +58,8 @@ function log( type, message ){
 
 	var functionName = getFunctionName( arguments.callee.caller.toString() );
 
-	stream.write( "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] - [" + type + "] - " + message + "\n"  );
-	console.log( "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] - [" + type + "] - " + message + ""  );
+	stream.write( "[" + type + "] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
+	console.log( "[" + type + "] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
 }
 
 function info( message ){
@@ -69,10 +69,10 @@ function info( message ){
 	var functionName = getFunctionName( arguments.callee.caller.toString() );
 
 	if( loggerInfo.writeFile.INFO ){
-		stream.write( "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] - [INFO] - " + message + "\n"  );
+		stream.write( "[INFO] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
 	}
 	if( loggerInfo.console.INFO ){
-		console.log( "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] - [INFO] - " + message + ""  );
+		console.log( "[INFO] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
 	}
 }
 
@@ -83,24 +83,24 @@ function debug( message ){
 	var functionName = getFunctionName( arguments.callee.caller.toString() );
 
 	if( loggerInfo.writeFile.INFO ){
-		stream.write( "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] - [DEBUG] - " + message + "\n"  );
+		stream.write( "[DEBUG] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
 	}
 	if( loggerInfo.console.INFO ){
-		console.log( "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] - [DEBUG] - " + message + ""  );
+		console.log( "[DEBUG] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
 	}
 }
 
-function error( message ){
+function error( message, caller ){
 	var curTime = new Date();
 	curTime = curTime.toISOString();
 
 	var functionName = getFunctionName( arguments.callee.caller.toString() );
 
 	if( loggerInfo.writeFile.ERROR ){
-		stream.write( "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] - [ERROR] - " + message + "\n"  );
+		stream.write( "[ERROR] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
 	}
 	if( loggerInfo.console.ERROR ){
-		console.log( "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] - [ERROR] - " + message + ""  );
+		console.log( "[ERROR] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
 	}
 }
 // Write Log - End
@@ -149,7 +149,9 @@ Object.defineProperty(global, '__callerFileName', {
 
 			while (err.stack.length) {
 			    callerfile = err.stack.shift().getFileName();
-			    if(currentfile !== callerfile) return callerfile;
+			    if(currentfile !== callerfile){
+			    	return callerfile.replace( path.dirname(require.main.filename), "" );
+			    }
 			}
 		} catch (err) {}
 			return undefined;
