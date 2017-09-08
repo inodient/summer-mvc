@@ -1,8 +1,15 @@
-exports.connection = function( req, res ){
-  this.req = req;
-  this.res = res;
+module.exports.getCookie = getCookie;
+module.exports.setCookie = setCookie;
+module.exports.clearCookie = clearCookie;
 
-  this.getCookie = function(){
+module.exports.getSession = getSession;
+module.exports.setSession = setSession;
+module.exports.destroySession = destroySession;
+module.exports.setSessionTimeout = setSessionTimeout
+module.exports.setSessionExpire = setSessionExpire;
+
+
+  function getCookie( req, res ){
     if( arguments[0] ){
       return req.cookies[ arguments[0] ];
     } else{
@@ -10,7 +17,7 @@ exports.connection = function( req, res ){
     }
   }
 
-  this.setCookie = function(){
+  function setCookie( req, res ){
     if( arguments[0] && arguments[1] ){
       res.cookie( arguments[0], arguments[1] );
     } else{
@@ -18,7 +25,7 @@ exports.connection = function( req, res ){
     }
   }
 
-  this.clearCookie = function(){
+  function clearCookie( req, res ){
     if( arguments[0] ){
       res.clearCookie( arguments[0] );
     } else{
@@ -29,7 +36,7 @@ exports.connection = function( req, res ){
 
 
 
-  this.getSession = function(){
+  function getSession( req, res ){
     if( arguments[0] ){
       return req.session[ arguments[0] ];
     } else{
@@ -37,7 +44,7 @@ exports.connection = function( req, res ){
     }
   }
 
-  this.setSession = function(){
+  function setSession( req, res ){
     if( arguments[0] && arguments[1] ){
       req.session[ arguments[0] ] = arguments[1];
     } else{
@@ -45,17 +52,17 @@ exports.connection = function( req, res ){
     }
   }
 
-  this.destroySession = function(){
+  function destroySession( req, res ){
     req.session.destroy( function(err){
       req.session = null;
     });
   }
 
-  this.setSessionTimeout = function( maxAge ){
+  function setSessionTimeout( req, res, maxAge ){
     req.session.cookie.maxAge = maxAge;
   }
 
-  this.setSessionExpire = function( expireDate ){
+  function setSessionExpire( req, res, expireDate ){
     req.session.expires = expireDate;
   }
-}
+

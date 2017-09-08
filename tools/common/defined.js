@@ -318,10 +318,70 @@ Object.defineProperty(global, "__errorHandler", {
 
 Object.defineProperty(global, "__clientErrorHandler", {
 	get : function(){
-		if( fs.existsSync(path.join( process.cwd(), architecture.tools.error, "clientErrorHandler.js" ) ) ){
-			return path.join( process.cwd(), architecture.tools.error, "clientErrorHandler.js" );
+		if( fs.existsSync(path.join( process.cwd(), architecture[ "tools-submodules" ], "clientErrorHandler.js" ) ) ){
+			return path.join( process.cwd(), architecture[ "tools-submodules" ], "clientErrorHandler.js" );
 		} else{
-			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", architecture.tools.error, "clientErrorHandler.js" );
+			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", architecture[ "tools-submodules" ], "clientErrorHandler.js" );
+		}
+	}
+} );
+
+Object.defineProperty(global, "__connectionHandler", {
+	get : function(){
+		if( fs.existsSync(path.join( process.cwd(), architecture.tools.connection, "connectionHandler.js" ) ) ){
+			return path.join( process.cwd(), architecture.tools.connection, "connectionHandler.js" );
+		} else{
+			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", architecture.tools.connection, "connectionHandler.js" );
+		}
+	}
+} );
+
+Object.defineProperty(global, "__connectionHandlerInfo", {
+	get : function(){
+		if( fs.existsSync(path.join( process.cwd(), architecture[ "tools-properties" ], "connection.json" ) ) ){
+			return path.join( process.cwd(), architecture[ "tools-properties" ], "connection.json" );
+		} else{
+			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", architecture[ "tools-properties" ], "connection.json" );
+		}
+	}
+} );
+
+Object.defineProperty(global, "__fileHandler", {
+	get : function(){
+		if( fs.existsSync(path.join( process.cwd(), architecture.tools.file, "fileHandler.js" ) ) ){
+			return path.join( process.cwd(), architecture.tools.file, "fileHandler.js" );
+		} else{
+			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", architecture.tools.file, "fileHandler.js" );
+		}
+	}
+} );
+
+Object.defineProperty(global, "__fileHandlerInfo", {
+	get : function(){
+		if( fs.existsSync(path.join( process.cwd(), architecture[ "tools-properties" ], "file.json" ) ) ){
+			return path.join( process.cwd(), architecture[ "tools-properties" ], "file.json" );
+		} else{
+			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", architecture[ "tools-properties" ], "file.json" );
+		}
+	}
+} );
+
+Object.defineProperty(global, "__mysqlHandler", {
+	get : function(){
+		if( fs.existsSync(path.join( process.cwd(), architecture.tools.db, "mysqlHandler.js" ) ) ){
+			return path.join( process.cwd(), architecture.tools.db, "mysqlHandler.js" );
+		} else{
+			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", architecture.tools.db, "mysqlHandler.js" );
+		}
+	}
+} );
+
+Object.defineProperty(global, "__mysqlHandlerInfo", {
+	get : function(){
+		if( fs.existsSync(path.join( process.cwd(), architecture[ "tools-properties" ], "mysql.json" ) ) ){
+			return path.join( process.cwd(), architecture[ "tools-properties" ], "mysql.json" );
+		} else{
+			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", architecture[ "tools-properties" ], "mysql.json" );
 		}
 	}
 } );
@@ -354,6 +414,54 @@ Object.defineProperty(global, "__errorHandlerUsage", {
 			
 			for( var i=0; i<tools.length; i++ ){
 				if( tools[i].name == "errorHandler" ){
+					return tools[i].enable;
+				}
+			}
+		} catch(err){
+			throw err;
+		}
+	}
+} );
+
+Object.defineProperty(global, "__connectionHandlerUsage", {
+	get : function(){
+		try{
+			var tools = initInfo.tools;
+			
+			for( var i=0; i<tools.length; i++ ){
+				if( tools[i].name == "connectionHandler" ){
+					return tools[i].enable;
+				}
+			}
+		} catch(err){
+			throw err;
+		}
+	}
+} );
+
+Object.defineProperty(global, "__fileHandlerUsage", {
+	get : function(){
+		try{
+			var tools = initInfo.tools;
+			
+			for( var i=0; i<tools.length; i++ ){
+				if( tools[i].name == "fileHandler" ){
+					return tools[i].enable;
+				}
+			}
+		} catch(err){
+			throw err;
+		}
+	}
+} );
+
+Object.defineProperty(global, "__mysqlHandlerUsage", {
+	get : function(){
+		try{
+			var tools = initInfo.tools;
+			
+			for( var i=0; i<tools.length; i++ ){
+				if( tools[i].name == "mysqlHandler" ){
 					return tools[i].enable;
 				}
 			}

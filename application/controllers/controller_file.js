@@ -3,15 +3,13 @@ exports.control_get = function( req, res ){
 }
 
 exports.control = function( req, res ){
-  let file = new fileHandler();
-
-  file.uploadFile( req, "upload", "2017-06-05" );
+  
+  fileHandler.uploadFile( req, "upload", "2017-06-05" );
 
   return {};
 }
 
 exports.control_download = function( req, res ){
-  let file = new fileHandler();
 
   ////////////////////////////////////////////////
   // req getFileName

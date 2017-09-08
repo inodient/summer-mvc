@@ -18,6 +18,10 @@ function initContextArchitecture( common, initInfo ){
 	          // makeBackup( folder );
 	          console.log( "remove_and_rebuild" );
 	      }
+	      
+	      if( architecture[i].files.length == 0 ){
+	    	  common.buildStructure( folder );
+	      }
 
 	      for( var j=0; j<architecture[i].files.length; j++ ){
 	        let fileName = architecture[i].files[j];
@@ -41,6 +45,10 @@ function initTools( common, initInfo ){
 				  for( var j=0; j<toolFiles.length; j++ ){
 					  let folder = toolFiles[j].folder;
 					  let files = toolFiles[j].files;
+			
+					  if( files.length == 0 ){
+						  common.buildStructure( folder );
+					  }
 					  
 					  for( var k=0; k<files.length; k++ ){
 				    	  let fileName = files[k];

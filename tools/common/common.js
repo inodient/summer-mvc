@@ -1,8 +1,7 @@
-exports.buildStructure = function( folder, fileName ){
-  let fs = require('fs');
-  let path = require('path');
+const fs = require('fs');
+const path = require('path');
 
-  let src = path.join( __staticPath, folder, fileName );
+exports.buildStructure = function( folder, fileName ){
   let destDir = path.join( __runningPath, folder );
 
   let folderHierarchy = path.join(folder).split( path.sep );
@@ -13,21 +12,37 @@ exports.buildStructure = function( folder, fileName ){
 	  if( folderHierarchy[i] != "" ){
 			currentPath = path.join( currentPath, folderHierarchy[i] )
 			
-			try{
-			    fs.accessSync( currentPath );
-			  } catch( err ){
-			    console.log( "[" + currentPath + "] disappears. Create Directory." );
-			    fs.mkdirSync( currentPath );
-			  }
+			this.makeFolder( currentPath );
+			
+//			try{
+//			    fs.accessSync( currentPath );
+//			  } catch( err ){
+//			    console.log( "[" + currentPath + "] disappears. Create Directory." );
+//			    fs.mkdirSync( currentPath );
+//			  }
 	  }  
   }
 
+  if( fileName ){
+	  let src = path.join( __staticPath, folder, fileName );
+	  
+	  try{
+		  
+		    fs.accessSync( path.join( destDir, fileName ) );
+		  } catch( err ){
+		    console.log( "[" + fileName + "] disappears. Copy File." );
+		    this.copyFile( src, path.join( destDir, fileName) );
+		  }  
+  }
+}
 
+exports.makeFolder = function( pathStr ){
+  
   try{
-    fs.accessSync( path.join( destDir, fileName ) );
-  } catch( err ){
-    console.log( "[" + fileName + "] disappears. Copy File." );
-    this.copyFile( src, path.join( destDir, fileName) );
+    fs.accessSync( pathStr );
+  } catch( err ) {
+    console.log( "[fileHandler.js] [" + pathStr + "] disappears. Create Directory." );
+    fs.mkdirSync( pathStr );
   }
 }
 

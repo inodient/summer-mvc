@@ -21,6 +21,10 @@
     {
       "folder" : "/static/upload",
       "files" : []
+    },
+    {
+      "folder" : "/__Logs",
+      "files" : []
     }
   ],
   "views" : {
@@ -42,8 +46,38 @@
   		"enable" : true,
   		"toolFiles" : [
   			{
-	  			"folder" : "/tools/error",
+	  			"folder" : "/tools-submodules",
 	  			"files" : [ "clientErrorHandler.js" ]
+  			}
+  		]
+  	},
+  	{
+  		"name" : "connectionHandler",
+  		"enable" : true,
+  		"toolFiles" : [
+  			{
+	  			"folder" : "/tools-properties",
+	  			"files" : [ "connection.json" ]
+  			}
+  		]
+  	},
+  	{
+  		"name" : "fileHandler",
+  		"enable" : true,
+  		"toolFiles" : [
+  			{
+	  			"folder" : "/tools-properties",
+	  			"files" : [ "file.json" ]
+  			}
+  		]
+  	},
+  	{
+  		"name" : "mysqlHandler",
+  		"enable" : true,
+  		"toolFiles" : [
+  			{
+	  			"folder" : "/tools-properties",
+	  			"files" : [ "mysql.json" ]
   			}
   		]
   	}

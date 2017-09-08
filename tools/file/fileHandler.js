@@ -1,18 +1,34 @@
-exports.fileHandler = function(){
+module.exports.uploadFile = uploadFile;
+module.exports.downloadFile = downloadFile;
 
-  this.uploadFile = function( req ){
+
+
+
+const path = require( "path" );
+const fs = require( "fs" );
+
+const Busboy = require( "busboy" );
+const mime = require( "mime" );
+const common = require( __common );
+
+
+
+
+
+function uploadFile( req ){
     if( req.headers["content-type"] ){
       var i;
       var destDir = path.join( process.cwd() );
 
       for( i=1; i<arguments.length; i++ ){
         destDir = path.join( destDir, arguments[i].toString() );
-        makeFolder( destDir );
+        common.makeFolder( destDir );
       }
 
       console.log( "[fileHandler.js] destDir : " + destDir );
 
       return new Promise( function(resolve, reject){
+    	  try{
         var busboy = new Busboy({ headers: req.headers });
         var resultObject = {};
 
@@ -38,11 +54,15 @@ exports.fileHandler = function(){
         });
 
         req.pipe(busboy);
+    	  } catch(err){
+    		  logger.error( err );
+    		  throw err;
+    	  }
       } );
     }
   }
 
-  this.downloadFile = function( res, savedPath, savedFileName, originalFileName ){
+function downloadFile( res, savedPath, savedFileName, originalFileName ){
     let fileSize, dest, mimeType;
 
     savedPath = path.join( process.cwd(), savedPath );
@@ -55,20 +75,20 @@ exports.fileHandler = function(){
 
     return { "originalFileName" : originalFileName, "savedPath" : savedPath, "savedFileName" : savedFileName };
   }
-}
 
 
 
 
-function makeFolder( pathStr ){
 
-  try{
-    fs.accessSync( pathStr );
-  } catch( err ) {
-    console.log( "[fileHandler.js] [" + pathStr + "] disappears. Create Directory." );
-    fs.mkdirSync( pathStr );
-  }
-}
+//function makeFolder( pathStr ){
+//
+//  try{
+//    fs.accessSync( pathStr );
+//  } catch( err ) {
+//    console.log( "[fileHandler.js] [" + pathStr + "] disappears. Create Directory." );
+//    fs.mkdirSync( pathStr );
+//  }
+//}
 
 function getSavedFileName(){
   var materials = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
