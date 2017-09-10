@@ -1,9 +1,16 @@
 const express = require( "express" );
-const app = express();
+var app = express();
 
 const setter = require( "./express_was_setter.js" );
 
-setter.parseAnnotation();
+setter.parseAnnotation()
+.then( function(){
+  console.log( "setter.parseAnnotation()" )
+} )
+.catch( function(err){
+  logger.error( err.stack );
+} );
+
 setter.setViewInfo( express, app );
 setter.setBodyParser( app );
 

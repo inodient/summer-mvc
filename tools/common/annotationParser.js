@@ -1,7 +1,45 @@
 module.exports.parseController = parseController;
 
+
+
+
+
+const fs = require( "fs" );
+const path = require( "path" );
+
+
+
+
+
 function parseController(){
-	
+	return new Promise( function(resolve, reject){
+		getControllerFileList()
+		.then( function(files){
+			console.log( files );
+		} )
+		.catch( function(err){
+			reject( err );
+		} );
+	} );
+}
+
+function getControllerFileList(){
+	return new Promise( function(resolve, reject){
+		var controllerDir = path.join( __controllerPath );
+
+		// Async
+		fs.readdir( zzzz, (err, files) => {
+			if( err ){
+				reject( err );
+			}
+			resolve( files );
+		});
+
+		// // Sync
+		// fs.readdirSync(testFolder).forEach(file => {
+		//   console.log(file);
+		// });
+	} );
 }
 
 

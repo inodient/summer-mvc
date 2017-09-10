@@ -3,7 +3,6 @@ exports.control_get = function( req, res ){
 }
 
 exports.control = function( req, res ){
-  
   fileHandler.uploadFile( req, "upload", "2017-06-05" );
 
   return {};

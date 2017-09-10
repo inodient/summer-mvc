@@ -16,19 +16,19 @@ const common = require( __common );
 
 
 function uploadFile( req ){
-    if( req.headers["content-type"] ){
-      var i;
-      var destDir = path.join( process.cwd() );
+  if( req.headers["content-type"] ){
+    var i;
+    var destDir = path.join( process.cwd() );
 
-      for( i=1; i<arguments.length; i++ ){
-        destDir = path.join( destDir, arguments[i].toString() );
-        common.makeFolder( destDir );
-      }
+    for( i=1; i<arguments.length; i++ ){
+      destDir = path.join( destDir, arguments[i].toString() );
+      common.makeFolder( destDir );
+    }
 
-      console.log( "[fileHandler.js] destDir : " + destDir );
+    console.log( "[fileHandler.js] destDir : " + destDir );
 
-      return new Promise( function(resolve, reject){
-    	  try{
+    return new Promise( function(resolve, reject){
+      try{
         var busboy = new Busboy({ headers: req.headers });
         var resultObject = {};
 
@@ -47,6 +47,7 @@ function uploadFile( req ){
 
           file.pipe(fs.createWriteStream(saveTo));
         });
+
         busboy.on( "finish", function() {
           console.log( "[fileHandler.js] Upload complete" );
 
@@ -54,27 +55,27 @@ function uploadFile( req ){
         });
 
         req.pipe(busboy);
-    	  } catch(err){
-    		  logger.error( err );
-    		  throw err;
-    	  }
-      } );
-    }
+      } catch(err){
+        logger.error( err );
+        throw err;
+      }
+    } );
   }
+}
 
 function downloadFile( res, savedPath, savedFileName, originalFileName ){
-    let fileSize, dest, mimeType;
+  let fileSize, dest, mimeType;
 
-    savedPath = path.join( process.cwd(), savedPath );
+  savedPath = path.join( process.cwd(), savedPath );
 
-    dest = path.join( savedPath, savedFileName );
-    mimeType = mime.lookup( dest );
+  dest = path.join( savedPath, savedFileName );
+  mimeType = mime.lookup( dest );
 
-    res.setHeader( "Content-disposition", "attachment; filename=" + originalFileName );
-    res.setHeader( "Content-type", mimeType );
+  res.setHeader( "Content-disposition", "attachment; filename=" + originalFileName );
+  res.setHeader( "Content-type", mimeType );
 
-    return { "originalFileName" : originalFileName, "savedPath" : savedPath, "savedFileName" : savedFileName };
-  }
+  return { "originalFileName" : originalFileName, "savedPath" : savedPath, "savedFileName" : savedFileName };
+}
 
 
 

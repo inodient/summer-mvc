@@ -1,6 +1,6 @@
 module.exports.parseAnnotation = parseAnnotation;
 module.exports.setViewInfo = setViewInfo;
-module.exports.setBodyParser = setBodyParser; 
+module.exports.setBodyParser = setBodyParser;
 module.exports.setErrorHandler = setErrorHandler;
 module.exports.setConnectionHandler = setConnectionHandler;
 module.exports.setFileHandler = setFileHandler;
@@ -13,9 +13,18 @@ module.exports.setMysqlHandler = setMysqlHandler;
 //*** Prepare Controller - Application
 //***************************************************
 function parseAnnotation(){
-	if( __annotationParserUsage ){
-		annotationParser = require( __annotationParser );
-	}
+	return new Promise( function(resolve, reject){
+		if( __annotationParserUsage ){
+			annotationParser = require( __annotationParser );
+			annotationParser.parseController()
+			.then( function(){
+				resolve( "parseAnnotation" );
+			} )
+			.catch( function(err){
+				reject( err );
+			} );
+		}
+	} );
 }
 
 
@@ -61,7 +70,7 @@ function setErrorHandler( app ){
 		app.use( errorHandler.logErrors );
 		app.use( errorHandler.clientErrorHandler );
 		app.use( errorHandler.defaultLogHandler );
-		
+
 		global.errorHandler;
 	}
 }
@@ -79,11 +88,11 @@ function setConnectionHandler( app ){
 
 		// set cookie parser
 		app.use( require("cookie-parser")() );
-		
+
 		// set session parser
 		connInfo.cookie.maxAge = eval(connInfo.cookie.maxAge);
 		app.use( require("express-session")( connInfo ) );
-		
+
 		global.connectionHandler = require( __connectionHandler );
 	}
 }
@@ -97,7 +106,7 @@ function setConnectionHandler( app ){
 //***************************************************
 function setFileHandler(){
 	if( __fileHandlerUsage ){
-		var fileInfo = require( __fileHandlerInfo );
+		// var fileInfo = require( __fileHandlerInfo );
 		global.fileHandler = require( __fileHandler );
 	}
 }

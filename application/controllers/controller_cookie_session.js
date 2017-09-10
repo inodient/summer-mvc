@@ -1,14 +1,10 @@
 exports.control = function( req, res ){
 
-  connection = new connectionHandler( req, res );
-
   if( req.query.cookieKey && req.query.cookieValue ){
-    connection.setCookie( req.query.cookieKey, req.query.cookieValue );
+    connectionHandler.setCookie( req, res, req.query.cookieKey, req.query.cookieValue );
   } else if( req.query.sessionKey && req.query.sessionValue ){
-    connection.setSession( req.query.sessionKey, req.query.sessionValue );
+    connectionHandler.setSession( req, res, req.query.sessionKey, req.query.sessionValue );
   }
-
-  this.connection = null;
 
   return setModel( req, res, null, null );
 }
