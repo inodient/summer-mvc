@@ -16,7 +16,7 @@ function parseAnnotation(){
 	return new Promise( function(resolve, reject){
 		if( __annotationParserUsage ){
 			annotationParser = require( __annotationParser );
-			annotationParser.parseController()
+			annotationParser.parseComponent()
 			.then( function(files){
 				resolve( files );
 			} )

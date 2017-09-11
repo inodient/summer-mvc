@@ -6,8 +6,9 @@ const setter = require( "./express_was_setter.js" );
 
 
 setter.parseAnnotation()
-.then( function(){
+.then( function(results){
   console.log( "setter.parseAnnotation()" )
+  console.log( results );
   console.log( "----------------------------" );
 } )
 .catch( function(err){

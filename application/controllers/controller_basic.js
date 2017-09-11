@@ -1,10 +1,15 @@
 /*
-* @controller asdfasdfasdf
-* @method get
-* @requestMapping / 
-* @viewPath default
-* @view index.ejs
+* @controller("ex_id")
+* @controller-method("get")
+* @controller-requestMapping("/")
+* @controller-viewPath("")
+* @controller-view("/")
 */
+
+
+
+
+
 exports.control = function( req, res, next ){
   return new Promise( function(resolve, reject){
     setModel( req, res, next )
@@ -17,14 +22,30 @@ exports.control = function( req, res, next ){
   } );
 }
 
+exports.controlaa = function( req, res, next ){
+  return new Promise( function(resolve, reject){
+    setModel( req, res, next )
+    .then( function(model){
+      resolve( model );
+    } )
+    .catch( function(err){
+      reject( err );
+    } );
+  } );
+}
 
 /*
-* @controller ex_id
-* @requestMapping /
-* @requestMapping /index
-* @params id : inodient
-* @params password : iloveyou
+* @controller("ex_id_02")
+* @controller-method("get")
+* @controller-requestMapping("/")
+* @controller-viewPath("")
+* @controller-view("/")
 */
+exports.control_ = function( req, res, next ){
+  return new Promise( function(resolve, reject){
+    resolve();
+  } );
+}
 
 
 function setModel( req, res, next ){

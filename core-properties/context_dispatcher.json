@@ -84,3 +84,4 @@
     }
   ]
 }
+[{"method":"get","id":"ex_id","path":"/","controllerJS":"controller_basic.js","controlFunction":"control","viewPath":"","view":"/"},{"method":"get","id":"ex_id_02","path":"/","controllerJS":"controller_basic.js","controlFunction":"control_","viewPath":"","view":"/"}]
