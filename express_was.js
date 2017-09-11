@@ -3,9 +3,12 @@ var app = express();
 
 const setter = require( "./express_was_setter.js" );
 
+
+
 setter.parseAnnotation()
 .then( function(){
   console.log( "setter.parseAnnotation()" )
+  console.log( "----------------------------" );
 } )
 .catch( function(err){
   logger.error( err.stack );

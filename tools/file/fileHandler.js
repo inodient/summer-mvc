@@ -56,8 +56,7 @@ function uploadFile( req ){
 
         req.pipe(busboy);
       } catch(err){
-        logger.error( err );
-        throw err;
+        reject( err );
       }
     } );
   }

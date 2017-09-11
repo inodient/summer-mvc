@@ -17,8 +17,8 @@ function parseAnnotation(){
 		if( __annotationParserUsage ){
 			annotationParser = require( __annotationParser );
 			annotationParser.parseController()
-			.then( function(){
-				resolve( "parseAnnotation" );
+			.then( function(files){
+				resolve( files );
 			} )
 			.catch( function(err){
 				reject( err );

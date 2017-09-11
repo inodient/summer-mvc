@@ -1,10 +1,9 @@
-/**
-*
-* @Controller
-* @requestMapping /
-* @requestMapping /index
-* @params id : inodient
-* @params password : iloveyou
+/*
+* @controller asdfasdfasdf
+* @method get
+* @requestMapping / 
+* @viewPath default
+* @view index.ejs
 */
 exports.control = function( req, res, next ){
   return new Promise( function(resolve, reject){
@@ -19,8 +18,15 @@ exports.control = function( req, res, next ){
 }
 
 
-// @controller
-// @RequestMapping '/'
+/*
+* @controller ex_id
+* @requestMapping /
+* @requestMapping /index
+* @params id : inodient
+* @params password : iloveyou
+*/
+
+
 function setModel( req, res, next ){
   return new Promise( function(resolve, reject){
 
