@@ -385,6 +385,16 @@ Object.defineProperty(global, "__mysqlHandlerInfo", {
 		}
 	}
 } );
+
+Object.defineProperty(global, "__colorInfo", {
+	get : function(){
+		if( fs.existsSync(path.join( process.cwd(), architecture[ "tools-properties" ], "color.json" ) ) ){
+			return path.join( process.cwd(), architecture[ "tools-properties" ], "color.json" );
+		} else{
+			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", architecture[ "tools-properties" ], "color.json" );
+		}
+	}
+} );
 // architecture file name - end
 
 

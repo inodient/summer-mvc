@@ -12,18 +12,28 @@ const path = require( "path" );
 
 function parseComponent(){
   return new Promise( function(resolve, reject){
-    var promises = [];
-
-    promises.push( parser("controller") );
-    promises.push( parser("service") );
-
-    Promise.all( promises )
-    .then( function(res){
-      resolve( res );
-    } )
-    .catch( function(err){
-      resolve( err );
-    } );
+	  
+	  parser( "controller" )
+	  .then( function(res){
+		  resolve( res );
+	  } )
+	  .catch( function(err){
+		  reject( err );
+	  } );
+	  
+//    var promises = [];
+//
+//    promises.push( parser("controller") );
+//    promises.push( parser("service") );
+//
+//    Promise.all( promises )
+//    .then( function(res){
+//      resolve( res );
+//    } )
+//    .catch( function(err){
+//  	  console.log( "ERROR OCCURED..." );
+//      reject( err );
+//    } );
   } );
 }
 
@@ -53,12 +63,22 @@ function parser( type ){
         .then( function(res){
           var subArgv = arguments[0];
 
+          var writePromises = [];
+          
           for( var k=0; k<subArgv.length; k++ ){
             if( subArgv[k].length > 0 ){
-              writeDispatcher( JSON.stringify(subArgv[k]) );
-              resolve( subArgv );
+            	
+              writePromises.push( writeDispatcher( subArgv[k] ) );
             }
           }
+          
+          Promise.all( writePromises )
+          .then( function(){
+        	  resolve( "Success");
+          })
+          .catch( function(err){
+        	  reject( err );
+          } );
         } )
         .catch( function(err){
           reject( err );
@@ -339,16 +359,69 @@ function _getFunctionName( lineStr ){
 }
 
 function writeDispatcher( annotations ){
-  console.log( annotations );
-
   return new Promise( function(resolve, reject){
 
     try{
-      var dispatcher = fs.createWriteStream( path.join( __runningPath, __corePropertiesPath, "context_dispatcher.json"), {flags : "a"} );
-
-      for( var i=0; i<annotations.length; i++ ){
-        dispatcher.write( annotations[i] );
+      var dispatchingInfo = require( __contextDispatchingInfo );
+      
+      var dispatchingInfoGet = [];
+      var dispatchingInfoPost = [];
+      
+      if( dispatchingInfo ){
+    	  dispatchingInfoGet = dispatchingInfo[ "GET" ];
+          dispatchingInfoPost = dispatchingInfo[ "POST" ];
       }
+      
+      for( var i=0; i<annotations.length; i++ ){
+    	  
+    	if( (annotations[i].method).toUpperCase() == "GET" ){
+    		var j = 0;
+    		for( j=0; j<dispatchingInfoGet.length; j++ ){
+    			if( dispatchingInfoGet[j].id == annotations[i].id ){
+    				break;
+    			}
+    		}
+    		
+    		if( j == dispatchingInfoGet.length ){
+    			var tempObject = {};
+        		tempObject.id = annotations[i].id;
+        		tempObject.path = annotations[i].path;
+        		tempObject.controllerJS = annotations[i].controllerJS;
+        		tempObject.controlFunction = annotations[i].controlFunction;
+        		tempObject.viewPath = annotations[i].viewPath;
+        		tempObject.view = annotations[i].view;
+        	
+        		dispatchingInfoGet.push( tempObject );
+    		}
+    	} else if( (annotations[i].method).toUpperCase() == "POST" ){
+    		var j = 0;
+    		for( j=0; j<dispatchingInfoGet.length; j++ ){
+    			if( dispatchingInfoGet[j].id == annotations[i].id ){
+    				break;
+    			}
+    		}
+    		
+    		if( j == dispatchingInfoGet.length ){
+    			var tempObject = {};
+        		tempObject.id = annotations[i].id;
+        		tempObject.path = annotations[i].path;
+        		tempObject.controllerJS = annotations[i].controllerJS;
+        		tempObject.controlFunction = annotations[i].controlFunction;
+        		tempObject.viewPath = annotations[i].viewPath;
+        		tempObject.view = annotations[i].view;
+        		
+        		dispatchingInfoPost.push( tempObject );
+    		}
+    	}
+      }
+      
+      dispatchingInfo = { "GET" : dispatchingInfoGet, "POST" : dispatchingInfoPost };
+      
+      var dispatcher = fs.createWriteStream( __contextDispatchingInfo );
+      dispatcher.write( JSON.stringify(dispatchingInfo, null, 4) );
+
+      resolve( "SUCCESS" );
+      
     } catch( err ){
       reject( err );
     }

@@ -1,4 +1,4 @@
-exports.dispatching = function( req, res, next ){
+exports.dispatching = function( req, res ){
   return new Promise( function(resolve, reject){
 	let ModelAndView = require( __mav );
 
@@ -11,8 +11,8 @@ exports.dispatching = function( req, res, next ){
     let view = require("path").join( dispatchingSpec.viewPath, dispatchingSpec.view );
 
     getController( dispatchingSpec.controllerJS )
-    .then( executeController.bind( null, dispatchingSpec.controlFunction, req, res, next ) )
-    .then( makeModelAndView.bind( null, mav, view, next ) )
+    .then( executeController.bind( null, dispatchingSpec.controlFunction, req, res ) )
+    .then( makeModelAndView.bind( null, mav, view ) )
     .then( function( mav ){
       resolve( mav );
     } )
@@ -58,18 +58,18 @@ function getController( controllerJS ){
   return Promise.resolve( controller );
 }
 
-function executeController( controlFunction, req, res, next, controller ){
-  // return new Promise( function(resolve, reject){
-  //   ( controller[ controlFunction ] )( req, res, next )
-  //   .then( function(model){
-  //     resolve( model );
-  //   } )
-  //   .catch( function(err){
-  //     reject( err );
-  //   } );
-  // } );
+function executeController( controlFunction, req, res, controller ){
+   return new Promise( function(resolve, reject){
+     ( controller[ controlFunction ] )( req, res )
+     .then( function(model){
+       resolve( model );
+     } )
+     .catch( function(err){
+       reject( err );
+     } );
+   } );
 
-  return Promise.resolve( controller[ controlFunction ]( req, res, next ) );
+//  return Promise.resolve( controller[ controlFunction ]( req, res, next ) );
 }
 
 function makeModelAndView( mav, view, next, model ){

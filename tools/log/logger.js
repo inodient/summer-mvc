@@ -10,6 +10,7 @@ module.exports.error = error;
 const fs = require( "fs" );
 const path = require( "path" );
 const loggerInfo = require( __loggerInfo );
+const colorInfo = require( __colorInfo );
 var stream = null;
 
 
@@ -66,13 +67,17 @@ function info( message ){
 	var curTime = new Date();
 	curTime = curTime.toISOString();
 
+	if( getMessageType(message) == "object" ){
+		message = JSON.stringify( message, null, 4 );
+	}
+	
 	var functionName = getFunctionName( arguments.callee.caller.toString() );
 
 	if( loggerInfo.writeFile.INFO ){
 		stream.write( "[INFO] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
 	}
 	if( loggerInfo.console.INFO ){
-		console.log( "[INFO] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
+		console.log( attachColorPrefix(colorInfo.FgYellow) + "%s" + attachColorPrefix(colorInfo.Reset), "[INFO]", "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "", ""  );
 	}
 }
 
@@ -80,13 +85,17 @@ function debug( message ){
 	var curTime = new Date();
 	curTime = curTime.toISOString();
 
+	if( getMessageType(message) == "object" ){
+		message = JSON.stringify( message, null, 4 );
+	}
+	
 	var functionName = getFunctionName( arguments.callee.caller.toString() );
 
 	if( loggerInfo.writeFile.INFO ){
 		stream.write( "[DEBUG] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
 	}
 	if( loggerInfo.console.INFO ){
-		console.log( "[DEBUG] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
+		console.log( attachColorPrefix(colorInfo.FgCyan) + "%s" +  attachColorPrefix(colorInfo.Reset), "[DEBUG]", "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
 	}
 }
 
@@ -100,7 +109,7 @@ function error( message, caller ){
 		stream.write( "[ERROR] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
 	}
 	if( loggerInfo.console.ERROR ){
-		console.log( "[ERROR] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
+		console.log(  attachColorPrefix(colorInfo.FgRed) + "%s" +  attachColorPrefix(colorInfo.Reset), "[ERROR]", "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
 	}
 }
 // Write Log - End
@@ -134,6 +143,14 @@ function getFunctionName( func ){
 	if( func == "" ) func = "ANONYMOUS_FUNC";
 
 	return func;
+}
+
+function getMessageType( message ){
+	return typeof message;
+}
+
+function attachColorPrefix( colorValue ){
+	return "\x1b" + colorValue;
 }
 
 Object.defineProperty(global, '__callerFileName', {

@@ -1,67 +1,128 @@
-module.exports.getCookie = getCookie;
-module.exports.setCookie = setCookie;
-module.exports.clearCookie = clearCookie;
-
-module.exports.getSession = getSession;
-module.exports.setSession = setSession;
-module.exports.destroySession = destroySession;
-module.exports.setSessionTimeout = setSessionTimeout
-module.exports.setSessionExpire = setSessionExpire;
-
-
-function getCookie( req, res ){
-  if( arguments[2] ){
-    return req.cookies[ arguments[2] ];
-  } else{
-    return req.cookies;
-  }
-}
-
-function setCookie( req, res ){
-  if( arguments[2] && arguments[3] ){
-    res.cookie( arguments[2], arguments[3] );
-  } else{
-    return;
-  }
-}
-
-function clearCookie( req, res ){
-  if( arguments[2] ){
-    res.clearCookie( arguments[2] );
-  } else{
-    return;
-  }
-}
-
-
-
-
-function getSession( req, res ){
-  if( arguments[2] ){
-    return req.session[ arguments[2] ];
-  } else{
-    return req.session;
-  }
-}
-
-function setSession( req, res ){
-  if( arguments[2] && arguments[3] ){
-    req.session[ arguments[2] ] = arguments[3];
-  } else{
-    return;
-  }
-}
-
-function destroySession( req, res ){
-  req.session.destroy( function(err){
-    req.session = null;
-  });
-}
-
-function setSessionTimeout( req, res, maxAge ){
-  req.session.cookie.maxAge = maxAge;
-}
-
-function setSessionExpire( req, res, expireDate ){
-  req.session.expires = expireDate;
+exports.body = function(){
+	this.req;
+	this.res;
+	
+	this.setConnectionInfo = function( req, res ){
+		return new Promise( function(resolve, reject){
+			try{
+				this.req = req;
+				this.res = res;
+				
+				logger.info( "Connection Handler Prepared" );
+				
+				resolve( {"status":"S"} );
+			} catch( err ){
+				reject( err );
+			}
+		} );
+	}
+	
+	this.getCookie = function(){
+		var argv = arguments[0];
+		
+		return new Promise( function(resolve, reject){
+			try{
+				if( argv ){
+					resolve( this.req.cookies[ argv ] );
+				  } else{
+				    resolve( this.req.cookies );
+				  }
+			} catch( err ){
+				reject( err );
+			}
+		} );
+	}
+	
+	this.setCookie = function(){
+		return new Promise( function(resolve, reject){
+			try{
+				if( arguments[0] && arguments[1] ){
+					this.res.cookie( arguments[0], arguments[1] );
+				  } 
+				resolve();
+			} catch( err ){
+				reject( err );
+			}
+			
+		} );
+	}
+	
+	this.clearCookie = function(){
+		return new Promise( function(resolve, reject){
+			try{
+				if( arguments[0] ){
+					this.res.clearCookie( arguments[0] );
+				  }
+				resolve();
+			} catch( err ){
+				reject( err );
+			}
+		} );
+	}
+	
+	
+	
+	
+	this.getSession = function(){
+		return new Promise( function(resolve, reject){
+			try{
+				if( arguments[0] ){
+				    resolve( this.req.session[ arguments[0] ] );
+				  } else{
+				    resolve( req.session );
+				  }
+			} catch( err ){
+				reject( err );
+			}
+		} );
+	}
+	
+	this.setSession = function(){
+		return new Promise( function(resolve, reject){
+			try{
+				if( arguments[0] && arguments[1] ){
+				    this.req.session[ arguments[0] ] = arguments[1];
+				  }
+				
+				resolve();
+			} catch( err ){
+				reject( err );
+			}
+		} );
+	}
+	
+	this.destroySession = function(){
+		return new Promise( function(resolve, reject){
+			try{
+				this.req.session.destroy( function(err){
+				    this.req.session = null;
+				  });
+				
+				resolve();
+			} catch( err ){
+				reject( err );
+			}
+		} );
+	}
+	
+	this.setSessionTimeout = function( maxAge ){
+		return new Promise( function(resolve, reject){
+			try{
+				this.req.session.cookie.maxAge = maxAge;
+			} catch( err ){
+				reject( err );
+			}
+		} );
+	}
+	
+	this.setSessionExpire = function( expireDate ){
+		return new Promise( function(resolve, reject){
+			try{
+				this.req.session.expires = expireDate;
+				resolve();
+			} catch( err ){
+				reject( err );
+			}
+		});
+	}
 }

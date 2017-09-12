@@ -1,9 +1,9 @@
 /*
-* @controller("ex_id")
+* @controller("exid")
 * @controller-method("get")
-* @controller-requestMapping("/")
+* @controller-requestMapping("/ex1")
 * @controller-viewPath("")
-* @controller-view("/")
+* @controller-view("index.ejs")
 */
 
 
@@ -35,11 +35,11 @@ exports.controlaa = function( req, res, next ){
 }
 
 /*
-* @controller("ex_id_02")
+* @controller("exid02")
 * @controller-method("get")
-* @controller-requestMapping("/")
+* @controller-requestMapping("/ex2")
 * @controller-viewPath("")
-* @controller-view("/")
+* @controller-view("index.ejs")
 */
 exports.control_ = function( req, res, next ){
   return new Promise( function(resolve, reject){

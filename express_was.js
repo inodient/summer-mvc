@@ -5,22 +5,28 @@ const setter = require( "./express_was_setter.js" );
 
 
 
-setter.parseAnnotation()
-.then( function(results){
-  console.log( "setter.parseAnnotation()" )
-  console.log( results );
-  console.log( "----------------------------" );
+// Setting Tools
+var setterPromises = [];
+
+setterPromises.push( setter.parseAnnotation() );
+setterPromises.push( setter.setViewInfo( express, app ) );
+setterPromises.push( setter.setBodyParser( app ) );
+setterPromises.push( setter.setConnectionHandler( app ) );
+setterPromises.push( setter.setFileHandler() );
+setterPromises.push( setter.setMysqlHandler() );
+
+Promise.all( setterPromises )
+.then( function(){
+	var argv = arguments[0];
+	
+	for( var i=0; i<argv.length; i++ ){
+		logger.info( "Initializing : " + argv[i].message );
+	}
 } )
 .catch( function(err){
-  logger.error( err.stack );
+	logger.error( err.stack );
 } );
 
-setter.setViewInfo( express, app );
-setter.setBodyParser( app );
-
-setter.setConnectionHandler( app );
-setter.setFileHandler();
-setter.setMysqlHandler();
 
 
 
@@ -41,10 +47,6 @@ app.listen( app.get('port'), () => {
 
 
 
-//const Promise = require( "bluebird" );
-
-
-
 
 app.get( "/*", (req, res, next) => {
 
@@ -52,7 +54,7 @@ app.get( "/*", (req, res, next) => {
   console.log( req.path );
 
   // 2. Dispatcher
-  contextDispatcher.dispatching( req, res, next )
+  contextDispatcher.dispatching( req, res )
   .then( function( mav ){
 
     try{
@@ -95,7 +97,7 @@ app.post( "/*", (req, res, next) => {
   console.log( req.path );
 
   // 2. Dispatcher
-  contextDispatcher.dispatching( req, res, next )
+  contextDispatcher.dispatching( req, res )
   .then( function( mav ){
     // 2-1. Ajax
     try{

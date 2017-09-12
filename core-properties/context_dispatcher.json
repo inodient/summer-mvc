@@ -1,87 +1,102 @@
 {
-  "GET" : [
-    {
-      "id": "index",
-      "path": "/",
-      "controllerJS": "controller_basic.js",
-      "controlFunction": "control",
-      "viewPath": "",
-      "view": "index.ejs"
-    },
-    {
-      "id": "getdb",
-      "path": "/getdb",
-      "controllerJS": "controller_db.js",
-      "controlFunction": "control",
-      "viewPath": "",
-      "view": "index.ejs"
-    },
-    {
-      "id": "ajaxRequest",
-      "path": "/ajaxRequest",
-      "controllerJS": "controller_ajax.js",
-      "controlFunction": "control",
-      "viewPath": "",
-      "view": "ajax.ejs"
-    },
-    {
-      "id": "setCookie",
-      "path": "/setCookie",
-      "controllerJS": "controller_cookie_session.js",
-      "controlFunction": "control",
-      "viewPath": "",
-      "view": "index.ejs"
-    },
-    {
-      "id": "setSession",
-      "path": "/setSession",
-      "controllerJS": "controller_cookie_session.js",
-      "controlFunction": "control",
-      "viewPath": "",
-      "view": "index.ejs"
-    },
-    {
-      "id": "getDB",
-      "path": "/getdb",
-      "controllerJS": "controller_db.js",
-      "controlFunction": "control",
-      "viewPath": "",
-      "view": "index.ejs"
-    },
-    {
-      "id": "file",
-      "path": "/file",
-      "controllerJS": "controller_file.js",
-      "controlFunction": "control_get",
-      "viewPath": "",
-      "view": "upload.ejs"
-    },
-    {
-      "id": "download",
-      "path": "/download",
-      "controllerJS": "controller_file.js",
-      "controlFunction": "control_download",
-      "viewPath": "",
-      "view": "upload.ejs"
-    }
-  ],
-  "POST" : [
-    {
-      "id": "indexPost",
-      "path": "/",
-      "controllerJS": "controller_post.js",
-      "controlFunction": "control",
-      "viewPath": "",
-      "view": "index.ejs"
-    },
-    {
-      "id": "upload",
-      "path": "/upload",
-      "controllerJS": "controller_file.js",
-      "controlFunction": "control",
-      "viewPath": "",
-      "view": "upload.ejs"
-    }
-  ]
+    "GET": [
+        {
+            "id": "index",
+            "path": "/",
+            "controllerJS": "controller_basic.js",
+            "controlFunction": "control",
+            "viewPath": "",
+            "view": "index.ejs"
+        },
+        {
+            "id": "getdb",
+            "path": "/getdb",
+            "controllerJS": "controller_db.js",
+            "controlFunction": "control",
+            "viewPath": "",
+            "view": "index.ejs"
+        },
+        {
+            "id": "ajaxRequest",
+            "path": "/ajaxRequest",
+            "controllerJS": "controller_ajax.js",
+            "controlFunction": "control",
+            "viewPath": "",
+            "view": "ajax.ejs"
+        },
+        {
+            "id": "setCookie",
+            "path": "/setCookie",
+            "controllerJS": "controller_cookie_session.js",
+            "controlFunction": "control",
+            "viewPath": "",
+            "view": "index.ejs"
+        },
+        {
+            "id": "setSession",
+            "path": "/setSession",
+            "controllerJS": "controller_cookie_session.js",
+            "controlFunction": "control",
+            "viewPath": "",
+            "view": "index.ejs"
+        },
+        {
+            "id": "getDB",
+            "path": "/getdb",
+            "controllerJS": "controller_db.js",
+            "controlFunction": "control",
+            "viewPath": "",
+            "view": "index.ejs"
+        },
+        {
+            "id": "file",
+            "path": "/file",
+            "controllerJS": "controller_file.js",
+            "controlFunction": "control_get",
+            "viewPath": "",
+            "view": "upload.ejs"
+        },
+        {
+            "id": "download",
+            "path": "/download",
+            "controllerJS": "controller_file.js",
+            "controlFunction": "control_download",
+            "viewPath": "",
+            "view": "upload.ejs"
+        },
+        {
+            "id": "exid",
+            "path": "/ex1",
+            "controllerJS": "controller_basic.js",
+            "controlFunction": "control",
+            "viewPath": "",
+            "view": "index.ejs"
+        },
+        {
+            "id": "exid02",
+            "path": "/ex2",
+            "controllerJS": "controller_basic.js",
+            "controlFunction": "control_",
+            "viewPath": "",
+            "view": "index.ejs"
+        }
+    ],
+    "POST": [
+        {
+            "id": "indexPost",
+            "path": "/",
+            "controllerJS": "controller_post.js",
+            "controlFunction": "control",
+            "viewPath": "",
+            "view": "index.ejs"
+        },
+        {
+            "id": "upload",
+            "path": "/upload",
+            "controllerJS": "controller_file.js",
+            "controlFunction": "control",
+            "viewPath": "",
+            "view": "upload.ejs"
+        }
+    ]
 }
-[{"method":"get","id":"ex_id","path":"/","controllerJS":"controller_basic.js","controlFunction":"control","viewPath":"","view":"/"},{"method":"get","id":"ex_id_02","path":"/","controllerJS":"controller_basic.js","controlFunction":"control_","viewPath":"","view":"/"}]
