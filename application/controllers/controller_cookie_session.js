@@ -1,50 +1,45 @@
 exports.control = function( req, res ){
-
 	return new Promise( function(resolve, reject){
-		var connHandler = new connectionHandler.body();
-		
-//		connHandler.setConnectionInfo( req, res )
-//		.then( connHandler.getCookie("asdf") )
-//		.then( function(results){
-//			console.log( "RES : ", results );
-//			
-//			var model = setModel( req, res, null, null );
-//			resolve( model );
-//		} )
-//		.catch( function(err){
-//			reject( err );
-//		} );
-		
+		var connHandler = new connectionHandler();
+
 		connHandler.setConnectionInfo( req, res );
-		connHandler.getCookie()
-		.then( function(results){
-			console.log( "HERE" );
-			logger.info( results );
-		} )
-		.then( connHandler.setCookie( null, "KKKK", "LLLL" ) )
-		.then( function(results11){
-			console.log( "HERE_02" );
-			logger.info( results11 );
-			resolve();
-		})
-		.catch( function(err){
-			reject(err);
-		});
+
+		// if( req.query.cookieKey && req.query.cookieValue ){
+		// 	connHandler.getCookie()
+		// 	.then( connHandler.setCookie.bind(null, req.query.cookieKey, req.query.cookieValue) )
+		// 	.then( connHandler.clearCookie.bind(null, req.query.cookieKey) )
+		// 	.catch( function(err){
+		// 		reject(err);
+		// 	});
+		//
+		//  } else if( req.query.sessionKey && req.query.sessionValue ){
+		// 	 connHandler.getSession()
+ 	// 		.then( connHandler.setSession.bind(null, req.query.sessionKey, req.query.sessionValue) )
+ 	// 		.then( connHandler.destroySession )
+ 	// 		.catch( function(err){
+ 	// 			reject(err);
+ 	// 		});
+		//  }
+
+		if( req.query.cookieKey && req.query.cookieValue ){
+			connHandler.getCookie( "aaa", function( results){
+				logger.info( results );
+			});
+			// connHandler.setCookie( req.query.cookieKey, req.query.cookieValue );
+			// connHandler.clearCookie( req.query.cookieKey );
+		 } else if( req.query.sessionKey && req.query.sessionValue ){
+			// connHandler.getSession();
+ 		// 	connHandler.setSession( req.query.sessionKey, req.query.sessionValue );
+ 		// 	connHandler.destroySession();
+		 }
+
+		resolve( setModel(req, res) );
 	} );
-	
-	
-//	connHandler.clearCookie( "asdf" );
-	
-//  if( req.query.cookieKey && req.query.cookieValue ){
-//    connectionHandler.setCookie( req, res, req.query.cookieKey, req.query.cookieValue );
-//  } else if( req.query.sessionKey && req.query.sessionValue ){
-//    connectionHandler.setSession( req, res, req.query.sessionKey, req.query.sessionValue );
-//  }
 }
 
 
 
-function setModel( req, res, results, fields ){
+function setModel( req, res ){
   var model = {};
 
   model.method = req.method;

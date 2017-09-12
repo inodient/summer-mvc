@@ -46,7 +46,7 @@ function setViewInfo( express, app ){
 			for( var i=0; i<__staticFolders.length; i++ ){
 			  app.use( express.static(__staticFolders[i]) );
 			}
-			
+
 			resolve( {"message" : "Set View Engine"} );
 		} catch( err ){
 			reject( err );
@@ -65,7 +65,7 @@ function setBodyParser( app ){
 	return new Promise( function(resolve, reject){
 		try{
 			app.use( require("body-parser").urlencoded({ extended : true}) );
-			
+
 			resolve( {"message" : "Set Body Parser"} );
 		} catch( err ){
 			reject( err );
@@ -91,7 +91,7 @@ function setErrorHandler( app ){
 
 				global.errorHandler;
 			}
-			
+
 			resolve( {"message" : "Set Error Handler"} );
 		} catch( err ){
 			reject( err );
@@ -119,9 +119,9 @@ function setConnectionHandler( app ){
 				connInfo.cookie.maxAge = eval(connInfo.cookie.maxAge);
 				app.use( require("express-session")( connInfo ) );
 
-				global.connectionHandler = require( __connectionHandler );
+				global.connectionHandler = require( __connectionHandler ).body;
 			}
-			
+
 			resolve( {"message" : "Set Connection Handler"} );
 		} catch( err ){
 			reject( err );
@@ -143,7 +143,7 @@ function setFileHandler(){
 				// var fileInfo = require( __fileHandlerInfo );
 				global.fileHandler = require( __fileHandler );
 			}
-			
+
 			resolve( {"message" : "Set File Handler"} );
 		} catch( err ){
 			reject( err );
@@ -164,7 +164,7 @@ function setMysqlHandler(){
 			if( __mysqlHandlerUsage ){
 				global.mysqlHandler = require( __mysqlHandler );
 			}
-			
+
 			resolve( {"message" : "Set MySql Handler"} )
 		} catch( err ){
 			reject( err );

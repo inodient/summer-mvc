@@ -5,11 +5,6 @@
 * @controller-viewPath("")
 * @controller-view("index.ejs")
 */
-
-
-
-
-
 exports.control = function( req, res, next ){
   return new Promise( function(resolve, reject){
     setModel( req, res, next )
@@ -22,17 +17,6 @@ exports.control = function( req, res, next ){
   } );
 }
 
-exports.controlaa = function( req, res, next ){
-  return new Promise( function(resolve, reject){
-    setModel( req, res, next )
-    .then( function(model){
-      resolve( model );
-    } )
-    .catch( function(err){
-      reject( err );
-    } );
-  } );
-}
 
 /*
 * @controller("exid02")

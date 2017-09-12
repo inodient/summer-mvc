@@ -2,7 +2,7 @@ exports.dispatching = function( req, res ){
   return new Promise( function(resolve, reject){
 	let ModelAndView = require( __mav );
 
-	  
+
     let mav = new ModelAndView();
     let method = req.method.toUpperCase();
 
@@ -27,10 +27,10 @@ exports.dispatching = function( req, res ){
 
 function getDispatchingSpec( method, reqPath ){
   let dispatchingInfo = require( __contextDispatchingInfo );
-	
+
   let specifications = {};
   let dispatchingSpec = {};
-  
+
   let length;
 
   if( method === "GET" ){
@@ -72,12 +72,12 @@ function executeController( controlFunction, req, res, controller ){
 //  return Promise.resolve( controller[ controlFunction ]( req, res, next ) );
 }
 
-function makeModelAndView( mav, view, next, model ){
+function makeModelAndView( mav, view, model ){
   try{
     mav.model = model;
     mav.view = view;
 
-    return Promise.resolve( mav, next );
+    return Promise.resolve( mav );
   } catch( err ){
     return Promise.reject( err );
   }
