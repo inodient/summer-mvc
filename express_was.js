@@ -80,7 +80,6 @@ app.get( "/*", (req, res, next) => {
 
       }
     } catch( err ){
-      console.log( "Error occured while res rendering : app.get" );
       res.status(404);
       next( err );
     }

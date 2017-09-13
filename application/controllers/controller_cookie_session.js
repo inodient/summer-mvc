@@ -1,8 +1,16 @@
 exports.control = function( req, res ){
+//	try{
+//		throw "TEST ERROR";
+//	} catch(err){
+//		throw err;
+//	}
+//	
+//	return setModel( req, res );
+	
 	return new Promise( function(resolve, reject){
-		var connHandler = new connectionHandler();
+		var connHandler = new connectionHandler( req, res );
 
-		connHandler.setConnectionInfo( req, res );
+//		connHandler.setConnectionInfo( req, res );
 
 		// if( req.query.cookieKey && req.query.cookieValue ){
 		// 	connHandler.getCookie()
@@ -22,9 +30,9 @@ exports.control = function( req, res ){
 		//  }
 
 		if( req.query.cookieKey && req.query.cookieValue ){
-			connHandler.getCookie( "aaa", function( results){
-				logger.info( results );
-			});
+//			connHandler.getCookie( "asdf", function(results){
+//				logger.info( results );
+//			});
 			// connHandler.setCookie( req.query.cookieKey, req.query.cookieValue );
 			// connHandler.clearCookie( req.query.cookieKey );
 		 } else if( req.query.sessionKey && req.query.sessionValue ){
@@ -32,7 +40,29 @@ exports.control = function( req, res ){
  		// 	connHandler.setSession( req.query.sessionKey, req.query.sessionValue );
  		// 	connHandler.destroySession();
 		 }
+		
+//		logger.debug( connHandler.getCookie("inodient") );
+//		connHandler.setCookie( "inodient", "sexy" );
+//		
+//		connHandler.clearCookie( "inodient" );
+//		connHandler.clearCookie( "inodient" );
 
+		console.log( req.session );
+//		req.session.regenerate( function(err){
+//			logger.error( err );
+//		});
+//		
+//		req.session.destroy( function(err){
+//			logger.error( err );
+//		});
+		
+		req.session.cookie.expires = new Date(Date.now() + 3600000);
+		
+		logger.debug( req.session.id );
+		logger.debug( req.session.cookie );
+		logger.debug( req.session.cookie.maxAge );
+		logger.debug( req.sessionID );
+		
 		resolve( setModel(req, res) );
 	} );
 }

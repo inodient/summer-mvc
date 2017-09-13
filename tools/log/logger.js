@@ -99,17 +99,25 @@ function debug( message ){
 	}
 }
 
-function error( message, caller ){
+function error( err, caller ){
 	var curTime = new Date();
 	curTime = curTime.toISOString();
-
+	
 	var functionName = getFunctionName( arguments.callee.caller.toString() );
 
+	var logMsg = "";
+	
+	if( err instanceof Error ){
+		logMsg = err.message + "\n" + err.stack; 
+	} else{
+		logMsg = String( err );
+	}
+	
 	if( loggerInfo.writeFile.ERROR ){
-		stream.write( "[ERROR] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
+		stream.write( "[ERROR] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + logMsg + "\n"  );
 	}
 	if( loggerInfo.console.ERROR ){
-		console.log(  attachColorPrefix(colorInfo.FgRed) + "%s" +  attachColorPrefix(colorInfo.Reset), "[ERROR]", "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
+		console.log(  attachColorPrefix(colorInfo.FgRed) + "%s" +  attachColorPrefix(colorInfo.Reset), "[ERROR]", "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + logMsg + ""  );
 	}
 }
 // Write Log - End

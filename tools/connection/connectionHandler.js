@@ -1,92 +1,89 @@
 exports.body = function( req, res ){
-
-	this.req;
-	this.res;
-
-	// this.setConnectionInfo = function( req, res ){
-	// 	return new Promise( function(resolve, reject){
-	// 		try{
-	// 			this.req = req;
-	// 			this.res = res;
-	//
-	// 			logger.info( "Connection Handler Prepared" );
-	//
-	// 			resolve( {"status":"S"} );
-	// 		} catch( err ){
-	// 			reject( err );
-	// 		}
-	// 	} );
-	// }
-
-	this.setConnectionInfo = function( req, res ){
+	
+	try{
+		this.req = req;
+		this.res = res;
+		logger.info( "Connection Handler Initialized" );
+	} catch( err ){
+		throw err;
+	}
+	
+	
+	
+	
+	
+	// Cookie Functions - Start
+	this.getCookie = function( key, callback ){
+		if( (typeof callback) === "function" ){
 			try{
-				this.req = req;
-				this.res = res;
-
-				logger.info( "Connection Handler Prepared" );
+				if( key ){
+					callback( this.req.cookies[ key ], null );
+				} else{
+					callback( this.req.cookies, null );
+				}
+			} catch( err ){
+				logger.error( err );
+				callback( {"status":"E"}, err );
+			}
+		} else{
+			try{
+				if( key ){
+					return this.req.cookies[ key ];
+				} else{
+					return this.req.cookies;
+				}
 			} catch( err ){
 				throw err;
 			}
-
-	}
-
-	// this.getCookie = function( key ){
-	// 	console.log( this.req.cookies );
-	//
- // 		return new Promise( function(resolve, reject){
-	//
-	// 		try{
-	// 			if( key ){
-	// 				resolve( this.req.cookies[ key ] );
-	// 		  } else{
-	// 		    resolve( this.req.cookies );
-	// 		  }
-	// 		} catch( err ){
-	// 			reject( err );
-	// 		}
-	// 	} );
-	// }
-
-	this.getCookie = function( key, callback ){
-		console.log( key, callback );
-
-		if( key ){
-			callback( this.req.cookies[ key ] );
-		} else{
-			callback( this.req.cookies );
 		}
 	}
 
-	this.setCookie = function( key, value ){
-		return new Promise( function(resolve, reject){
+	this.setCookie = function( key, value, callback ){
+		if( (typeof callback) === "function" ){
 			try{
-				if( key && value ){
-					this.res.cookie( key, value );
-				  }
-				resolve( {"status":"S"} );
+				this.res.cookie( key, value );
+				callback( {"status":"S"}, null );
 			} catch( err ){
-				reject( err );
+				callback( {"status":"E"}, err );
 			}
-
-		} );
+			
+		} else{
+			try{
+				this.res.cookie( key, value );
+			} catch( err ){
+				throw err;
+			}
+		}
 	}
+	
 
-	this.clearCookie = function( key ){
-		return new Promise( function(resolve, reject){
+	this.clearCookie = function( key, callback ){
+		if( (typeof callback) === "function" ){
 			try{
 				if( key ){
 					this.res.clearCookie( key );
-			  }
-				resolve();
+				}
+				callback( {"status":"S"}, null );
 			} catch( err ){
-				reject( err );
+				callback( {"status":"E"}, err );
 			}
-		} );
+		} else{
+			try{
+				if( key ){
+					this.res.clearCookie( key );
+				}
+			} catch( err ){
+				throw err;
+			}
+		}
 	}
+	// Cookie Functions - End
 
 
 
-
+	
+	
+	// Session Functions - Start
 	this.getSession = function( key ){
 		return new Promise( function(resolve, reject){
 			try{
@@ -148,4 +145,5 @@ exports.body = function( req, res ){
 			}
 		});
 	}
+	// Session Functions - End	
 }

@@ -7,18 +7,15 @@ module.exports.defaultLogHandler = defaultLogHandler;
 
 
 function logErrors(err, req, res, next){
-	var code = err.code == undefined ? "" : err.code;
-	var message = err.message;
-	var stack = err.stack;
-	
 	var logMsg = "";
-	if( code == "" ){
-		logMsg = code + "\n" + message + "\n" + stack;
+	
+	if( err instanceof Error ){
+		logMsg = err.message + "\n" + err.stack; 
 	} else{
-		logMsg = message + "\n" + stack;
+		logMsg = String( err );
 	}
 	
-	logger.error( "Error Occured when [" + req.path + "] called." + logMsg );
+	logger.error( "Error Occured when [" + req.path + "] called.\n" + logMsg );
 	next(err);
 }
 

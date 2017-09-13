@@ -59,17 +59,28 @@ function getController( controllerJS ){
 }
 
 function executeController( controlFunction, req, res, controller ){
-   return new Promise( function(resolve, reject){
-     ( controller[ controlFunction ] )( req, res )
-     .then( function(model){
-       resolve( model );
-     } )
-     .catch( function(err){
-       reject( err );
-     } );
-   } );
-
-//  return Promise.resolve( controller[ controlFunction ]( req, res, next ) );
+	return Promise.resolve( (controller[ controlFunction ])(req, res) );
+	
+//	var execution = controller[ controlFunction ]( req, res );
+//	var promiseExecution = Promise.resolve( execution );
+//	
+//	
+//	if( promiseExecution === execution ){
+//		logger.debug( "PROMISE CONTROLLER BODY" );
+//		
+//		return new Promise( function(resolve, reject){
+//		     ( controller[ controlFunction ] )( req, res )
+//		     .then( function(model){
+//		       resolve( model );
+//		     } )
+//		     .catch( function(err){
+//		       reject( err );
+//		     } );
+//		   } );
+//	} else{
+//		logger.debug( "NORMAL CONTROLLER BODY" );
+//		return promiseExecution;
+//	}
 }
 
 function makeModelAndView( mav, view, model ){
