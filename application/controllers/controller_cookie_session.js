@@ -30,6 +30,7 @@ exports.control = function( req, res ){
 		//  }
 
 		if( req.query.cookieKey && req.query.cookieValue ){
+			
 //			connHandler.getCookie( "asdf", function(results){
 //				logger.info( results );
 //			});
@@ -47,6 +48,13 @@ exports.control = function( req, res ){
 //		connHandler.clearCookie( "inodient" );
 //		connHandler.clearCookie( "inodient" );
 
+		
+		
+		
+		
+		
+		
+		
 		console.log( req.session );
 //		req.session.regenerate( function(err){
 //			logger.error( err );

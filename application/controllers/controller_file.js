@@ -3,7 +3,13 @@ exports.control_get = function( req, res ){
 }
 
 exports.control = function( req, res ){
-  fileHandler.uploadFile( req, "upload", "2017-06-05" );
+  fileHandler.uploadFile( req, "upload", "2017-06-05" )
+  .then( function(results){
+	  logger.info( results );
+  })
+  .catch( function(err){
+	  throw err;
+  });
 
   return {};
 }
@@ -16,9 +22,10 @@ exports.control_download = function( req, res ){
   ////////////////////////////////////////////////
 
   let savedPath = "upload";
-  let savedFileName = "75893.png";
+  //let savedFileName = "BpBouHaMCKy0vR2CWjuF0lAcBu1qtgs6IB1miSX24uombiAt5r45xm6OgYu2NhbY_(AD) 계정관리 DB의 SQL 계정 및 검증_170307.xlsx";
+  let savedFileName = 'favicon2.ico';
 
-  let model = file.downloadFile( res, savedPath, savedFileName );
+  let model = fileHandler.downloadFile( res, savedPath, savedFileName );
 
   return model;
 }

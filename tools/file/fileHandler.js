@@ -25,7 +25,7 @@ function uploadFile( req ){
       common.makeFolder( destDir );
     }
 
-    console.log( "[fileHandler.js] destDir : " + destDir );
+    logger.info( "destDir : " + destDir );
 
     return new Promise( function(resolve, reject){
       try{
@@ -43,19 +43,19 @@ function uploadFile( req ){
           resultObject.mimetype = mimetype;
 
           var saveTo = path.join( destDir, resultObject.savedFileName );
-          console.log( "[fileHandler.js] Uploading : " + saveTo);
+          logger.info( "Uploading : " + saveTo);
 
           file.pipe(fs.createWriteStream(saveTo));
         });
 
         busboy.on( "finish", function() {
-          console.log( "[fileHandler.js] Upload complete" );
-
+          logger.info( "Upload complete" );
           resolve( resultObject );
         });
 
         req.pipe(busboy);
       } catch(err){
+    	logger.error( err );
         reject( err );
       }
     } );
@@ -65,30 +65,47 @@ function uploadFile( req ){
 function downloadFile( res, savedPath, savedFileName, originalFileName ){
   let fileSize, dest, mimeType;
 
-  savedPath = path.join( process.cwd(), savedPath );
+  savedPath = path.join( __runningPath, savedPath );
 
   dest = path.join( savedPath, savedFileName );
   mimeType = mime.lookup( dest );
 
-  res.setHeader( "Content-disposition", "attachment; filename=" + originalFileName );
-  res.setHeader( "Content-type", mimeType );
+  logger.info( mimeType );
+  
+//  res.setHeader( "Content-disposition", "attachment;filename='TEST.txt'" );
+//  res.setHeader( "Content-Transfer-Encoding", "binary" );
+//  res.setHeader( "Content-type", mimeType );
 
+  logger.info( "Download File : " + savedFileName );
+  
+  res.setHeader( "Content-disposition", "attachment;filename='TEST.txt'" );
+  res.setHeader( "Content-Transfer-Encoding", "binary" );
+  res.setHeader( "Content-type", mimeType );
+  
+  var fileStream = fs.createReadStream( dest );
+  
+  fileStream.on( "data", function(){
+	  logger.info( "data" );
+	  
+//	  logger.info( arguments ); 
+  });
+  
+  fileStream.on( "close", function(){
+	  logger.info( "finish" );
+	  
+	  
+	  
+//	 logger.info( arguments ); 
+  });
+
+  fileStream.pipe( res );
+  
   return { "originalFileName" : originalFileName, "savedPath" : savedPath, "savedFileName" : savedFileName };
 }
 
 
 
 
-
-//function makeFolder( pathStr ){
-//
-//  try{
-//    fs.accessSync( pathStr );
-//  } catch( err ) {
-//    console.log( "[fileHandler.js] [" + pathStr + "] disappears. Create Directory." );
-//    fs.mkdirSync( pathStr );
-//  }
-//}
 
 function getSavedFileName(){
   var materials = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -100,3 +117,4 @@ function getSavedFileName(){
 
   return savedFileName;
 }
+	
