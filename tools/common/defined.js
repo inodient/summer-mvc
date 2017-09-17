@@ -302,7 +302,7 @@ Object.defineProperty(global, "__loggerInfo", {
 			return path.join( process.cwd(), architecture[ "tools-properties" ], "logger.json")
 		} else{
 			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", architecture[ "tools-properties" ], "logger.json" );
-		} 
+		}
 	}
 } );
 
@@ -366,6 +366,16 @@ Object.defineProperty(global, "__fileHandlerInfo", {
 	}
 } );
 
+Object.defineProperty(global, "__fileSubmodule", {
+	get : function(){
+		if( fs.existsSync(path.join( process.cwd(), architecture[ "tools-submodules" ], "fileSubmodules.js" ) ) ){
+			return path.join( process.cwd(), architecture[ "tools-submodules" ], "fileSubmodules.js" );
+		} else{
+			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", architecture[ "tools-submodules" ], "fileSubmodules.js" );
+		}
+	}
+} );
+
 Object.defineProperty(global, "__mysqlHandler", {
 	get : function(){
 		if( fs.existsSync(path.join( process.cwd(), architecture.tools.db, "mysqlHandler.js" ) ) ){
@@ -405,7 +415,7 @@ Object.defineProperty(global, "__loggerUsage", {
 	get : function(){
 		try{
 			var tools = initInfo.tools;
-			
+
 			for( var i=0; i<tools.length; i++ ){
 				if( tools[i].name == "logger" ){
 					return tools[i].enable;
@@ -421,7 +431,7 @@ Object.defineProperty(global, "__errorHandlerUsage", {
 	get : function(){
 		try{
 			var tools = initInfo.tools;
-			
+
 			for( var i=0; i<tools.length; i++ ){
 				if( tools[i].name == "errorHandler" ){
 					return tools[i].enable;
@@ -437,7 +447,7 @@ Object.defineProperty(global, "__connectionHandlerUsage", {
 	get : function(){
 		try{
 			var tools = initInfo.tools;
-			
+
 			for( var i=0; i<tools.length; i++ ){
 				if( tools[i].name == "connectionHandler" ){
 					return tools[i].enable;
@@ -453,7 +463,7 @@ Object.defineProperty(global, "__fileHandlerUsage", {
 	get : function(){
 		try{
 			var tools = initInfo.tools;
-			
+
 			for( var i=0; i<tools.length; i++ ){
 				if( tools[i].name == "fileHandler" ){
 					return tools[i].enable;
@@ -469,7 +479,7 @@ Object.defineProperty(global, "__mysqlHandlerUsage", {
 	get : function(){
 		try{
 			var tools = initInfo.tools;
-			
+
 			for( var i=0; i<tools.length; i++ ){
 				if( tools[i].name == "mysqlHandler" ){
 					return tools[i].enable;

@@ -18,7 +18,7 @@ setterPromises.push( setter.setMysqlHandler() );
 Promise.all( setterPromises )
 .then( function(){
 	var argv = arguments[0];
-	
+
 	for( var i=0; i<argv.length; i++ ){
 		logger.info( "Initializing : " + argv[i].message );
 	}
@@ -75,7 +75,7 @@ app.get( "/*", (req, res, next) => {
         // 2-2-2. File Download
         else{
           res.status(200);
-          res.download( require("path").join(mav.model.savedPath, mav.model.savedFileName), mav.model.originalFileName );
+          // res.download( require("path").join(mav.model.savedPath, mav.model.savedFileName), mav.model.originalFileName );
         }
 
       }

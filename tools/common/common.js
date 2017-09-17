@@ -4,40 +4,40 @@ const path = require('path');
 exports.buildStructure = function( folder, fileName ){
   let destDir = path.join( __runningPath, folder );
 
-  let folderHierarchy = path.join(folder).split( path.sep );
-
-  let currentPath = __runningPath;
-  
-  for( var i=0; i<folderHierarchy.length; i++ ){
-	  if( folderHierarchy[i] != "" ){
-			currentPath = path.join( currentPath, folderHierarchy[i] )
-			
-			this.makeFolder( currentPath );
-			
-//			try{
-//			    fs.accessSync( currentPath );
-//			  } catch( err ){
-//			    console.log( "[" + currentPath + "] disappears. Create Directory." );
-//			    fs.mkdirSync( currentPath );
-//			  }
-	  }  
-  }
-
   if( fileName ){
 	  let src = path.join( __staticPath, folder, fileName );
-	  
+
+    this.makeHierarchy( folder );
+
 	  try{
-		  
 		    fs.accessSync( path.join( destDir, fileName ) );
 		  } catch( err ){
 		    console.log( "[" + fileName + "] disappears. Copy File." );
 		    this.copyFile( src, path.join( destDir, fileName) );
-		  }  
+		  }
+  }
+}
+
+exports.makeHierarchy = function( folder ){
+  let folderHierarchy = path.join(folder).split( path.sep );
+
+  let currentPath = __runningPath;
+
+  try{
+    for( var i=0; i<folderHierarchy.length; i++ ){
+  	  if( folderHierarchy[i] != "" ){
+  			currentPath = path.join( currentPath, folderHierarchy[i] )
+
+  			this.makeFolder( currentPath );
+  	  }
+    }
+  } catch( err ){
+    throw err;
   }
 }
 
 exports.makeFolder = function( pathStr ){
-  
+
   try{
     fs.accessSync( pathStr );
   } catch( err ) {

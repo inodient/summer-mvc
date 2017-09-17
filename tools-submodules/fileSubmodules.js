@@ -1,5 +1,5 @@
-exports.module.getSavedFileName = getSavedFileName; 
-	
+module.exports.getSavedFileName = getSavedFileName;
+
 function getSavedFileName(){
   var materials = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   var savedFileName = "";
@@ -10,4 +10,3 @@ function getSavedFileName(){
 
   return savedFileName;
 }
-	

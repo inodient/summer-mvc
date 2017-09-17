@@ -63,14 +63,23 @@ function log( type, message ){
 	console.log( "[" + type + "] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
 }
 
-function info( message ){
+function info(){
 	var curTime = new Date();
 	curTime = curTime.toISOString();
 
-	if( getMessageType(message) == "object" ){
-		message = JSON.stringify( message, null, 4 );
+	var message = "";
+
+	for( var i=0; i<arguments.length; i++ ){
+		if( getMessageType(arguments[i]) == "object" ){
+			if( message == "" ){
+				message += " ";
+			}
+			message += JSON.stringify( arguments[i], null, 4 );
+		} else{
+			message += arguments[i];
+		}
 	}
-	
+
 	var functionName = getFunctionName( arguments.callee.caller.toString() );
 
 	if( loggerInfo.writeFile.INFO ){
@@ -85,10 +94,19 @@ function debug( message ){
 	var curTime = new Date();
 	curTime = curTime.toISOString();
 
-	if( getMessageType(message) == "object" ){
-		message = JSON.stringify( message, null, 4 );
+	var message = "";
+
+	for( var i=0; i<arguments.length; i++ ){
+		if( getMessageType(arguments[i]) == "object" ){
+			if( message == "" ){
+				message += " ";
+			}
+			message += JSON.stringify( arguments[i], null, 4 );
+		} else{
+			message += arguments[i];
+		}
 	}
-	
+
 	var functionName = getFunctionName( arguments.callee.caller.toString() );
 
 	if( loggerInfo.writeFile.INFO ){
@@ -99,25 +117,39 @@ function debug( message ){
 	}
 }
 
-function error( err, caller ){
+function error(){
 	var curTime = new Date();
 	curTime = curTime.toISOString();
-	
+
 	var functionName = getFunctionName( arguments.callee.caller.toString() );
 
-	var logMsg = "";
-	
-	if( err instanceof Error ){
-		logMsg = err.message + "\n" + err.stack; 
-	} else{
-		logMsg = String( err );
+	var message = "";
+
+	for( var i=0; i<arguments.length; i++ ){
+		if( arguments[i] instanceof Error ){
+			if( message == "" ){
+				message += " ";
+			}
+			message += arguments[i].message + "\n" + arguments[i].stack;
+		} else{
+			// message = String( arguments[i] );
+
+			if( getMessageType(arguments[i]) == "object" ){
+				if( message == "" ){
+					message += " ";
+				}
+				message += JSON.stringify( arguments[i], null, 4 );
+			} else{
+				message += arguments[i];
+			}
+		}
 	}
-	
+
 	if( loggerInfo.writeFile.ERROR ){
-		stream.write( "[ERROR] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + logMsg + "\n"  );
+		stream.write( "[ERROR] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
 	}
 	if( loggerInfo.console.ERROR ){
-		console.log(  attachColorPrefix(colorInfo.FgRed) + "%s" +  attachColorPrefix(colorInfo.Reset), "[ERROR]", "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + logMsg + ""  );
+		console.log(  attachColorPrefix(colorInfo.FgRed) + "%s" +  attachColorPrefix(colorInfo.Reset), "[ERROR]", "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
 	}
 }
 // Write Log - End

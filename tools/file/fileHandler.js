@@ -11,41 +11,47 @@ const Busboy = require( "busboy" );
 const mime = require( "mime" );
 const common = require( __common );
 
+const submodule = require( __fileSubmodule );
+const fileInfo = require( __fileHandlerInfo );
+
 
 
 
 
 function uploadFile( req ){
+
   if( req.headers["content-type"] ){
-    var i;
-    var destDir = path.join( process.cwd() );
 
-    for( i=1; i<arguments.length; i++ ){
-      destDir = path.join( destDir, arguments[i].toString() );
-      common.makeFolder( destDir );
-    }
-
-    logger.info( "destDir : " + destDir );
+    var destDir = _getUploadDestination( arguments );
 
     return new Promise( function(resolve, reject){
+
+      logger.info( "destDir : ", destDir );
+
       try{
         var busboy = new Busboy({ headers: req.headers });
         var resultObject = {};
 
         busboy.on( "file", function(fieldname, file, filename, encoding, mimetype){
 
-          resultObject.destDir = destDir;
-          resultObject.fieldname = fieldname;
-          resultObject.file = file;
-          resultObject.originalFileName = filename;
-          resultObject.savedFileName = getSavedFileName() + "_" + filename;
-          resultObject.encoding = encoding;
-          resultObject.mimetype = mimetype;
+          try{
+            resultObject.destDir = destDir;
+            resultObject.fieldname = fieldname;
+            resultObject.file = file;
+            resultObject.originalFileName = filename;
+            resultObject.savedFileName = submodule.getSavedFileName() + "_" + filename;
+            resultObject.encoding = encoding;
+            resultObject.mimetype = mimetype;
 
-          var saveTo = path.join( destDir, resultObject.savedFileName );
-          logger.info( "Uploading : " + saveTo);
+            var saveTo = path.join( destDir, resultObject.savedFileName );
+            file.pipe(fs.createWriteStream(saveTo));
 
-          file.pipe(fs.createWriteStream(saveTo));
+            logger.info( "Uploading : " + saveTo);
+
+          } catch( err ){
+            logger.error( err );
+            throw err;
+          }
         });
 
         busboy.on( "finish", function() {
@@ -53,9 +59,15 @@ function uploadFile( req ){
           resolve( resultObject );
         });
 
+        busboy.on( "error", function(err){
+          logger.error( err );
+          reject( err );
+        });
+
         req.pipe(busboy);
+
       } catch(err){
-    	logger.error( err );
+        logger.error( "BUSBOY Catch an ERROR when Upload File.", err );
         reject( err );
       }
     } );
@@ -63,58 +75,81 @@ function uploadFile( req ){
 }
 
 function downloadFile( res, savedPath, savedFileName, originalFileName ){
-  let fileSize, dest, mimeType;
+  return new Promise( function(resolve, reject){
 
-  savedPath = path.join( __runningPath, savedPath );
+    _setDownloadResponse( res, savedPath, savedFileName, originalFileName )
+    .then( function(response){
 
-  dest = path.join( savedPath, savedFileName );
-  mimeType = mime.lookup( dest );
+      let fileSize, dest, mimeType;
 
-  logger.info( mimeType );
-  
-//  res.setHeader( "Content-disposition", "attachment;filename='TEST.txt'" );
-//  res.setHeader( "Content-Transfer-Encoding", "binary" );
-//  res.setHeader( "Content-type", mimeType );
+      savedPath = path.join( __runningPath, savedPath );
+      dest = path.join( savedPath, savedFileName );
+      mimeType = mime.lookup( dest );
 
-  logger.info( "Download File : " + savedFileName );
-  
-  res.setHeader( "Content-disposition", "attachment;filename='TEST.txt'" );
-  res.setHeader( "Content-Transfer-Encoding", "binary" );
-  res.setHeader( "Content-type", mimeType );
-  
-  var fileStream = fs.createReadStream( dest );
-  
-  fileStream.on( "data", function(){
-	  logger.info( "data" );
-	  
-//	  logger.info( arguments ); 
-  });
-  
-  fileStream.on( "close", function(){
-	  logger.info( "finish" );
-	  
-	  
-	  
-//	 logger.info( arguments ); 
-  });
 
-  fileStream.pipe( res );
-  
-  return { "originalFileName" : originalFileName, "savedPath" : savedPath, "savedFileName" : savedFileName };
+
+      var fileStream = fs.createReadStream( dest );
+      fileStream.pipe( response );
+
+      fileStream.on( "data", function(){
+    	  logger.info( "Downloading : " + savedFileName );
+      });
+
+      fileStream.on( "close", function(){
+        logger.info( "Download Complete" );
+        resolve( { "originalFileName" : originalFileName, "savedPath" : savedPath, "savedFileName" : savedFileName } );
+      });
+
+    } )
+    .catch( function(err){
+      reject( err );
+    } );
+  } );
 }
 
 
 
 
+function _getUploadDestination( arguments ){
+  logger.info( fileInfo[ "default-path" ] );
 
-function getSavedFileName(){
-  var materials = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  var savedFileName = "";
+  var defaultPath = path.join( fileInfo[ "default-path" ] ).split( path.sep )
 
-  for( let i=0; i<64; i++ ){
-    savedFileName += materials.charAt( Math.floor(Math.random() * 64) % materials.length );
+  var destDir = __runningPath;
+
+  for( var i=0; i<defaultPath.length; i++ ){
+    if( defaultPath[i] != "" ){
+      destDir = path.join( destDir, defaultPath[i] );
+      logger.info( destDir );
+      common.makeFolder( destDir );
+    }
   }
 
-  return savedFileName;
+  for( var i=1; i<arguments.length; i++ ){
+    destDir = path.join( destDir, arguments[i].toString() );
+    common.makeFolder( destDir );
+  }
+
+  return destDir;
 }
-	
+
+function _setDownloadResponse( res, savedPath, savedFileName, originalFileName ){
+  return new Promise( function(resolve, reject){
+    try{
+      let fileSize, dest, mimeType;
+
+      savedPath = path.join( __runningPath, savedPath );
+      dest = path.join( savedPath, savedFileName );
+      mimeType = mime.lookup( dest );
+
+      res.setHeader( "content-disposition", "attachment;filename=" + originalFileName );
+      res.setHeader( "content-Transfer-Encoding", "binary" );
+      res.setHeader( "content-type", mimeType );
+
+      resolve( res );
+
+    } catch( err ){
+      reject( err );
+    }
+  } );
+}

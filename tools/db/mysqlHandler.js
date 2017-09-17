@@ -9,6 +9,18 @@ module.exports.end = end;
 
 
 
+// {
+//   "connectionLimit" : 100,
+//   "host" : "104.199.217.31",
+//   "user" : "root",
+//   "password" : "123qwer@",
+//   "database" : "summer-mvc"
+// }
+
+
+
+
+
 const mysql = require( "mysql" );
 
 function getPool(){
@@ -24,13 +36,13 @@ function getPool(){
 function getConnection(){
 	return new Promise( function(resolve, reject){
 		var pool;
-		
+
 		if( arguments ){
 			pool = arguments[0];
 		} else{
 			pool = this.getPool();
 		}
-		
+
 		pool.getConnection( function(err, connection){
 			if( err ) reject( err );
 			resolve( connection );
@@ -41,16 +53,16 @@ function getConnection(){
 function executeSelect( queryId, variables ){
 	return new Promise( function(resolve, reject){
 		var connection;
-		
+
 		if( arguments[2] ){
 			connection = arguments[2];
 		} else{
 			connection = this.getConnection();
 		}
-		
+
 		connection.query( getQueryString( queryId, variables ), function(err, results, fields){
 			if( err ) reject( err );
-			
+
 			connection.destroy();
 			resolve( results );
 		} );
@@ -60,23 +72,23 @@ function executeSelect( queryId, variables ){
 function executeInsert(){
 	return new Promise( function(resolve, reject){
 		var connection;
-		
+
 		if( arguments[2] ){
 			connection = arguments[2];
 		} else{
 			connection = this.getConnection();
 		}
-		
+
 		connection.beginTransaction( function(err){
 			if( err ) reject( err );
-			
+
 			connection.query( getQueryString( queryId, variables ), function(err, results, fields){
 				if( err ){
 					return connection.rollback( function(){
 						reject( err );
 					} );
 				}
-				
+
 				connection.destroy();
 				resolve( results );
 			} );
@@ -87,23 +99,23 @@ function executeInsert(){
 function executeUpdate(){
 	return new Promise( function(resolve, reject){
 		var connection;
-		
+
 		if( arguments[2] ){
 			connection = arguments[2];
 		} else{
 			connection = this.getConnection();
 		}
-		
+
 		connection.beginTransaction( function(err){
 			if( err ) reject( err );
-			
+
 			connection.query( getQueryString( queryId, variables ), function(err, results, fields){
 				if( err ){
 					return connection.rollback( function(){
 						reject( err );
 					} );
 				}
-				
+
 				connection.destroy();
 				resolve( results );
 			} );
@@ -114,23 +126,23 @@ function executeUpdate(){
 function executeDelete(){
 	return new Promise( function(resolve, reject){
 		var connection;
-		
+
 		if( arguments[2] ){
 			connection = arguments[2];
 		} else{
 			connection = this.getConnection();
 		}
-		
+
 		connection.beginTransaction( function(err){
 			if( err ) reject( err );
-			
+
 			connection.query( getQueryString( queryId, variables ), function(err, results, fields){
 				if( err ){
 					return connection.rollback( function(){
 						reject( err );
 					} );
 				}
-				
+
 				connection.destroy();
 				resolve( results );
 			} );

@@ -140,7 +140,6 @@ function setFileHandler(){
 	return new Promise( function(resolve, reject){
 		try{
 			if( __fileHandlerUsage ){
-				// var fileInfo = require( __fileHandlerInfo );
 				global.fileHandler = require( __fileHandler );
 			}
 
