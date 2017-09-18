@@ -31,11 +31,11 @@ exports.control = function( req, res ){
 
 		if( req.query.cookieKey && req.query.cookieValue ){
 			
-//			connHandler.getCookie( "asdf", function(results){
-//				logger.info( results );
-//			});
-			// connHandler.setCookie( req.query.cookieKey, req.query.cookieValue );
-			// connHandler.clearCookie( req.query.cookieKey );
+			connHandler.getCookie( "asdf", function(results){
+				logger.info( results );
+			});
+			 connHandler.setCookie( req.query.cookieKey, req.query.cookieValue );
+			 connHandler.clearCookie( req.query.cookieKey );
 		 } else if( req.query.sessionKey && req.query.sessionValue ){
 			// connHandler.getSession();
  		// 	connHandler.setSession( req.query.sessionKey, req.query.sessionValue );

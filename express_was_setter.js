@@ -119,7 +119,7 @@ function setConnectionHandler( app ){
 				connInfo.cookie.maxAge = eval(connInfo.cookie.maxAge);
 				app.use( require("express-session")( connInfo ) );
 
-				global.connectionHandler = require( __connectionHandler ).body;
+				global.connectionHandler = require( __connectionHandler );
 			}
 
 			resolve( {"message" : "Set Connection Handler"} );

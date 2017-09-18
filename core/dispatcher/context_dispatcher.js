@@ -53,7 +53,7 @@ function getDispatchingSpec( method, reqPath ){
 
 function getController( controllerJS ){
   let path = require("path");
-  let controller = require( path.join( __runningPath, __controllerPath, controllerJS) );
+  let controller = require( path.join(__runningPath, __controllerPath, controllerJS) );
 
   return Promise.resolve( controller );
 }

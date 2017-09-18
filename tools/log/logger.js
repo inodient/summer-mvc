@@ -71,12 +71,9 @@ function info(){
 
 	for( var i=0; i<arguments.length; i++ ){
 		if( getMessageType(arguments[i]) == "object" ){
-			if( message == "" ){
-				message += " ";
-			}
-			message += JSON.stringify( arguments[i], null, 4 );
+			message += JSON.stringify( arguments[i], null, 4 ) + " ";
 		} else{
-			message += arguments[i];
+			message += arguments[i] + " ";
 		}
 	}
 
@@ -90,7 +87,7 @@ function info(){
 	}
 }
 
-function debug( message ){
+function debug(){
 	var curTime = new Date();
 	curTime = curTime.toISOString();
 
@@ -98,12 +95,9 @@ function debug( message ){
 
 	for( var i=0; i<arguments.length; i++ ){
 		if( getMessageType(arguments[i]) == "object" ){
-			if( message == "" ){
-				message += " ";
-			}
-			message += JSON.stringify( arguments[i], null, 4 );
+			message += JSON.stringify( arguments[i], null, 4 ) + " ";
 		} else{
-			message += arguments[i];
+			message += arguments[i] + " ";
 		}
 	}
 
@@ -127,20 +121,14 @@ function error(){
 
 	for( var i=0; i<arguments.length; i++ ){
 		if( arguments[i] instanceof Error ){
-			if( message == "" ){
-				message += " ";
-			}
 			message += arguments[i].message + "\n" + arguments[i].stack;
 		} else{
 			// message = String( arguments[i] );
 
 			if( getMessageType(arguments[i]) == "object" ){
-				if( message == "" ){
-					message += " ";
-				}
-				message += JSON.stringify( arguments[i], null, 4 );
+				message += JSON.stringify( arguments[i], null, 4 ) + " ";
 			} else{
-				message += arguments[i];
+				message += arguments[i] + " ";
 			}
 		}
 	}

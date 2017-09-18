@@ -1,17 +1,26 @@
 [
   {
     "id" : "getAccessLog",
-    "queryString" : "select * from testAccessLog",
-    "params" : ""
+    "queryString" : "select * from wellformedit.TB_CONTENT where createdDate > ? and createdDate < ? "
   },
   {
     "id" : "getAccessLogByDate",
-    "queryString" : "select * from testAccessLog where connectedTime > ? and connectedTime < ?",
-    "params" : [ "startDate", "endDate" ]
+    "queryString" : "select * from wellformedit.TB_CONTENT_IMAGE where hitCount > ? "
   },
   {
     "id" : "getMySqlVersion",
-    "queryString" : "select version()",
-    "params" : ""
+    "queryString" : "select version() "
+  },
+  {
+  	"id" : "insertAccessLog",
+  	"queryString" : "insert into connectionInfo values (4444, '2017-09-18', 'inodient', '/db', 'query', 'param', 'GET' )"
+  },
+  {
+  	"id" : "updateAccessLog",
+  	"queryString" : "update connectionInfo set userId = 'I Love sssss' where param = ? "
+  },
+  {
+  	"id" : "deleteAccessLog",
+  	"queryString" : "delete from connectionInfo where param = ? "
   }
 ]

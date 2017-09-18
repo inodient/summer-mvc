@@ -1,4 +1,4 @@
-exports.body = function( req, res ){
+module.exports = function( req, res ){
 	
 	try{
 		this.req = req;
