@@ -162,9 +162,12 @@ function setMysqlHandler(){
 		try{
 			if( __mysqlHandlerUsage ){
 				global.mysqlHandler = require( __mysqlHandler );
+				mysqlHandler.getPool()
+				.then( function(_pool){
+					global.pool = _pool;
+					resolve( {"message" : "Set MySql Handler"} );
+				} );
 			}
-
-			resolve( {"message" : "Set MySql Handler"} )
 		} catch( err ){
 			reject( err );
 		}

@@ -71,7 +71,11 @@ function info(){
 
 	for( var i=0; i<arguments.length; i++ ){
 		if( getMessageType(arguments[i]) == "object" ){
+			var argv = arguments[i];
 			message += JSON.stringify( arguments[i], null, 4 ) + " ";
+			// for( name in argv ){
+			// 	message += argv[name];
+			// }
 		} else{
 			message += arguments[i] + " ";
 		}

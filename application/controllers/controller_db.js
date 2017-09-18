@@ -1,37 +1,51 @@
 exports.control = function( req, res ){
-	
-//	mysqlHandler.getPool()
-//	.then( mysqlHandler.getConnection )
-//	.then( mysqlHandler.executeSelect.bind( null, "getAccessLog", ["2017-07-01","2017-08-01"] ) )
-//	.then( function(results){
-//		logger.info( results );
-//	})
-//	.catch( function(err){
-//		throw err;
-//	} );
-	
-//	mysqlHandler.executeSelect( "getMySqlVersion", ["2017-07-01","2017-08-01"] )
-//	.then( function(results){
-//		logger.info( results );
-//	})
-//	.catch( function(err){
-//		throw err;
-//	} );
-	
-	mysqlHandler.executeQuery( "getAccessLog", ["2017-07-01","2017-08-01"] )
-	.then( function(results){
-		logger.info( results.results );
+
+	mysqlHandler.getConnection( pool )
+	.then( function(connection){
+		mysqlHandler.executeQuery( "getMysqlVersion", connection )
+		.then( function(queryResults){
+			mysqlHandler.releaseConnection( connection );
+			logger.debug( queryResults.results );
+		} );
 	} )
 	.catch( function(err){
 		logger.error( err );
 	} );
-	
+
+	// mysqlHandler.getConnection( pool )
+	// .then( mysqlHandler.executeQuery.bind( null, "getMysqlVersion" ) )
+	// .then( function(results){
+	// 	logger.info( results.results );
+	// } )
+	// .catch( function(err){
+	// 	logger.error( err );
+	// } );
+
+	// mysqlHandler.getConnection()
+	// .then( mysqlHandler.executeQuery.bind( null, "getMySqlVersion" ) )
+	// .then( function(results){
+	// 	logger.info( results.results );
+	// } )
+	// .catch( function(err){
+	// 	logger.error( err );
+	// } );
+
+
+
+	// mysqlHandler.executeQuery( "getMySqlVersion" )
+	// .then( function(results){
+	// 	logger.info( results.results );
+	// } )
+	// .catch( function(err){
+	// 	logger.error( err );
+	// } );
+
 	return setModel( req, res, {}, null );
 }
 
 function setModel( req, res, results, fields ){
 	var model = {};
-	
+
 	try{
 		model.method = req.method;
 		model.path = req._parsedUrl.pathname;
@@ -42,7 +56,7 @@ function setModel( req, res, results, fields ){
 		model.controlFunction = "control";
 		model.dbRes = JSON.stringify( results[0], null, 4 );
 		model.ajaxResult = "-";
-		
+
 		return model;
 	} catch( err ){
 		throw err;
