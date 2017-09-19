@@ -1,16 +1,28 @@
-exports.control = function( req, res ){
+exports.control = function( req, res, connection ){
 
-	mysqlHandler.getConnection( pool )
-	.then( function(connection){
-		mysqlHandler.executeQuery( "getMysqlVersion", connection )
+	return new Promise( function(resolve, reject){
+		mysqlHandler.executeQuery( "insertAccessLog", connection )
 		.then( function(queryResults){
-			mysqlHandler.releaseConnection( connection );
 			logger.debug( queryResults.results );
+			resolve( setModel( req, res, {}, null ) );
+		} )
+		.catch( function(err){
+			reject( err );
 		} );
-	} )
-	.catch( function(err){
-		logger.error( err );
 	} );
+	
+	
+//	mysqlHandler.getConnection( pool )
+//	.then( function(connection){
+//		mysqlHandler.executeQuery( "getMysqlVersion", connection )
+//		.then( function(queryResults){
+//			mysqlHandler.releaseConnection( connection );
+//			logger.debug( queryResults.results );
+//		} );
+//	} )
+//	.catch( function(err){
+//		logger.error( err );
+//	} );
 
 	// mysqlHandler.getConnection( pool )
 	// .then( mysqlHandler.executeQuery.bind( null, "getMysqlVersion" ) )
@@ -40,7 +52,6 @@ exports.control = function( req, res ){
 	// 	logger.error( err );
 	// } );
 
-	return setModel( req, res, {}, null );
 }
 
 function setModel( req, res, results, fields ){

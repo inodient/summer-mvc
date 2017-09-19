@@ -24,7 +24,7 @@ Promise.all( setterPromises )
 	}
 } )
 .catch( function(err){
-	logger.error( err.stack );
+	logger.error( err );
 } );
 
 

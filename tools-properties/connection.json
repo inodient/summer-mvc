@@ -1,8 +1,10 @@
 {
 	"secret" : "a;slkjf;alkjsd;foiqnw;jbnf;kajbsd;kfjasdh",
-	"resave" : false,
+	"resave" : true,
 	"saveUninitialized" : true,
 	"cookie" : {
-		"maxAge" : "1000 * 60 * 60"
+		"httpOnly" : true,
+		"maxAge" : "1000 * 60 * 60",
+		"secure" : false
 	}
 }

@@ -31,11 +31,11 @@ exports.control = function( req, res ){
 
 		if( req.query.cookieKey && req.query.cookieValue ){
 			
-			connHandler.getCookie( "asdf", function(results){
-				logger.info( results );
-			});
-			 connHandler.setCookie( req.query.cookieKey, req.query.cookieValue );
-			 connHandler.clearCookie( req.query.cookieKey );
+//			connHandler.getCookie( "asdf", function(results, err){
+//				if( err ) reject( err );
+//			});
+			connHandler.setCookie( req.query.cookieKey, req.query.cookieValue );
+//			 connHandler.clearCookie( req.query.cookieKey );
 		 } else if( req.query.sessionKey && req.query.sessionValue ){
 			// connHandler.getSession();
  		// 	connHandler.setSession( req.query.sessionKey, req.query.sessionValue );
@@ -49,29 +49,99 @@ exports.control = function( req, res ){
 //		connHandler.clearCookie( "inodient" );
 
 		
+		var Store = req.session.Store;
 		
 		
 		
+//		logger.debug( req.session );
+		
+		if( !(req.session.userName) ){
+			req.session.userName = "INODIENT! Remember parents";
+//			logger.debug( req.session.userName );
+		}
 		
 		
+//		logger.debug( req.session.userName );
+
+		connHandler.getSession( "userName" )
+		.then( function(info){
+			logger.debug( info );
+		} )
+		.catch( function(err){
+			logger.error( err );
+		} );
 		
-		console.log( req.session );
+		
 //		req.session.regenerate( function(err){
 //			logger.error( err );
-//		});
+//		} );
+		
+//		req.session.userName = "inodient";
+		
+//		logger.debug( "1", req.session.userName );
 //		
+		req.session.save( function(err){
+//			logger.error( err );
+			resolve( setModel(req, res) );
+		} );
+		
+//		logger.debug( "3", req.session.userName );
+		
+		
+//		req.session.cookie.http = false;
+		
+		
+//		req.session.destroy( function(err){
+////			connHandler.clearCookie( "connect.sid", function( status, err ){
+////				if( err ) logger.error( err );
+////				logger.debug( status );
+////				resolve( setModel(req, res) );
+////			} );
+////			logger.error( err );
+//		} );
+		
+//		logger.debug( req.session.id );
+		
+		
+		
+//		console.log( req.session );
+////		req.session.regenerate( function(err){
+////			logger.error( err );
+////		});
+////		
+////		req.session.destroy( function(err){
+////			logger.error( err );
+////		});
+//		
+//		req.session.cookie.expires = new Date(Date.now() + 3600000);
+//		
+//		req.session.views = 1;
+//		
+//		logger.debug( req.session.views );
+//		logger.debug( req.session.id );
+//		logger.debug( req.session.cookie );
+////		req.session.cookie.path = "/setCookie"
+//		logger.debug( req.session.cookie.path );
+//		logger.debug( req.session.cookie.maxAge );
+//		logger.debug( req.sessionID );
+		
+//		req.session.store.all( function(err, sessions){
+//			if( err ) logger.error( err );
+//			logger.debug( sessions );
+//		});
+		
 //		req.session.destroy( function(err){
 //			logger.error( err );
-//		});
+//		} );
 		
-		req.session.cookie.expires = new Date(Date.now() + 3600000);
+//		req.session.reload( function(err){
+//			logger.error( err );
+//		} );
 		
-		logger.debug( req.session.id );
-		logger.debug( req.session.cookie );
-		logger.debug( req.session.cookie.maxAge );
-		logger.debug( req.sessionID );
+//		req.session.touch();
 		
-		resolve( setModel(req, res) );
+//		resolve( setModel(req, res) );
+
 	} );
 }
 

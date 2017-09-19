@@ -10,15 +10,42 @@ exports.dispatching = function( req, res ){
 
     let view = require("path").join( dispatchingSpec.viewPath, dispatchingSpec.view );
 
-    getController( dispatchingSpec.controllerJS )
-    .then( executeController.bind( null, dispatchingSpec.controlFunction, req, res ) )
-    .then( makeModelAndView.bind( null, mav, view ) )
-    .then( function( mav ){
-      resolve( mav );
+    var promises = [];
+    
+    promises.push( getController(dispatchingSpec.controllerJS) );
+    promises.push( getConnection() );
+    
+    Promise.all( promises )
+    .then( function(){
+    	
+    	var argv = arguments[0];
+    	
+    	var controller = argv[0];
+    	var connection = argv[1];
+    	
+		executeController( dispatchingSpec.controlFunction, req, res, controller, connection )
+		.then( makeModelAndView.bind( null, mav, view ) )
+	    .then( function( mav ){
+			resolve( mav );
+		} )
+		.catch( function(err){
+			reject( err );
+		} );    	
     } )
     .catch( function(err){
-      reject( err );
+    	reject( err ); 
     } );
+    
+    
+//    getController( dispatchingSpec.controllerJS )
+//    .then( executeController.bind( null, dispatchingSpec.controlFunction, req, res ) )
+//    .then( makeModelAndView.bind( null, mav, view ) )
+//    .then( function( mav ){
+//      resolve( mav );
+//    } )
+//    .catch( function(err){
+//      reject( err );
+//    } );
   } );
 }
 
@@ -52,14 +79,39 @@ function getDispatchingSpec( method, reqPath ){
 }
 
 function getController( controllerJS ){
-  let path = require("path");
-  let controller = require( path.join(__runningPath, __controllerPath, controllerJS) );
-
-  return Promise.resolve( controller );
+	return new Promise( function(resolve, reject){
+		try{
+			let path = require("path");
+			let controller = require( path.join(__runningPath, __controllerPath, controllerJS) );
+			
+			resolve( controller );
+		} catch( err ){
+			reject( err );
+		}
+	} );
+	
+//  let path = require("path");
+//  let controller = require( path.join(__runningPath, __controllerPath, controllerJS) );
+//
+//  return Promise.resolve( controller );
 }
 
-function executeController( controlFunction, req, res, controller ){
-	return Promise.resolve( (controller[ controlFunction ])(req, res) );
+function getConnection(){
+	return new Promise( function(resolve, reject){
+		try{
+			pool.getConnection( function(err, _connection){
+				if( err ) reject( err );
+				
+				resolve( _connection );
+			} );
+		} catch( err ){
+			reject( err );
+		}
+	} );
+}
+
+function executeController( controlFunction, req, res, controller, connection ){
+	return Promise.resolve( (controller[ controlFunction ])(req, res, connection) );
 	
 //	var execution = controller[ controlFunction ]( req, res );
 //	var promiseExecution = Promise.resolve( execution );

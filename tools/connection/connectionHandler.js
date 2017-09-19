@@ -17,12 +17,11 @@ module.exports = function( req, res ){
 		if( (typeof callback) === "function" ){
 			try{
 				if( key ){
-					callback( this.req.cookies[ key ], null );
+					callback( this.req.cookies[ key ] );
 				} else{
-					callback( this.req.cookies, null );
+					callback( this.req.cookies );
 				}
 			} catch( err ){
-				logger.error( err );
 				callback( {"status":"E"}, err );
 			}
 		} else{
@@ -42,7 +41,7 @@ module.exports = function( req, res ){
 		if( (typeof callback) === "function" ){
 			try{
 				this.res.cookie( key, value );
-				callback( {"status":"S"}, null );
+				callback( {"status":"S"} );
 			} catch( err ){
 				callback( {"status":"E"}, err );
 			}
@@ -55,8 +54,7 @@ module.exports = function( req, res ){
 			}
 		}
 	}
-	
-
+		
 	this.clearCookie = function( key, callback ){
 		if( (typeof callback) === "function" ){
 			try{
@@ -83,14 +81,20 @@ module.exports = function( req, res ){
 
 	
 	
+	//https://github.com/tj/connect-redis/blob/master/lib/connect-redis.js
+	//http://mythinkg.blogspot.kr/2016/01/nodejs-redis-rediss-session.html
+
+	
 	// Session Functions - Start
 	this.getSession = function( key ){
 		return new Promise( function(resolve, reject){
+			logger.info( req.session );
+			
 			try{
 				if( key ){
-				    resolve( this.req.session[ key ] );
+				    resolve( req.session[ key ] );
 				  } else{
-				    resolve( this.req.session );
+				    resolve( req.session );
 				  }
 			} catch( err ){
 				reject( err );
@@ -102,6 +106,9 @@ module.exports = function( req, res ){
 		return new Promise( function(resolve, reject){
 			try{
 				if( key && value ){
+					
+					logger.debug( this.req.session );
+					
 				    this.req.session[ key ] = value;
 				}
 				resolve();
