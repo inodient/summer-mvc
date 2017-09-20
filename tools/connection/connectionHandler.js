@@ -84,52 +84,122 @@ module.exports = function( req, res ){
 	//https://github.com/tj/connect-redis/blob/master/lib/connect-redis.js
 	//http://mythinkg.blogspot.kr/2016/01/nodejs-redis-rediss-session.html
 
+	// Helper Functions - Start
+	function _getCallback( arguments ){
+		try{
+			if( arguments.length > 0 && (typeof arguments[arguments.length - 1]) === "function" ){
+				return arguments[ arguments.length - 1 ];
+			} else{
+				return undefined;
+			}
+		} catch( err ){
+			throw err;
+		}
+	}
+	
+	function _getValueArguments( arguments ){
+		try{
+			if( arguments.length > 1 ){
+				
+				if( (typeof arguments[arguments.length-1]) === "function" ){
+					delete arguments[ arguments.length - 1 ];
+				}
+				return arguments;
+				
+			} else{
+				return undefined;
+			}
+		} catch( err ){
+			throw err;
+		}
+	}
+	// Helper Functions - End
+	
 	
 	// Session Functions - Start
-	this.getSession = function( key ){
-		return new Promise( function(resolve, reject){
-			logger.info( req.session );
+	this.getSession = function(){ // arguments : key, callback
+		
+		try{
+			var key = undefined;
 			
-			try{
+			var callback = _getCallback( arguments );
+			var argv = _getValueArguments( arguments );
+			
+			if( argv ){
+				key = argv[0];
+			}
+			
+			if( callback ){
 				if( key ){
-				    resolve( req.session[ key ] );
-				  } else{
-				    resolve( req.session );
-				  }
-			} catch( err ){
-				reject( err );
-			}
-		} );
-	}
-
-	this.setSession = function( key, value ){
-		return new Promise( function(resolve, reject){
-			try{
-				if( key && value ){
-					
-					logger.debug( this.req.session );
-					
-				    this.req.session[ key ] = value;
+					callback( req.session[ key ] )
+				} else{
+					callback( req.session )
 				}
-				resolve();
-			} catch( err ){
-				reject( err );
+			} else{
+				throw "IllegalArgumentException : callback dismissed";
 			}
-		} );
+		} catch( err ){
+			if( callback ){
+				callback( null, err );
+			} else{
+				throw err;
+			}
+		}
 	}
-
-	this.destroySession = function(){
-		return new Promise( function(resolve, reject){
-			try{
-				this.req.session.destroy( function(err){
-				    this.req.session = null;
-						if( err ) reject( err );
-						resolve();
-			  });
-			} catch( err ){
-				reject( err );
+	
+	this.setSession = function(){ // arguments : key, value, (callback)
+		
+		try{
+			var key = undefined;
+			var value = undefined;
+			
+			var callback = _getCallback( arguments );
+			var argv = _getValueArguments( arguments );
+			
+			if( argv ){
+				key = argv[0];
+				value = argv[1];
 			}
-		} );
+			
+			if( key && value ){
+				req.session[ key ] = value;
+				
+				if( callback ){
+					callback( "Set Session Value Succeed" );
+				}
+			} else{
+				throw "IllegalArgumentError : not enough arguments";
+			}
+			
+		} catch( err ){
+			if( callback ){
+				callback( null, err );
+			} else{
+				throw err;
+			}
+		}
+	}
+	
+	this.destroySession = function(){ // arguments : (callback)
+		try{
+			var callback = _getCallback( arguments );
+			
+			if( callback ){
+				req.session.destroy( function(err){
+					if( err ) callback( err );
+				} );
+			} else{
+				req.session.destroy( function(err){
+					if( err ) throw err;
+				} );
+			}
+		} catch( err ){
+			if( callback ){
+				callback( null, err );
+			} else{
+				throw err;
+			}
+		}
 	}
 
 	this.setSessionTimeout = function( maxAge ){

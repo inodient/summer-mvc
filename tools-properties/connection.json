@@ -1,10 +1,23 @@
 {
-	"secret" : "a;slkjf;alkjsd;foiqnw;jbnf;kajbsd;kfjasdh",
-	"resave" : true,
-	"saveUninitialized" : true,
-	"cookie" : {
-		"httpOnly" : true,
-		"maxAge" : "1000 * 60 * 60",
-		"secure" : false
+	"session-setting" : {
+		"enable-redis-store" : true,
+		"enable-custom-id-generator" : false,
+		"enable-custom-name" : true
+	},
+	"session-info" : {
+		"secret" : "a;slkjf;alkjsd;foiqnw;jbnf;kajbsd;kfjasdh",
+		"resave" : false,
+		"saveUninitialized" : true,
+		"cookie" : {
+			"httpOnly" : true,
+			"maxAge" : "1000 * 60 * 60",
+			"secure" : false
+		}
+	},
+	"redis-info" : {
+		"host" : "127.0.0.1",
+		"port" : "6379",
+		"prefix" : "session:",
+		"db" : 0
 	}
 }

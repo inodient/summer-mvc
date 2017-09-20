@@ -34,13 +34,30 @@ exports.control = function( req, res ){
 //			connHandler.getCookie( "asdf", function(results, err){
 //				if( err ) reject( err );
 //			});
-			connHandler.setCookie( req.query.cookieKey, req.query.cookieValue );
+//			connHandler.setCookie( req.query.cookieKey, req.query.cookieValue );
 //			 connHandler.clearCookie( req.query.cookieKey );
 		 } else if( req.query.sessionKey && req.query.sessionValue ){
 			// connHandler.getSession();
  		// 	connHandler.setSession( req.query.sessionKey, req.query.sessionValue );
  		// 	connHandler.destroySession();
 		 }
+		
+		
+		connHandler.getSession( function( ses, err ){
+			logger.debug( ses );
+			if( err ) logger.error( err )
+		} );
+		
+		connHandler.setSession( "teasdfstId", "TEST", function( results, err ){
+//			logger.error( err );
+		} );
+		
+//		connHandler.destroySession();
+		
+//		req.session.destroy( function(err){
+//			if(err) logger.error( err );
+//		});
+		
 		
 //		logger.debug( connHandler.getCookie("inodient") );
 //		connHandler.setCookie( "inodient", "sexy" );
@@ -49,27 +66,60 @@ exports.control = function( req, res ){
 //		connHandler.clearCookie( "inodient" );
 
 		
-		var Store = req.session.Store;
-		
-		
 		
 //		logger.debug( req.session );
+
+//		if( !(req.session.userName) ){
+//			req.session.userName = "INODIENT! Remember parents";
+////			logger.debug( req.session.userName );
+//		}
 		
-		if( !(req.session.userName) ){
-			req.session.userName = "INODIENT! Remember parents";
-//			logger.debug( req.session.userName );
-		}
+//			if( !(req.session.userName) ){
+//				req.session.userName = "INODIENT! Remember parents";
+////				logger.debug( req.session.userName );
+//			}
+//			
+//			if( !(req.session.redisCompleted) ){
+//				req.session.redisCompleted = "test";
+////				logger.debug( req.session.userName );
+//			}
+//			
+//			if( !(req.session.testtesttest) ){
+//				req.session.testtesttest = "testtesttest";
+////				logger.debug( req.session.userName );
+//			}
+//			
+//			if( !(req.session.kkkkkk) ){
+//				req.session.kkkkkk = "kkkkkk";
+////				logger.debug( req.session.userName );
+//			}
+//			
+//			if( !(req.session.asdf) ){
+//				req.session.asdf = "asdf";
+////				logger.debug( req.session.userName );
+//			}
+//			
+//			if( req.session.id ){
+//				logger.debug( req.session.id );
+//			}
+			
+//			req.session.destroy( function(err){
+//				if(err) logger.error( err );
+//			});
+
+		
+
 		
 		
 //		logger.debug( req.session.userName );
 
-		connHandler.getSession( "userName" )
-		.then( function(info){
-			logger.debug( info );
-		} )
-		.catch( function(err){
-			logger.error( err );
-		} );
+//		connHandler.getSession( "userName" )
+//		.then( function(info){
+//			logger.debug( info );
+//		} )
+//		.catch( function(err){
+//			logger.error( err );
+//		} );
 		
 		
 //		req.session.regenerate( function(err){
@@ -80,10 +130,10 @@ exports.control = function( req, res ){
 		
 //		logger.debug( "1", req.session.userName );
 //		
-		req.session.save( function(err){
-//			logger.error( err );
-			resolve( setModel(req, res) );
-		} );
+//		req.session.save( function(err){
+////			logger.error( err );
+//			resolve( setModel(req, res) );
+//		} );
 		
 //		logger.debug( "3", req.session.userName );
 		
@@ -140,7 +190,7 @@ exports.control = function( req, res ){
 		
 //		req.session.touch();
 		
-//		resolve( setModel(req, res) );
+		resolve( setModel(req, res) );
 
 	} );
 }

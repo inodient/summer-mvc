@@ -173,7 +173,8 @@ function getFunctionName( func ){
   func = func.substr(0, func.indexOf('('));
 
 	if( func == "" ) func = "ANONYMOUS_FUNC";
-
+	if( func.indexOf( "=>" ) >= 0 ) func = "ANONYMOUS_FUNC";
+	
 	return func;
 }
 

@@ -53,10 +53,15 @@ app.get( "/*", (req, res, next) => {
   console.log( req.headers["accept-language"] );
   console.log( req.path );
 
+  var submodule = require( __connectionHandlerSubmodule );
+  logger.debug( submodule.genUuid( req ) );
+  
+  var connHandler = new connectionHandler( req, res );
+  
   // 2. Dispatcher
   contextDispatcher.dispatching( req, res )
   .then( function( mav ){
-
+	  
     try{
       // 2-1. Ajax
       if( req.xhr || req.headers.accept.indexOf("json") > -1 ){
@@ -69,6 +74,7 @@ app.get( "/*", (req, res, next) => {
 
         // 2-2-1. Render View
         if( !contentDisposition ){
+        	
           res.status(200);
           res.render( mav.view, mav.model );
         }

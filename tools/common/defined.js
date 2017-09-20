@@ -346,6 +346,26 @@ Object.defineProperty(global, "__connectionHandlerInfo", {
 	}
 } );
 
+Object.defineProperty(global, "__connectionHandlerSubmodule", {
+	get : function(){
+		if( fs.existsSync(path.join( process.cwd(), architecture[ "tools-submodules" ], "connectionHandlerSubmodules.js" ) ) ){
+			return path.join( process.cwd(), architecture[ "tools-submodules" ], "connectionHandlerSubmodules.js" );
+		} else{
+			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", architecture[ "tools-submodules" ], "connectionHandlerSubmodules.js" );
+		}
+	}
+} );
+
+Object.defineProperty(global, "__connectionSetter", {
+	get : function(){
+		if( fs.existsSync(path.join( process.cwd(), architecture.tools.connection, "connectionSetter.js" ) ) ){
+			return path.join( process.cwd(), architecture.tools.connection, "connectionSetter.js" );
+		} else{
+			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", architecture.tools.connection, "connectionSetter.js" );
+		}
+	}
+} );
+
 Object.defineProperty(global, "__fileHandler", {
 	get : function(){
 		if( fs.existsSync(path.join( process.cwd(), architecture.tools.file, "fileHandler.js" ) ) ){
