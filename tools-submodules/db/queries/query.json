@@ -13,7 +13,7 @@
   },
   {
   	"id" : "insertAccessLog",
-  	"queryString" : "insert into connectionInfo values (4444, '2017-09-18', 'inodient', '/db', 'query', 'param', 'GET' )"
+  	"queryString" : "insert into connectionInfo values ( ?, ?, ?, ?, ?, ?, ? )"
   },
   {
   	"id" : "updateAccessLog",

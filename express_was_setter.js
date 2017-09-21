@@ -172,6 +172,9 @@ function setMysqlHandler(){
 				.then( function(_pool){
 					global.pool = _pool;
 					resolve( {"message" : "Set MySql Handler"} );
+				} )
+				.catch( function(err){
+					reject( err );
 				} );
 			}
 		} catch( err ){

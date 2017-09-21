@@ -6,24 +6,9 @@ module.exports.genName = genName;
 
 
 function genUuid( req ){
-	
-//	if( req.query.cookieKey ){
-//		return req.query.cookieKey;
-//	} else{
-//		return "test session id";
-//	}
-	
-//	return "TEST_SESSION_UUID";
-	return new Date();
+	return "id_summer_mvc_sess";
 }
 
 function genName(){
-	
-//	if( req.query.cookieKey ){
-//		return req.query.cookieKey;
-//	} else{
-//		return "test session id";
-//	}
-	
-	return "TEST_NAME";
+	return "SMVCSESS";
 }

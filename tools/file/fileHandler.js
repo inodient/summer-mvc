@@ -26,7 +26,7 @@ function uploadFile( req ){
 
     return new Promise( function(resolve, reject){
 
-      logger.info( "destDir : ", destDir );
+      logger.debug( "destDir : ", destDir );
 
       try{
         var busboy = new Busboy({ headers: req.headers });
@@ -46,7 +46,7 @@ function uploadFile( req ){
             var saveTo = path.join( destDir, resultObject.savedFileName );
             file.pipe(fs.createWriteStream(saveTo));
 
-            logger.info( "Uploading : " + saveTo);
+            logger.debug( "Uploading : " + saveTo);
 
           } catch( err ){
             logger.error( err );
@@ -55,7 +55,7 @@ function uploadFile( req ){
         });
 
         busboy.on( "finish", function() {
-          logger.info( "Upload complete" );
+          logger.debug( "Upload complete" );
           resolve( resultObject );
         });
 
@@ -92,11 +92,11 @@ function downloadFile( res, savedPath, savedFileName, originalFileName ){
       fileStream.pipe( response );
 
       fileStream.on( "data", function(){
-    	  logger.info( "Downloading : " + savedFileName );
+    	  logger.debug( "Downloading : " + savedFileName );
       });
 
       fileStream.on( "close", function(){
-        logger.info( "Download Complete" );
+        logger.debug( "Download Complete" );
         resolve( { "originalFileName" : originalFileName, "savedPath" : savedPath, "savedFileName" : savedFileName } );
       });
 

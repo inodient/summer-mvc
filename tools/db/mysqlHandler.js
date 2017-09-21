@@ -25,7 +25,7 @@ function getPool(){
 }
 
 function getConnection(){
-	var _pool;
+	var _pool = undefined;
 
 	if( arguments ){
 		_pool = arguments[0];
@@ -47,9 +47,7 @@ function getConnection(){
 					resolve( _connection );
 				} );
 			} );
-
 		}
-
 	} );
 }
 
@@ -59,8 +57,8 @@ function getConnection(){
 
 
 function executeQuery( queryId ){
-	var params = null;
-	var connection = null;
+	var params = undefined;
+	var connection = undefined;
 
 	if( arguments[1] && typeof arguments[1] == "object" ){
 		if( arguments[1] instanceof Array ){
@@ -75,6 +73,7 @@ function executeQuery( queryId ){
 	}
 
 	return new Promise( function(resolve, reject){
+		
 		if( connection ){
 			executeTransaction( queryId, params, connection )
 			.then( function(queryResults){
@@ -143,8 +142,8 @@ function releasePool( pool ){
 	pool.end();
 }
 
-function releaseConnection( connection ){
-	connection.destroy();
+function releaseConnection( _connection ){
+	_connection.destroy();
 }
 
 function getQueryString( queryId, params ){

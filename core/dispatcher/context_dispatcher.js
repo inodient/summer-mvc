@@ -26,6 +26,7 @@ exports.dispatching = function( req, res ){
 		executeController( dispatchingSpec.controlFunction, req, res, controller, connection )
 		.then( makeModelAndView.bind( null, mav, view ) )
 	    .then( function( mav ){
+	    	Promise.resolve( releaseConnection( connection ) );
 			resolve( mav );
 		} )
 		.catch( function(err){
@@ -35,17 +36,6 @@ exports.dispatching = function( req, res ){
     .catch( function(err){
     	reject( err ); 
     } );
-    
-    
-//    getController( dispatchingSpec.controllerJS )
-//    .then( executeController.bind( null, dispatchingSpec.controlFunction, req, res ) )
-//    .then( makeModelAndView.bind( null, mav, view ) )
-//    .then( function( mav ){
-//      resolve( mav );
-//    } )
-//    .catch( function(err){
-//      reject( err );
-//    } );
   } );
 }
 
@@ -89,21 +79,24 @@ function getController( controllerJS ){
 			reject( err );
 		}
 	} );
-	
-//  let path = require("path");
-//  let controller = require( path.join(__runningPath, __controllerPath, controllerJS) );
-//
-//  return Promise.resolve( controller );
 }
 
 function getConnection(){
 	return new Promise( function(resolve, reject){
+		mysqlHandler.getConnection( pool )
+		.then( function(connection){
+			resolve( connection );
+		} )
+		.catch( function(err){
+			reject( err );
+		} );
+	} );
+}
+
+function releaseConnection( connection ){
+	return new Promise( function(resolve, reject){
 		try{
-			pool.getConnection( function(err, _connection){
-				if( err ) reject( err );
-				
-				resolve( _connection );
-			} );
+			resolve( mysqlHandler.releaseConnection( connection ) );
 		} catch( err ){
 			reject( err );
 		}

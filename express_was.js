@@ -5,6 +5,8 @@ const setter = require( "./express_was_setter.js" );
 
 
 
+
+
 // Setting Tools
 var setterPromises = [];
 
@@ -53,10 +55,10 @@ app.get( "/*", (req, res, next) => {
   console.log( req.headers["accept-language"] );
   console.log( req.path );
 
-  var submodule = require( __connectionHandlerSubmodule );
-  logger.debug( submodule.genUuid( req ) );
-  
-  var connHandler = new connectionHandler( req, res );
+//  var submodule = require( __connectionHandlerSubmodule );
+//  logger.debug( submodule.genUuid( req ) );
+//  
+//  var connHandler = new connectionHandler( req, res );
   
   // 2. Dispatcher
   contextDispatcher.dispatching( req, res )

@@ -23,7 +23,7 @@ exports.control_download = function( req, res ){
 
   let savedPath = "upload";
   //let savedFileName = "BpBouHaMCKy0vR2CWjuF0lAcBu1qtgs6IB1miSX24uombiAt5r45xm6OgYu2NhbY_(AD) 계정관리 DB의 SQL 계정 및 검증_170307.xlsx";
-  let savedFileName = 'test.png';
+  let savedFileName = 'favicon2.ico';
 
   let model = fileHandler.downloadFile( res, savedPath, savedFileName, "asdf.png" );
 

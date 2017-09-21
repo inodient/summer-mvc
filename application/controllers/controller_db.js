@@ -1,14 +1,16 @@
 exports.control = function( req, res, connection ){
 
 	return new Promise( function(resolve, reject){
-		mysqlHandler.executeQuery( "insertAccessLog", connection )
-		.then( function(queryResults){
-			logger.debug( queryResults.results );
+		var params = [];
+		
+		mysqlHandler.executeQuery( "getMySqlVersion", params, connection )
+		.then( function( queryResults ){
 			resolve( setModel( req, res, {}, null ) );
 		} )
 		.catch( function(err){
 			reject( err );
 		} );
+
 	} );
 	
 	
