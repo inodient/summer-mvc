@@ -29,6 +29,8 @@ Promise.all( setterPromises )
 	logger.error( err );
 } );
 
+require( require("path").join( process.cwd(), "tools", "exit", "exitHandler.js") );
+
 
 
 
