@@ -120,7 +120,7 @@ function _getUploadDestination( arguments ){
   for( var i=0; i<defaultPath.length; i++ ){
     if( defaultPath[i] != "" ){
       destDir = path.join( destDir, defaultPath[i] );
-      logger.info( destDir );
+      logger.degug( destDir );
       common.makeFolder( destDir );
     }
   }

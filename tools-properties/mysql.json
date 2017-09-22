@@ -1,5 +1,5 @@
 {
-  "connectionLimit" : 1,
+  "connectionLimit" : 100,
   "host" : "104.199.217.31",
   "user" : "root",
   "password" : "123qwer@",

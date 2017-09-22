@@ -66,8 +66,8 @@ app.get( "/*", (req, res, next) => {
 	  
     try{
       // 2-1. Ajax
-      if( req.xhr || req.headers.accept.indexOf("json") > -1 ){
-    	res.status(200);
+      if( req.xhr || (req.headers["accept"] && req.headers.accept.indexOf("json") > -1) ){
+    	  res.status(200);
         res.send( mav.model );
       }
       // 2-2. With View

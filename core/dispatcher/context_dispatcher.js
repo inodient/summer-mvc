@@ -26,8 +26,17 @@ exports.dispatching = function( req, res ){
 		executeController( dispatchingSpec.controlFunction, req, res, controller, connection )
 		.then( makeModelAndView.bind( null, mav, view ) )
 	    .then( function( mav ){
-	    	Promise.resolve( releaseConnection( connection ) );
-			resolve( mav );
+	    	
+	    	releaseConnection( connection )
+	    	.then( function(){
+	    		resolve( mav );
+	    	} )
+	    	.catch( function(_err){
+	    		reject( _err );
+	    	} );
+	    	
+//	    	Promise.resolve( releaseConnection( connection ) );
+			
 		} )
 		.catch( function(err){
 			reject( err );
@@ -83,22 +92,30 @@ function getController( controllerJS ){
 
 function getConnection(){
 	return new Promise( function(resolve, reject){
-		mysqlHandler.getConnection( pool )
-		.then( function(connection){
-			resolve( connection );
-		} )
-		.catch( function(err){
-			reject( err );
-		} );
+		if( __mysqlHandlerUsage ){
+			mysqlHandler.getConnection( pool )
+			.then( function(connection){
+				resolve( connection );
+			} )
+			.catch( function(err){
+				reject( err );
+			} );
+		} else{
+			resolve( undefined );
+		}
 	} );
 }
 
 function releaseConnection( connection ){
 	return new Promise( function(resolve, reject){
-		try{
-			resolve( mysqlHandler.releaseConnection( connection ) );
-		} catch( err ){
-			reject( err );
+		if( __mysqlHandlerUsage ){
+			try{
+				resolve( mysqlHandler.releaseConnection( connection ) );
+			} catch( err ){
+				reject( err );
+			}
+		} else{
+			resolve( undefined );
 		}
 	} );
 }
