@@ -435,6 +435,26 @@ Object.defineProperty(global, "__colorInfo", {
 		}
 	}
 } );
+
+Object.defineProperty(global, "__exitHandler", {
+	get : function(){
+		if( fs.existsSync(path.join( process.cwd(), architecture.tools.exit, "exitHandler.js" ) ) ){
+			return path.join( process.cwd(), architecture.tools.exit, "exitHandler.js" );
+		} else{
+			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", architecture.tools.exit, "exitHandler.js" );
+		}
+	}
+} );
+
+Object.defineProperty(global, "__clientExitHandler", {
+	get : function(){
+		if( fs.existsSync(path.join( process.cwd(), architecture[ "tools-submodules" ], "clientExitHandler.js" ) ) ){
+			return path.join( process.cwd(), architecture[ "tools-submodules" ], "clientExitHandler.js" );
+		} else{
+			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", architecture[ "tools-submodules" ], "clientExitHandler.js" );
+		}
+	}
+} );
 // architecture file name - end
 
 

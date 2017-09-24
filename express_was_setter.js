@@ -5,6 +5,7 @@ module.exports.setErrorHandler = setErrorHandler;
 module.exports.setConnectionHandler = setConnectionHandler;
 module.exports.setFileHandler = setFileHandler;
 module.exports.setMysqlHandler = setMysqlHandler;
+module.exports.setExitHandler = setExitHandler;
 
 
 
@@ -116,9 +117,9 @@ function setConnectionHandler( app ){
 				// set session parser
 				var session = require( "express-session" );
 				var connectionSetter = require( __connectionSetter );
-				
+
 				var sessionInfo = connectionSetter.getConnectionInfo( session );
-				
+
 				app.use( session(sessionInfo) );
 
 				global.connectionHandler = require( __connectionHandler );
@@ -167,7 +168,7 @@ function setMysqlHandler(){
 		try{
 			if( __mysqlHandlerUsage ){
 				global.mysqlHandler = require( __mysqlHandler );
-				
+
 				mysqlHandler.getPool()
 				.then( function(_pool){
 					global.pool = _pool;
@@ -177,6 +178,25 @@ function setMysqlHandler(){
 					reject( err );
 				} );
 			}
+		} catch( err ){
+			reject( err );
+		}
+	} );
+}
+
+
+
+
+
+//***************************************************
+//** Prepare exit Handler - Tools
+//***************************************************
+function setExitHandler(){
+	return new Promise( function(resolve, reject){
+		try{
+			require( require("path").join( process.cwd(), "tools", "exit", "exitHandler.js") );
+
+			resolve( {"message" : "Set Exit Handler"} );
 		} catch( err ){
 			reject( err );
 		}

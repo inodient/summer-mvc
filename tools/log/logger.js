@@ -12,7 +12,6 @@ const fs = require( "fs" );
 const path = require( "path" );
 const loggerInfo = require( __loggerInfo );
 const colorInfo = require( __colorInfo );
-var stream = null;
 
 
 
@@ -20,7 +19,7 @@ var stream = null;
 // Initializing Logger - Start
 function initLogger(){
 	let destination = createLogFile();
-	stream = createStream( destination );
+	global.logFileWriteStream = createStream( destination );
 }
 
 function createLogFile(){
@@ -60,7 +59,7 @@ function log( type, message ){
 
 	var functionName = getFunctionName( arguments.callee.caller.toString() );
 
-	stream.write( "[" + type + "] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
+	logFileWriteStream.write( "[" + type + "] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
 	console.log( "[" + type + "] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
 }
 
@@ -85,7 +84,7 @@ function info(){
 	var functionName = getFunctionName( arguments.callee.caller.toString() );
 
 	if( loggerInfo.writeFile.INFO ){
-		stream.write( "[INFO] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
+		logFileWriteStream.write( "[INFO] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
 	}
 	if( loggerInfo.console.INFO ){
 		console.log( attachColorPrefix(colorInfo.FgYellow) + "%s" + attachColorPrefix(colorInfo.Reset), "[INFO]", "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "", ""  );
@@ -109,7 +108,7 @@ function debug(){
 	var functionName = getFunctionName( arguments.callee.caller.toString() );
 
 	if( loggerInfo.writeFile.INFO ){
-		stream.write( "[DEBUG] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
+		logFileWriteStream.write( "[DEBUG] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
 	}
 	if( loggerInfo.console.INFO ){
 		console.log( attachColorPrefix(colorInfo.FgCyan) + "%s" +  attachColorPrefix(colorInfo.Reset), "[DEBUG]", "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
@@ -139,7 +138,7 @@ function error(){
 	}
 
 	if( loggerInfo.writeFile.ERROR ){
-		stream.write( "[ERROR] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
+		logFileWriteStream.write( "[ERROR] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
 	}
 	if( loggerInfo.console.ERROR ){
 		console.log(  attachColorPrefix(colorInfo.FgRed) + "%s" +  attachColorPrefix(colorInfo.Reset), "[ERROR]", "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
@@ -150,32 +149,14 @@ function error(){
 
 
 
-//// Exit control - start
-//process.stdin.resume();//so the program will not close instantly
-//process.on('exit', exitHandler.bind(null,{cleanup:true})); //do something when app is closing
-//process.on('SIGINT', exitHandler.bind(null, {exit:true})); //catches ctrl+c event
-//process.on('uncaughtException', exitHandler.bind(null, {exit:true})); //catches uncaught exceptions
-//// Exit control - end
-
-
-
-
 // Helper Functions - Start
-//function exitHandler(options, err) {
-//	stream.end();
-//
-//	if (options.cleanup) console.log('clean');
-//	if (err) console.log(err.stack);
-//	if (options.exit) process.exit();
-//}
-
 function getFunctionName( func ){
   func = func.substr('function '.length);
   func = func.substr(0, func.indexOf('('));
 
 	if( func == "" ) func = "ANONYMOUS_FUNC";
 	if( func.indexOf( "=>" ) >= 0 ) func = "ANONYMOUS_FUNC";
-	
+
 	return func;
 }
 

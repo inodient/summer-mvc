@@ -16,6 +16,7 @@ setterPromises.push( setter.setBodyParser( app ) );
 setterPromises.push( setter.setConnectionHandler( app ) );
 setterPromises.push( setter.setFileHandler() );
 setterPromises.push( setter.setMysqlHandler() );
+setterPromises.push( setter.setExitHandler() );
 
 Promise.all( setterPromises )
 .then( function(){
@@ -28,9 +29,6 @@ Promise.all( setterPromises )
 .catch( function(err){
 	logger.error( err );
 } );
-
-require( require("path").join( process.cwd(), "tools", "exit", "exitHandler.js") );
-
 
 
 
@@ -59,13 +57,13 @@ app.get( "/*", (req, res, next) => {
 
 //  var submodule = require( __connectionHandlerSubmodule );
 //  logger.debug( submodule.genUuid( req ) );
-//  
+//
 //  var connHandler = new connectionHandler( req, res );
-  
+
   // 2. Dispatcher
   contextDispatcher.dispatching( req, res )
   .then( function( mav ){
-	  
+
     try{
       // 2-1. Ajax
       if( req.xhr || (req.headers["accept"] && req.headers.accept.indexOf("json") > -1) ){
@@ -78,7 +76,7 @@ app.get( "/*", (req, res, next) => {
 
         // 2-2-1. Render View
         if( !contentDisposition ){
-        	
+
           res.status(200);
           res.render( mav.view, mav.model );
         }

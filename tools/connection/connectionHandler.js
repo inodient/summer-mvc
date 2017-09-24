@@ -1,16 +1,16 @@
 module.exports = function( req, res ){
-	
+
 	try{
 		this.req = req;
 		this.res = res;
 	} catch( err ){
 		throw err;
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	// Helper Functions - Start
 	function _getCallback( arguments ){
 		try{
@@ -23,16 +23,16 @@ module.exports = function( req, res ){
 			throw err;
 		}
 	}
-	
+
 	function _getValueArguments( arguments ){
 		try{
 			if( arguments.length >= 1 ){
-				
+
 				if( (typeof arguments[arguments.length-1]) === "function" ){
 					delete arguments[ arguments.length - 1 ];
 				}
 				return arguments;
-				
+
 			} else{
 				return undefined;
 			}
@@ -41,23 +41,23 @@ module.exports = function( req, res ){
 		}
 	}
 	// Helper Functions - End
-	
-	
-	
-	
-	
+
+
+
+
+
 	// Cookie Functions - Start
 	this.getCookie = function(){ // arguments : (key), (callback)
 		try{
 			var key = undefined;
-			
+
 			var callback = _getCallback( arguments );
 			var argv = _getValueArguments( arguments );
 
 			if( argv ){
 				key = argv[0];
 			}
-			
+
 			if( key ){
 				if( callback ){
 					callback( this.req.cookies[key] );
@@ -71,7 +71,7 @@ module.exports = function( req, res ){
 					return this.req.cookies;
 				}
 			}
-			
+
 		} catch( err ){
 			if( callback ){
 				callback( null, err );
@@ -85,15 +85,15 @@ module.exports = function( req, res ){
 		try{
 			var key = undefined;
 			var value = undefined;
-			
+
 			var callback = _getCallback( arguments );
 			var argv = _getValueArguments( arguments );
-			
+
 			if( argv ){
 				key = argv[0];
 				value = argv[1];
 			}
-			
+
 			if( key && value ){
 				res.cookie( key, value );
 			} else{
@@ -107,18 +107,18 @@ module.exports = function( req, res ){
 			}
 		}
 	}
-		
-	this.clearCookie = function(){ // arguments :  key, (callback) 
+
+	this.clearCookie = function(){ // arguments :  key, (callback)
 		try{
 			var key = undefined;
-			
+
 			var callback = _getCallback( arguments );
 			var argv = _getValueArguments( arguments );
-			
+
 			if( argv ){
 				key = argv[0];
 			}
-			
+
 			if( key ){
 				this.res.clearCookie( key );
 			} else{
@@ -136,21 +136,21 @@ module.exports = function( req, res ){
 
 
 
-	
-	
+
+
 	// Session Functions - Start
 	this.getSession = function(){ // arguments : key, callback
-		
+
 		try{
 			var key = undefined;
-			
+
 			var callback = _getCallback( arguments );
 			var argv = _getValueArguments( arguments );
-			
+
 			if( argv ){
 				key = argv[0];
 			}
-			
+
 			if( callback ){
 				if( key ){
 					callback( req.session[ key ] )
@@ -168,27 +168,29 @@ module.exports = function( req, res ){
 			}
 		}
 	}
-	
+
 	this.setSession = function(){ // arguments : key, value, (callback)
-		
+
 		try{
 			var key = undefined;
 			var value = undefined;
-			
+
 			var callback = _getCallback( arguments );
 			var argv = _getValueArguments( arguments );
-			
+
 			if( argv ){
 				key = argv[0];
 				value = argv[1];
 			}
-			
+
+			logger.debug( key, value );
+
 			if( key && value ){
 				req.session[ key ] = value;
 			} else{
 				throw "IllegalArgumentError : not enough arguments";
 			}
-			
+
 		} catch( err ){
 			if( callback ){
 				callback( err );
@@ -197,11 +199,11 @@ module.exports = function( req, res ){
 			}
 		}
 	}
-	
+
 	this.destroySession = function(){ // arguments : (callback)
 		try{
 			var callback = _getCallback( arguments );
-			
+
 			if( callback ){
 				req.session.destroy( function(err){
 					if( err ) callback( err );
@@ -219,11 +221,11 @@ module.exports = function( req, res ){
 			}
 		}
 	}
-	
+
 	this.regenerateSession = function(){ // arguments : (callback)
 		try{
 			var callback = _getCallback( arguments );
-			
+
 			if( callback ){
 				req.session.regenerate( function(err){
 					if( err ) callback( err );
@@ -241,11 +243,11 @@ module.exports = function( req, res ){
 			}
 		}
 	}
-	
+
 	this.reloadSession = function(){ // arguments : (callback)
 		try{
 			var callback = _getCallback( arguments );
-			
+
 			if( callback ){
 				req.session.reload( function(err){
 					if( err ) callback( err );
@@ -263,11 +265,11 @@ module.exports = function( req, res ){
 			}
 		}
 	}
-	
+
 	this.saveSession = function(){ // arguments : (callback)
 		try{
 			var callback = _getCallback( arguments );
-			
+
 			if( callback ){
 				req.session.save( function(err){
 					if( err ) callback( err );
@@ -285,11 +287,11 @@ module.exports = function( req, res ){
 			}
 		}
 	}
-	
+
 	this.touchSession = function(){ // arguments : (callback)
 		try{
 			var callback = _getCallback( arguments );
-			
+
 			req.session.touch();
 		} catch( err ){
 			if( callback ){
@@ -303,14 +305,14 @@ module.exports = function( req, res ){
 	this.setSessionTimeout = function(){ // arguments : maxAge, (callback)
 		try{
 			var maxAge = undefined;
-			
+
 			var callback = _getCallback( arguments );
 			var argv = _getValueArguments( arguments );
-			
+
 			if( argv ){
 				maxAge = argv[0];
 			}
-			
+
 			if( maxAge ){
 				req.session.cookie.maxAge = maxAge;
 			} else{
@@ -328,14 +330,14 @@ module.exports = function( req, res ){
 	this.setSessionExpire = function(){ // arguments : expireDate, (callback)
 		try{
 			var expireDate = undefined;
-			
+
 			var callback = _getCallback( arguments );
 			var argv = _getValueArguments( arguments );
-			
+
 			if( argv ){
 				expireDate = argv[0];
 			}
-			
+
 			if( expireDate ){
 				req.session.cookie.expireDate = expireDate;
 			} else{
@@ -349,5 +351,5 @@ module.exports = function( req, res ){
 			}
 		}
 	}
-	// Session Functions - End	
+	// Session Functions - End
 }

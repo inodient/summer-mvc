@@ -11,39 +11,39 @@ exports.dispatching = function( req, res ){
     let view = require("path").join( dispatchingSpec.viewPath, dispatchingSpec.view );
 
     var promises = [];
-    
+
     promises.push( getController(dispatchingSpec.controllerJS) );
     promises.push( getConnection() );
-    
+
     Promise.all( promises )
     .then( function(){
-    	
+
     	var argv = arguments[0];
-    	
+
     	var controller = argv[0];
     	var connection = argv[1];
-    	
-		executeController( dispatchingSpec.controlFunction, req, res, controller, connection )
-		.then( makeModelAndView.bind( null, mav, view ) )
-	    .then( function( mav ){
-	    	
-	    	releaseConnection( connection )
-	    	.then( function(){
-	    		resolve( mav );
-	    	} )
-	    	.catch( function(_err){
-	    		reject( _err );
-	    	} );
-	    	
+
+  		executeController( dispatchingSpec.controlFunction, req, res, controller, connection )
+  		.then( makeModelAndView.bind( null, mav, view ) )
+  	    .then( function( mav ){
+
+  	    	releaseConnection( connection )
+  	    	.then( function(){
+  	    		resolve( mav );
+  	    	} )
+  	    	.catch( function(_err){
+  	    		reject( _err );
+  	    	} );
+
 //	    	Promise.resolve( releaseConnection( connection ) );
-			
+
 		} )
 		.catch( function(err){
 			reject( err );
-		} );    	
+		} );
     } )
     .catch( function(err){
-    	reject( err ); 
+    	reject( err );
     } );
   } );
 }
@@ -82,7 +82,7 @@ function getController( controllerJS ){
 		try{
 			let path = require("path");
 			let controller = require( path.join(__runningPath, __controllerPath, controllerJS) );
-			
+
 			resolve( controller );
 		} catch( err ){
 			reject( err );
@@ -122,14 +122,14 @@ function releaseConnection( connection ){
 
 function executeController( controlFunction, req, res, controller, connection ){
 	return Promise.resolve( (controller[ controlFunction ])(req, res, connection) );
-	
+
 //	var execution = controller[ controlFunction ]( req, res );
 //	var promiseExecution = Promise.resolve( execution );
-//	
-//	
+//
+//
 //	if( promiseExecution === execution ){
 //		logger.debug( "PROMISE CONTROLLER BODY" );
-//		
+//
 //		return new Promise( function(resolve, reject){
 //		     ( controller[ controlFunction ] )( req, res )
 //		     .then( function(model){
