@@ -43,7 +43,7 @@
   	},
   	{
   		"name" : "errorHandler",
-  		"enable" : false,
+  		"enable" : true,
   		"toolFiles" : [
   			{
 	  			"folder" : "/tools-submodules",
@@ -53,7 +53,7 @@
   	},
   	{
   		"name" : "connectionHandler",
-  		"enable" : false,
+  		"enable" : true,
   		"toolFiles" : [
   			{
 	  			"folder" : "/tools-properties",
@@ -63,7 +63,7 @@
   	},
   	{
   		"name" : "fileHandler",
-  		"enable" : false,
+  		"enable" : true,
   		"toolFiles" : [
   			{
 	  			"folder" : "/tools-properties",
@@ -73,7 +73,7 @@
   	},
   	{
   		"name" : "mysqlHandler",
-  		"enable" : false,
+  		"enable" : true,
   		"toolFiles" : [
   			{
 	  			"folder" : "/tools-properties",

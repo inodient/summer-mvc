@@ -57,11 +57,6 @@ app.get( "/*", (req, res, next) => {
   console.log( req.headers["accept-language"] );
   console.log( req.path );
 
-//  var submodule = require( __connectionHandlerSubmodule );
-//  logger.debug( submodule.genUuid( req ) );
-//
-//  var connHandler = new connectionHandler( req, res );
-
   // 2. Dispatcher
   contextDispatcher.dispatching( req, res )
   .then( function( mav ){

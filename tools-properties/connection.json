@@ -1,6 +1,6 @@
 {
 	"session-setting" : {
-		"enable-redis-store" : true,
+		"enable-redis-store" : false,
 		"enable-custom-id-generator" : false,
 		"enable-custom-name" : true
 	},
