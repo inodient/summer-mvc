@@ -43,7 +43,7 @@
   	},
   	{
   		"name" : "errorHandler",
-  		"enable" : true,
+  		"enable" : false,
   		"toolFiles" : [
   			{
 	  			"folder" : "/tools-submodules",
@@ -53,7 +53,7 @@
   	},
   	{
   		"name" : "connectionHandler",
-  		"enable" : true,
+  		"enable" : false,
   		"toolFiles" : [
   			{
 	  			"folder" : "/tools-properties",
@@ -63,7 +63,7 @@
   	},
   	{
   		"name" : "fileHandler",
-  		"enable" : true,
+  		"enable" : false,
   		"toolFiles" : [
   			{
 	  			"folder" : "/tools-properties",
@@ -73,11 +73,25 @@
   	},
   	{
   		"name" : "mysqlHandler",
-  		"enable" : true,
+  		"enable" : false,
   		"toolFiles" : [
   			{
 	  			"folder" : "/tools-properties",
 	  			"files" : [ "mysql.json" ]
+  			},
+  			{
+	  			"folder" : "/tools-submodules/db/queries",
+	  			"files" : [ "query.json" ]
+  			}
+  		]
+  	},
+  	{
+  		"name" : "exitHandler",
+  		"enable" : false,
+  		"toolFiles" : [
+  			{
+	  			"folder" : "/tools-submodules",
+	  			"files" : [ "clientExitHandler.js" ]
   			}
   		]
   	}

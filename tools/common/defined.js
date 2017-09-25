@@ -471,6 +471,8 @@ Object.defineProperty(global, "__loggerUsage", {
 					return tools[i].enable;
 				}
 			}
+			
+			return false;
 		} catch(err){
 			throw err;
 		}
@@ -487,6 +489,8 @@ Object.defineProperty(global, "__errorHandlerUsage", {
 					return tools[i].enable;
 				}
 			}
+			
+			return false;
 		} catch(err){
 			throw err;
 		}
@@ -503,6 +507,8 @@ Object.defineProperty(global, "__connectionHandlerUsage", {
 					return tools[i].enable;
 				}
 			}
+			
+			return false;
 		} catch(err){
 			throw err;
 		}
@@ -519,6 +525,8 @@ Object.defineProperty(global, "__fileHandlerUsage", {
 					return tools[i].enable;
 				}
 			}
+			
+			return false;
 		} catch(err){
 			throw err;
 		}
@@ -535,6 +543,26 @@ Object.defineProperty(global, "__mysqlHandlerUsage", {
 					return tools[i].enable;
 				}
 			}
+			
+			return false;
+		} catch(err){
+			throw err;
+		}
+	}
+} );
+
+Object.defineProperty(global, "__exitHandlerUsage", {
+	get : function(){
+		try{
+			var tools = initInfo.tools;
+
+			for( var i=0; i<tools.length; i++ ){
+				if( tools[i].name == "exitHandler" ){
+					return tools[i].enable;
+				}
+			}
+			
+			return false;
 		} catch(err){
 			throw err;
 		}

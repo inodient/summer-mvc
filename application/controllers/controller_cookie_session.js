@@ -14,6 +14,7 @@ exports.control = function( req, res ){
 			
 		 } else if( req.query.sessionKey && req.query.sessionValue ){
 
+//			 connHandler.saveSession();
 			 connHandler.setSession( req.query.sessionKey, req.query.sessionValue );
 			 connHandler.getSession( function(results, err){
 				 if( err ) reject( err );

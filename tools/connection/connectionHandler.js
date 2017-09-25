@@ -182,9 +182,7 @@ module.exports = function( req, res ){
 				key = argv[0];
 				value = argv[1];
 			}
-
-			logger.debug( key, value );
-
+			
 			if( key && value ){
 				req.session[ key ] = value;
 			} else{

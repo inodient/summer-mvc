@@ -32,7 +32,9 @@ process.on( 'uncaughtException', function(){
 
 
 
-
+//***************************************************
+//** Default Exit Handler
+//***************************************************
 function exitHandler(options) {
 	return new Promise( function(resolve, reject){
 

@@ -24,6 +24,8 @@ function parseAnnotation(){
 			.catch( function(err){
 				reject( err );
 			} );
+		} else{
+			resolve( {"message" : false} );
 		}
 	} );
 }
@@ -91,9 +93,11 @@ function setErrorHandler( app ){
 				app.use( errorHandler.defaultLogHandler );
 
 				global.errorHandler;
-			}
-
-			resolve( {"message" : "Set Error Handler"} );
+				
+				resolve( {"message" : "Set Error Handler"} );
+			} else{
+				resolve( {"message" : false} );
+			}			
 		} catch( err ){
 			reject( err );
 		}
@@ -123,9 +127,11 @@ function setConnectionHandler( app ){
 				app.use( session(sessionInfo) );
 
 				global.connectionHandler = require( __connectionHandler );
+				
+				resolve( {"message" : "Set Connection Handler"} );
+			} else{
+				resolve( {"message" : false} );
 			}
-
-			resolve( {"message" : "Set Connection Handler"} );
 		} catch( err ){
 			reject( err );
 		}
@@ -147,9 +153,11 @@ function setFileHandler(){
 		try{
 			if( __fileHandlerUsage ){
 				global.fileHandler = require( __fileHandler );
+				
+				resolve( {"message" : "Set File Handler"} );
+			} else{
+				resolve( {"message" : false} );
 			}
-
-			resolve( {"message" : "Set File Handler"} );
 		} catch( err ){
 			reject( err );
 		}
@@ -177,6 +185,8 @@ function setMysqlHandler(){
 				.catch( function(err){
 					reject( err );
 				} );
+			} else{
+				resolve( {"message" : false} );
 			}
 		} catch( err ){
 			reject( err );
@@ -194,9 +204,13 @@ function setMysqlHandler(){
 function setExitHandler(){
 	return new Promise( function(resolve, reject){
 		try{
-			require( require("path").join( process.cwd(), "tools", "exit", "exitHandler.js") );
-
-			resolve( {"message" : "Set Exit Handler"} );
+			if( __exitHandlerUsage ){
+				require( require("path").join( process.cwd(), "tools", "exit", "exitHandler.js") );
+	
+				resolve( {"message" : "Set Exit Handler"} );
+			} else{
+				resolve( {"message" : false} );
+			}
 		} catch( err ){
 			reject( err );
 		}

@@ -71,7 +71,7 @@ function executeQuery( queryId ){
 			connection = arguments[1];
 		}
 	}
-
+	
 	return new Promise( function(resolve, reject){
 		
 		if( connection ){
@@ -156,3 +156,4 @@ function getQueryString( queryId, params ){
 
 	return "SELECT NOW()";
 }
+

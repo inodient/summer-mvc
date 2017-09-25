@@ -23,7 +23,9 @@ Promise.all( setterPromises )
 	var argv = arguments[0];
 
 	for( var i=0; i<argv.length; i++ ){
-		logger.info( "Initializing : " + argv[i].message );
+		if( argv[i].message ){
+			logger.info( "Initializing : " + argv[i].message );
+		}
 	}
 } )
 .catch( function(err){

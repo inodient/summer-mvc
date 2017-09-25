@@ -10,6 +10,7 @@ module.exports.error = error;
 
 const fs = require( "fs" );
 const path = require( "path" );
+const util = require( "util" );
 const loggerInfo = require( __loggerInfo );
 const colorInfo = require( __colorInfo );
 
@@ -71,11 +72,13 @@ function info(){
 
 	for( var i=0; i<arguments.length; i++ ){
 		if( getMessageType(arguments[i]) == "object" ){
-			var argv = arguments[i];
-			message += JSON.stringify( arguments[i], null, 4 ) + " ";
-			// for( name in argv ){
-			// 	message += argv[name];
-			// }
+			try{
+				message += JSON.stringify( arguments[i], null, 4 ) + " ";
+			} catch( err ){
+				var argv = arguments[i];
+				argv = util.inspect( arguments[i], {showHidden: false, depth: null} );
+				message += argv + " ";
+			}
 		} else{
 			message += arguments[i] + " ";
 		}
@@ -99,7 +102,13 @@ function debug(){
 
 	for( var i=0; i<arguments.length; i++ ){
 		if( getMessageType(arguments[i]) == "object" ){
-			message += JSON.stringify( arguments[i], null, 4 ) + " ";
+			try{
+				message += JSON.stringify( arguments[i], null, 4 ) + " ";
+			} catch( err ){
+				var argv = arguments[i];
+				argv = util.inspect( arguments[i], {showHidden: false, depth: null} );
+				message += argv + " ";
+			}
 		} else{
 			message += arguments[i] + " ";
 		}
@@ -127,10 +136,14 @@ function error(){
 		if( arguments[i] instanceof Error ){
 			message += arguments[i].message + "\n" + arguments[i].stack;
 		} else{
-			// message = String( arguments[i] );
-
 			if( getMessageType(arguments[i]) == "object" ){
-				message += JSON.stringify( arguments[i], null, 4 ) + " ";
+				try{
+					message += JSON.stringify( arguments[i], null, 4 ) + " ";
+				} catch( err ){
+					var argv = arguments[i];
+					argv = util.inspect( arguments[i], {showHidden: false, depth: null} );
+					message += argv + " ";
+				}
 			} else{
 				message += arguments[i] + " ";
 			}
