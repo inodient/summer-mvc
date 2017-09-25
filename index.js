@@ -21,21 +21,11 @@ initializer.initStructure();
 if( __loggerUsage ){
 	global.logger = require( __logger );
 	logger.initLogger();
+} else{
+	global.logger = require( __skippedLogger );
 }
 
 
-
-
-//***************************************************
-//*** Set Global Modules
-//***************************************************
-//global.dbHandler = require( "./common/dbHandler.js" ).dbHandler;
-//global.connectionHandler = require( "./common/connection.js" ).connection;
-//global.fileHandler = require( "./common/fileHandler.js" ).fileHandler;
-//global.Promise = require( "bluebird" );
-
-//global.mysql = require( "mysql" );
-//global.pool = mysql.createPool( require(require("path").join(process.cwd(), "properties", "db.json") ) );
 
 
 

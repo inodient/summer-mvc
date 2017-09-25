@@ -296,6 +296,16 @@ Object.defineProperty(global, "__logger", {
 	}
 } );
 
+Object.defineProperty(global, "__skippedLogger", {
+	get : function(){
+		try{
+			return path.join( __dirname, "../../", architecture.tools.log, "skippedLogger.js" );
+		} catch(err){
+			throw err;
+		}
+	}
+} );
+
 Object.defineProperty(global, "__loggerInfo", {
 	get : function(){
 		if( fs.existsSync(path.join( process.cwd(), architecture[ "tools-properties" ], "logger.json") ) ){

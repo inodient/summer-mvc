@@ -45,7 +45,7 @@ const contextDispatcher = require( __contextDispatcher );
 app.set('port', (process.env.PORT || __defaultPort)); // 3000 was my original port
 
 app.listen( app.get('port'), () => {
-  console.log( "Listen Port : " + app.get('port') );
+  logger.info( "Listen Port : " + app.get('port') );
 } );
 
 
@@ -54,8 +54,8 @@ app.listen( app.get('port'), () => {
 
 app.get( "/*", (req, res, next) => {
 
-  console.log( req.headers["accept-language"] );
-  console.log( req.path );
+  logger.info( "ACCEPTED-LANGUAGE :", req.headers["accept-language"] );
+  logger.info( "REQUEST PATH :", req.path );
 
   // 2. Dispatcher
   contextDispatcher.dispatching( req, res )
@@ -97,8 +97,8 @@ app.get( "/*", (req, res, next) => {
 
 app.post( "/*", (req, res, next) => {
 
-  console.log( req.headers["accept-language"] );
-  console.log( req.path );
+  logger.info( "ACCEPTED-LANGUAGE :", req.headers["accept-language"] );
+  logger.info( "REQUEST PATH :", req.path );
 
   // 2. Dispatcher
   contextDispatcher.dispatching( req, res )

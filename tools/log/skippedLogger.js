@@ -69,3 +69,10 @@ function error(){
 
 	console.error( message );
 }
+
+
+
+
+function getMessageType( message ){
+	return typeof message;
+}
