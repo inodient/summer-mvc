@@ -44,7 +44,6 @@ function setModel( req, res, next ){
       model.queryString = JSON.stringify( req.query, null, 4 );
       model.params = JSON.stringify( req.params, null, 4 );
       model.controllerName = require( "path" ).basename( __filename );
-      // model.controllerName = require( "path" ).basename( asdfasdfasdf );
       model.controlFunction = "control";
       model.dbRes = "-";
       model.ajaxResult = "-";

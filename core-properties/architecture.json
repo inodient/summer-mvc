@@ -16,7 +16,8 @@
 		"db" : "/tools/db",
 		"error" : "/tools/error",
 		"file" : "/tools/file",
-		"log" : "/tools/log"
+		"log" : "/tools/log",
+		"exit" : "/tools/exit"
 	},
 	"tools-properties" : "/tools-properties",
 	"tools-submodules" : "/tools-submodules",
