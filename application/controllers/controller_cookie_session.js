@@ -9,17 +9,18 @@ exports.control = function( req, res ){
 //			} );
 //			connHandler.setCookie( req.query.cookieKey, req.query.cookieValue );
 //			logger.debug( connHandler.getCookie() );
-//			
+//
 //			connHandler.clearCookie( "1" );
-			
+
 		 } else if( req.query.sessionKey && req.query.sessionValue ){
 
 //			 connHandler.saveSession();
 			 connHandler.setSession( req.query.sessionKey, req.query.sessionValue );
 			 connHandler.getSession( function(results, err){
+				 logger.debug( results );
 				 if( err ) reject( err );
 			 });
-			 
+
 			 connHandler.getSession( "1515", function(results, err){
 				 if( results ){
 					 //connHandler.setSessionTimeout( 10000 );

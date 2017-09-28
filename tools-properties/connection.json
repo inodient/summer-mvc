@@ -1,13 +1,13 @@
 {
 	"session-setting" : {
 		"enable-redis-store" : false,
-		"enable-custom-id-generator" : false,
+		"enable-custom-id-generator" : true,
 		"enable-custom-name" : true
 	},
 	"session-info" : {
 		"secret" : "a;slkjf;alkjsd;foiqnw;jbnf;kajbsd;kfjasdh",
-		"resave" : false,
-		"saveUninitialized" : false,
+		"resave" : true,
+		"saveUninitialized" : true,
 		"cookie" : {
 			"httpOnly" : true,
 			"maxAge" : "1000 * 60 * 60",
