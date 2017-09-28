@@ -91,7 +91,7 @@
   	},
   	{
   		"name" : "exitHandler",
-  		"enable" : false,
+  		"enable" : true,
   		"toolFiles" : [
   			{
 	  			"folder" : "/tools-submodules",

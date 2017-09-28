@@ -93,11 +93,11 @@ function setErrorHandler( app ){
 				app.use( errorHandler.defaultLogHandler );
 
 				global.errorHandler;
-				
+
 				resolve( {"message" : "Set Error Handler"} );
 			} else{
 				resolve( {"message" : false} );
-			}			
+			}
 		} catch( err ){
 			reject( err );
 		}
@@ -127,7 +127,7 @@ function setConnectionHandler( app ){
 				app.use( session(sessionInfo) );
 
 				global.connectionHandler = require( __connectionHandler );
-				
+
 				resolve( {"message" : "Set Connection Handler"} );
 			} else{
 				resolve( {"message" : false} );
@@ -153,7 +153,7 @@ function setFileHandler(){
 		try{
 			if( __fileHandlerUsage ){
 				global.fileHandler = require( __fileHandler );
-				
+
 				resolve( {"message" : "Set File Handler"} );
 			} else{
 				resolve( {"message" : false} );
@@ -205,8 +205,8 @@ function setExitHandler(){
 	return new Promise( function(resolve, reject){
 		try{
 			if( __exitHandlerUsage ){
-				require( require("path").join( process.cwd(), "tools", "exit", "exitHandler.js") );
-	
+				require( __exitHandler );
+
 				resolve( {"message" : "Set Exit Handler"} );
 			} else{
 				resolve( {"message" : false} );
