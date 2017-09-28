@@ -15,6 +15,10 @@ exports.buildStructure = function( folder, fileName ){
 		    console.log( "[" + fileName + "] disappears. Copy File." );
 		    this.copyFile( src, path.join( destDir, fileName) );
 		  }
+  } else{
+    let src = path.join( __staticPath, folder );
+
+    this.makeHierarchy( folder );
   }
 }
 

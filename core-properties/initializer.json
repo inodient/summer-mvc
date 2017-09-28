@@ -38,6 +38,10 @@
   			{
 	  			"folder" : "/tools-properties",
 	  			"files" : [ "logger.json" ]
+  			},
+        {
+	  			"folder" : "/__logs",
+	  			"files" : []
   			}
   		]
   	},
