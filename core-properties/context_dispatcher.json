@@ -22,7 +22,7 @@
             "controllerJS": "controller_ajax.js",
             "controlFunction": "control",
             "viewPath": "",
-            "view": "ajax.ejs"
+            "view": "index.ejs"
         },
         {
             "id": "setCookie",

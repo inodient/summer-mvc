@@ -47,6 +47,7 @@ function setModel( req, res, next ){
       model.controlFunction = "control";
       model.dbRes = "-";
       model.ajaxResult = "-";
+      model.message = "Default summer-mvc Test Request"
 
       resolve( model );
     } catch( err ){

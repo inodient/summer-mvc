@@ -1,9 +1,11 @@
 exports.control = function( req, res ){
 
-  return setModel( req, res );
+  console.log( req.body.postMessage );
+	
+  return setModel( req, res, req.body.postMessage );
 }
 
-function setModel( req, res ){
+function setModel( req, res, message ){
   var model = {};
 
   try{
@@ -16,6 +18,7 @@ function setModel( req, res ){
     model.controlFunction = "control";
     model.dbRes = "-";
     model.ajaxResult = "-";
+    model.message = message;
 
     return model;
   } catch( err ){
