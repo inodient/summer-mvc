@@ -3,46 +3,53 @@ exports.control_get = function( req, res ){
 }
 
 exports.control = function( req, res ){
-  fileHandler.uploadFile( req, "upload", "2017-06-05" )
-  .then( function(results){
-	  logger.info( results.originalFileName );
-  })
-  .catch( function(err){
-	  throw err;
-  });
+  return new Promise( function(resolve, reject){
 
-  return {};
+    fileHandler.uploadFile( req, "test-upload-folder" )
+    .then( function(results){
+      var message = "** Uploaded File(s) **\n" + results.originalFileName;
+      logger.debug( message );
+      resolve( setModel(req, res, message) );
+    } )
+    .catch( function(err){
+  	  reject( err );
+    } );
+
+  } );
 }
 
 exports.control_download = function( req, res ){
 
-  ////////////////////////////////////////////////
-  // req getFileName
-  // req getSavedPath getSavedFileName
-  ////////////////////////////////////////////////
+  return new Promise( function(resolve, reject){
 
-  let savedPath = "upload";
-  //let savedFileName = "BpBouHaMCKy0vR2CWjuF0lAcBu1qtgs6IB1miSX24uombiAt5r45xm6OgYu2NhbY_(AD) 계정관리 DB의 SQL 계정 및 검증_170307.xlsx";
-  let savedFileName = 'favicon2.ico';
+    let downloadFileName = req.query.downloadFileName;
+    let savedPath = "upload";
+    let savedFileName = 'test_image.png';
 
-  let model = fileHandler.downloadFile( res, savedPath, savedFileName, "asdf.png" );
-
-  return model;
+    fileHandler.downloadFile( res, savedPath, savedFileName, downloadFileName + ".png" )
+    .then( function(results){
+      var message = "** Downloaded File(s) **\n" + JSON.stringify( results, null, 4 );
+      logger.debug( message );
+      resolve( setModel(req, res, message) );
+    } )
+    .catch( function(err){
+      reject( err );
+    } )
+  } );
 }
 
-function setModel( req, res ){
+function setModel( req, res, message ){
+  var queries = require( __mysqlQueries );
   var model = {};
 
   try{
     model.method = req.method;
     model.path = req._parsedUrl.pathname;;
-    model.postMessage = "";
     model.queryString = JSON.stringify( req.query, null, 4 );
     model.params = JSON.stringify( req.params, null, 4 );
-    model.controllerName = require( "path" ).basename( __filename );
-    model.controlFunction = "control";
-    model.dbRes = "-";
-    model.ajaxResult = "-";
+
+    model.message = message;
+    model.queries = queries;
 
     return model;
   } catch( err ){

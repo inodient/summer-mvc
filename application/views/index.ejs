@@ -4,53 +4,56 @@
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	  
+
 	  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-	  
+
 	  <meta charset="utf-8">
-	  
+
 	  <style>
-	  	
+
 	  	.jumbotron{
 	  		padding: 25px 25px;
 	  		background-color: black;
 	  		color: lightgray;
 	  	}
-	  	
+
 	  	.test_table{
 	  		margin-bottom: 0px;
 	  	}
-	  	
+
 	  	.test_table tbody tr td{
 	  		border: 0px;
 	  	}
-	  	
+
 	  	.input-group{
 	  		width: 100%;
 	  	}
-	  	
+
 	  	.query_select{
 	  		width: 100%;
 	  	}
-	  	
+
 	  	.site-footer-container {
 	  		padding: 100px;
 	  	}
-	  
+
 	  </style>
-	  
+
 	  <script type="text/javascript">
-	  
+
 	  	$(document).ready( function(){
 	  		$("#ajax_request").on( "click", function(){
 	  		  var queryText = $("#ajaxMessage").val();
-	
-	          $.get( "/ajaxRequest?text=" + queryText, function(data, status){
-	            $("#message").text( data.text.toString() );
-	          } );
+
+          $.get( "/ajaxRequest?text=" + queryText, function(data, status){
+            $("#message").text( data.text.toString() );
+          } );
 	      } );
-	      
-	      
+
+				$("#queryId").on( "change", function(){
+					$("#selectedQueryId").val( this.value );
+				} );
+
 	      $(function() {
 		  // We can attach the `fileselect` event to all file inputs on the page
 		  $(document).on('change', ':file', function() {
@@ -59,29 +62,30 @@
 		        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
 		    input.trigger('fileselect', [numFiles, label]);
 		  });
-		
+
 		  // We can watch for our custom `fileselect` event like this
 		  $(document).ready( function() {
 		      $(':file').on('fileselect', function(event, numFiles, label) {
-		
+
 		          var input = $(this).parents('.input-group').find(':text'),
 		              log = numFiles > 1 ? numFiles + ' files selected' : label;
-				
+
 		          if( input.length ) {
 		              input.val(log);
+									$("#uploadForm").submit();
 		          } else {
 		              if( log ) alert(log);
 		          }
-		
+
 		      });
 		  });
-		  
+
 		});
-	      
-	      
+
+
 	  	} );
 	  </script>
-	  
+
 	  <title>Welcome summer-mvc</title>
 </head>
 <body>
@@ -92,7 +96,7 @@
 	<div class="container-fluid" style="font-size:15px">
 		<div class="row">
 			<div class="col-lg-1 col-md-1 col-sm-1"></div>
-			
+
 			<div class="col-lg-5 col-md-5 col-sm-5">
 				<h3>Test</h3>
 				<hr>
@@ -118,7 +122,7 @@
 										<div class="input-group">
 											<input type="input" class="form-control" id="ajaxMessage" placeholder="Ajax Message" required />
 											<div class="input-group-btn">
-												<button class="btn btn-default" id="ajax_request">Send</button>
+												<button type="submit" class="btn btn-default" id="ajax_request">Send</button>
 											</div>
 										</div>
 								</td>
@@ -133,10 +137,10 @@
 							<tr>
 								<td class="col-lg-3 col-md-3 col-sm-3">Cookie</td>
 								<td>
-									<form class="form-inline" action="/" method="get">
+									<form class="form-inline" action="/setCookie" method="get">
 										<div class="input-group">
-											<input style="width:50%" class="form-control" placeholder="key" required />
-											<input style="width:50%" class="form-control" placeholder="value" required />
+											<input style="width:50%" class="form-control" name="cookieKey" placeholder="key" required />
+											<input style="width:50%" class="form-control" name="cookieValue" placeholder="value" required />
 											<div class="input-group-btn">
 												<button class="btn btn-default">Set</button>
 											</div>
@@ -147,10 +151,10 @@
 							<tr>
 								<td class="col-lg-3 col-md-3 col-sm-3">Session</td>
 								<td>
-									<form class="form-inline">
+									<form class="form-inline" action="/setSession" method="get">
 										<div class="input-group">
-											<input style="width:50%" class="form-control" placeholder="key" required />
-											<input style="width:50%" class="form-control" placeholder="value" required />
+											<input style="width:50%" class="form-control" name="sessionKey" placeholder="key" required />
+											<input style="width:50%" class="form-control" name="sessionValue" placeholder="value" required />
 											<div class="input-group-btn">
 												<button class="btn btn-default">Set</button>
 											</div>
@@ -168,14 +172,13 @@
 							<tr>
 								<td class="col-lg-3 col-md-3 col-sm-3">DB</td>
 								<td>
-									<form class="form-inline">
-										<select class="form-control query_select">
-											<option>1</option>
-											<option>2</option>
-											<option>3</option>
-											<option>4</option>
-											<option>5</option>
+									<form class="form-inline" action="/getData" method="get">
+										<select class="form-control query_select" id="queryId">
+											<% for( var i=0; i<queries.length; i++ ){ %>
+												<option value=<%= queries[i].id %> ><%= queries[i].id %></option>
+											<% } %>
 										</select>
+										<input id="selectedQueryId" name="selectedQueryId" type="text" value=<%= queries[0].id %> hidden />
 										<button class="btn btn-default">Run</button>
 									</form>
 								</td>
@@ -190,27 +193,26 @@
 							<tr>
 								<td class="col-lg-3 col-md-3 col-sm-3">File Upload</td>
 								<td>
-									<form class="form-inline">
+									<form id="uploadForm" class="form-inline" action="/upload" method="post" enctype="multipart/form-data">
 										<div class="input-group">
 											<input type="text" class="form-control" readonly>
-							                <label class="input-group-btn">
-							                    <span class="btn btn-default">
-							                        Submit <input type="file" style="display: none;" multiple>
-							                    </span>
-							                </label>
-							            </div>
-							        </form>
-
+			                <label class="input-group-btn">
+			                    <span class="btn btn-default">
+			                        Submit <input type="file" style="display: none;" name="uploadFileForm" multiple>
+			                    </span>
+			                </label>
+			            	</div>
+			        		</form>
 								</td>
 							</tr>
 							<tr>
 								<td class="col-lg-3 col-md-3 col-sm-3">File Download</td>
 								<td>
-									<form class="form-inline">
+									<form class="form-inline" action="/download" method="get">
 										<div class="input-group">
-											<input class="form-control" />
+											<input class="form-control" name="downloadFileName" placeholder="file name" required/>
 											<div class="input-group-btn">
-												<button class="btn btn-default">Download</button>
+												<button type="submit" class="btn btn-default">Download</button>
 											</div>
 										</div>
 									</form>
@@ -220,9 +222,9 @@
 					</table>
 				</div>
 			</div>
-			
-			
-			
+
+
+
 			<div class="col-lg-5 col-md-5 col-sm-5">
 				<h3>Test Result</h3>
 				<hr>
@@ -254,7 +256,7 @@
 			<div class="col-lg-1 col-md-1 col-sm-1"></div>
 		</div>
 	</div>
-	
+
 	<footer class="container-fluid site-footer-container">
 	    <div class="col-sm-1"></div>
 	    <div class="col-sm-10 text-center">
@@ -270,42 +272,3 @@
 	    <div class="col-sm-1"></div>
 	</fotter>
 </body>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -426,7 +426,7 @@ Object.defineProperty(global, "__mysqlHandlerInfo", {
 	}
 } );
 
-Object.defineProperty(global, "__mysqQueries", {
+Object.defineProperty(global, "__mysqlQueries", {
 	get : function(){
 		if( fs.existsSync(path.join( process.cwd(), architecture[ "tools-submodules" ], "db", "queries", "query.json" ) ) ){
 			return path.join( process.cwd(), architecture[ "tools-submodules" ], "db", "queries", "query.json" );
@@ -481,7 +481,7 @@ Object.defineProperty(global, "__loggerUsage", {
 					return tools[i].enable;
 				}
 			}
-			
+
 			return false;
 		} catch(err){
 			throw err;
@@ -499,7 +499,7 @@ Object.defineProperty(global, "__errorHandlerUsage", {
 					return tools[i].enable;
 				}
 			}
-			
+
 			return false;
 		} catch(err){
 			throw err;
@@ -517,7 +517,7 @@ Object.defineProperty(global, "__connectionHandlerUsage", {
 					return tools[i].enable;
 				}
 			}
-			
+
 			return false;
 		} catch(err){
 			throw err;
@@ -535,7 +535,7 @@ Object.defineProperty(global, "__fileHandlerUsage", {
 					return tools[i].enable;
 				}
 			}
-			
+
 			return false;
 		} catch(err){
 			throw err;
@@ -553,7 +553,7 @@ Object.defineProperty(global, "__mysqlHandlerUsage", {
 					return tools[i].enable;
 				}
 			}
-			
+
 			return false;
 		} catch(err){
 			throw err;
@@ -571,7 +571,7 @@ Object.defineProperty(global, "__exitHandlerUsage", {
 					return tools[i].enable;
 				}
 			}
-			
+
 			return false;
 		} catch(err){
 			throw err;

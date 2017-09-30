@@ -9,14 +9,6 @@
             "view": "index.ejs"
         },
         {
-            "id": "getdb",
-            "path": "/getdb",
-            "controllerJS": "controller_db.js",
-            "controlFunction": "control",
-            "viewPath": "",
-            "view": "index.ejs"
-        },
-        {
             "id": "ajaxRequest",
             "path": "/ajaxRequest",
             "controllerJS": "controller_ajax.js",
@@ -41,20 +33,12 @@
             "view": "index.ejs"
         },
         {
-            "id": "getDB",
-            "path": "/getdb",
+            "id": "getData",
+            "path": "/getData",
             "controllerJS": "controller_db.js",
             "controlFunction": "control",
             "viewPath": "",
             "view": "index.ejs"
-        },
-        {
-            "id": "file",
-            "path": "/file",
-            "controllerJS": "controller_file.js",
-            "controlFunction": "control_get",
-            "viewPath": "",
-            "view": "upload.ejs"
         },
         {
             "id": "download",
@@ -62,7 +46,7 @@
             "controllerJS": "controller_file.js",
             "controlFunction": "control_download",
             "viewPath": "",
-            "view": "upload.ejs"
+            "view": "index.ejs"
         },
         {
             "id": "exid",
@@ -96,7 +80,15 @@
             "controllerJS": "controller_file.js",
             "controlFunction": "control",
             "viewPath": "",
-            "view": "upload.ejs"
+            "view": "index.ejs"
+        },
+        {
+            "id": "ajaxRequest",
+            "path": "/ajaxRequest2",
+            "controllerJS": "controller_ajax.js",
+            "controlFunction": "control",
+            "viewPath": "",
+            "view": "index.ejs"
         }
     ]
 }

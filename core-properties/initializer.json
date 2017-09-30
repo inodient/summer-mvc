@@ -77,7 +77,7 @@
   	},
   	{
   		"name" : "mysqlHandler",
-  		"enable" : false,
+  		"enable" : true,
   		"toolFiles" : [
   			{
 	  			"folder" : "/tools-properties",

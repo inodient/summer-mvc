@@ -9,7 +9,7 @@ module.exports.releaseConnection = releaseConnection;
 
 
 const mysql = require( "mysql" );
-const queries = require( __mysqQueries );
+const queries = require( __mysqlQueries );
 
 
 
@@ -71,9 +71,9 @@ function executeQuery( queryId ){
 			connection = arguments[1];
 		}
 	}
-	
+
 	return new Promise( function(resolve, reject){
-		
+
 		if( connection ){
 			executeTransaction( queryId, params, connection )
 			.then( function(queryResults){
@@ -156,4 +156,3 @@ function getQueryString( queryId, params ){
 
 	return "SELECT NOW()";
 }
-

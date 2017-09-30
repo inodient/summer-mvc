@@ -31,6 +31,7 @@ function uploadFile( req ){
       try{
         var busboy = new Busboy({ headers: req.headers });
         var resultObject = {};
+        resultObject.originalFileName = "";
 
         busboy.on( "file", function(fieldname, file, filename, encoding, mimetype){
 
@@ -38,7 +39,7 @@ function uploadFile( req ){
             resultObject.destDir = destDir;
             resultObject.fieldname = fieldname;
             resultObject.file = file;
-            resultObject.originalFileName = filename;
+            resultObject.originalFileName += filename + "\n";
             resultObject.savedFileName = submodule.getSavedFileName() + "_" + filename;
             resultObject.encoding = encoding;
             resultObject.mimetype = mimetype;
@@ -120,7 +121,7 @@ function _getUploadDestination( arguments ){
   for( var i=0; i<defaultPath.length; i++ ){
     if( defaultPath[i] != "" ){
       destDir = path.join( destDir, defaultPath[i] );
-      logger.degug( destDir );
+      logger.debug( destDir );
       common.makeFolder( destDir );
     }
   }

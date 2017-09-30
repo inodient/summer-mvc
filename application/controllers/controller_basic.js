@@ -5,9 +5,10 @@
 * @controller-viewPath("")
 * @controller-view("index.ejs")
 */
-exports.control = function( req, res, next ){
+exports.control = function( req, res ){
   return new Promise( function(resolve, reject){
-    setModel( req, res, next )
+
+    setModel( req, res )
     .then( function(model){
       resolve( model );
     } )
@@ -25,28 +26,26 @@ exports.control = function( req, res, next ){
 * @controller-viewPath("")
 * @controller-view("index.ejs")
 */
-exports.control_ = function( req, res, next ){
+exports.control_ = function( req, res ){
   return new Promise( function(resolve, reject){
     resolve();
   } );
 }
 
 
-function setModel( req, res, next ){
+function setModel( req, res ){
   return new Promise( function(resolve, reject){
 
+    var queries = require( __mysqlQueries );
     var model = {};
 
     try{
       model.method = req.method;
       model.path = req._parsedUrl.pathname;;
-      model.postMessage = "";
       model.queryString = JSON.stringify( req.query, null, 4 );
       model.params = JSON.stringify( req.params, null, 4 );
-      model.controllerName = require( "path" ).basename( __filename );
-      model.controlFunction = "control";
-      model.dbRes = "-";
-      model.ajaxResult = "-";
+
+      model.queries = queries;
       model.message = "Default summer-mvc Test Request"
 
       resolve( model );

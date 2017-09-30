@@ -1,21 +1,38 @@
 exports.control = function( req, res, connection ){
 
 	return new Promise( function(resolve, reject){
-		
+
 		var params = [];
-		
-		mysqlHandler.executeQuery( "getMySqlVersion", params, connection )
+		var queryId = req.query.selectedQueryId;
+
+		if( queryId === "getAccessLog" ){
+			params.push( "2017-09-01", "2017-09-30" );
+		} else if( queryId === "insertAccessLog" ){
+			params.push( (new Date()).toISOString() );
+			params.push( "inodient" );
+			params.push( req._parsedUrl.pathname );
+			params.push( JSON.stringify( req.query, null, 4 ) );
+			params.push( JSON.stringify( req.params, null, 4 ) );
+			params.push( req.method );
+		} else if( queryId === "updateAccessLog" ){
+			params.push( "inodient" );
+			params.push( "your_user_id" );
+		} else if( queryId === "deleteAccessLog" ){
+			params.push( "%getData%" );
+		}
+
+		mysqlHandler.executeQuery( queryId, params, connection )
 		.then( function( queryResults ){
-			console.log( queryResults.results );
-			resolve( setModel( req, res, {}, null ) );
+			logger.debug( queryResults.results );
+			resolve( setModel( req, res, JSON.stringify(queryResults.results, null, 4), null ) );
 		} )
 		.catch( function(err){
 			reject( err );
 		} );
 
 	} );
-	
-	
+
+
 //	mysqlHandler.getConnection( pool )
 //	.then( function(connection){
 //		mysqlHandler.executeQuery( "getMysqlVersion", connection )
@@ -59,18 +76,18 @@ exports.control = function( req, res, connection ){
 }
 
 function setModel( req, res, results, fields ){
+
+	var queries = require( __mysqlQueries );
 	var model = {};
 
 	try{
 		model.method = req.method;
 		model.path = req._parsedUrl.pathname;
-		model.postMessage = "";
 		model.queryString = JSON.stringify( req.query, null, 4 );
 		model.params = JSON.stringify( req.params, null, 4 );
-		model.controllerName = require( "path" ).basename( __filename );
-		model.controlFunction = "control";
-		model.dbRes = JSON.stringify( results[0], null, 4 );
-		model.ajaxResult = "-";
+
+		model.message = results;
+		model.queries = queries;
 
 		return model;
 	} catch( err ){
