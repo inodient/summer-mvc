@@ -12,7 +12,7 @@ exports.buildStructure = function( folder, fileName ){
 	  try{
 		    fs.accessSync( path.join( destDir, fileName ) );
 		  } catch( err ){
-		    console.log( "[" + fileName + "] disappears. Copy File." );
+        console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[" + fileName + "] disappears. Copy File." );
 		    this.copyFile( src, path.join( destDir, fileName) );
 		  }
   } else{
@@ -45,7 +45,7 @@ exports.makeFolder = function( pathStr ){
   try{
     fs.accessSync( pathStr );
   } catch( err ) {
-    console.log( "[fileHandler.js] [" + pathStr + "] disappears. Create Directory." );
+    console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[" + pathStr + "] disappears. Create Directory." );
     fs.mkdirSync( pathStr );
   }
 }

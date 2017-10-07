@@ -62,7 +62,11 @@
   			{
 	  			"folder" : "/tools-properties",
 	  			"files" : [ "connection.json" ]
-  			}
+  			},
+        {
+          "folder" : "/tools-submodules",
+          "files" : [ "connectionHandlerSubmodules.js" ]
+        }
   		]
   	},
   	{
@@ -72,7 +76,11 @@
   			{
 	  			"folder" : "/tools-properties",
 	  			"files" : [ "file.json" ]
-  			}
+  			},
+        {
+          "folder" : "/tools-submodules",
+          "files" : [ "fileSubmodules.js" ]
+        }
   		]
   	},
   	{

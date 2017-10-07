@@ -96,12 +96,16 @@ module.exports = function( req, res ){
 
 			if( key && value ){
 				res.cookie( key, value );
+
+				if( callback ){
+					callback( {key:key, value:value}, null );
+				}
 			} else{
 				throw "IllegalArgumentError : not enough arguments";
 			}
 		} catch( err ){
 			if( callback ){
-				callback( err );
+				callback( null, err );
 			} else{
 				throw err;
 			}
@@ -182,7 +186,7 @@ module.exports = function( req, res ){
 				key = argv[0];
 				value = argv[1];
 			}
-			
+
 			if( key && value ){
 				req.session[ key ] = value;
 			} else{

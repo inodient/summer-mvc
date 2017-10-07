@@ -4,14 +4,18 @@ exports.control = function( req, res ){
 		var message = "";
 		var connHandler = new connectionHandler( req, res );
 
-
 		if( req.query.cookieKey && req.query.cookieValue ){
-			connHandler.setCookie( req.query.cookieKey, req.query.cookieValue );
-			connHandler.getCookie( function( results, err ){
+			connHandler.setCookie( req.query.cookieKey, req.query.cookieValue, function( results, err ){
 				if( err ) reject( err );
 				logger.debug( results );
-				message = JSON.stringify( results, null, 4 );
+				// message = JSON.stringify( results, null, 4 );
+				message = "Cookie : " + req.query.cookieKey + ", " + req.query.cookieValue;
 			} );
+			// connHandler.getCookie( function( results, err ){
+			// 	if( err ) reject( err );
+			// 	logger.debug( results );
+			// 	message = JSON.stringify( results, null, 4 );
+			// } );
 
 		 } else if( req.query.sessionKey && req.query.sessionValue ){
 			 connHandler.setSession( req.query.sessionKey, req.query.sessionValue );
@@ -22,8 +26,7 @@ exports.control = function( req, res ){
 			 });
 		 }
 
-		resolve( setModel(req, res, message) );
-
+		 resolve( setModel(req, res, message) );
 	} );
 }
 
