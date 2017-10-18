@@ -12,7 +12,7 @@ const path = require( "path" );
 
 function parseComponent(){
   return new Promise( function(resolve, reject){
-	  
+
 	  parser( "controller" )
 	  .then( function(res){
 		  resolve( res );
@@ -20,7 +20,7 @@ function parseComponent(){
 	  .catch( function(err){
 		  reject( err );
 	  } );
-	  
+
 //    var promises = [];
 //
 //    promises.push( parser("controller") );
@@ -64,14 +64,14 @@ function parser( type ){
           var subArgv = arguments[0];
 
           var writePromises = [];
-          
+
           for( var k=0; k<subArgv.length; k++ ){
             if( subArgv[k].length > 0 ){
-            	
+
               writePromises.push( writeDispatcher( subArgv[k] ) );
             }
           }
-          
+
           Promise.all( writePromises )
           .then( function(){
         	  resolve( "Success");
@@ -363,65 +363,84 @@ function writeDispatcher( annotations ){
 
     try{
       var dispatchingInfo = require( __contextDispatchingInfo );
-      
+
       var dispatchingInfoGet = [];
       var dispatchingInfoPost = [];
-      
+
       if( dispatchingInfo ){
     	  dispatchingInfoGet = dispatchingInfo[ "GET" ];
-          dispatchingInfoPost = dispatchingInfo[ "POST" ];
+        dispatchingInfoPost = dispatchingInfo[ "POST" ];
       }
-      
+
       for( var i=0; i<annotations.length; i++ ){
-    	  
-    	if( (annotations[i].method).toUpperCase() == "GET" ){
-    		var j = 0;
-    		for( j=0; j<dispatchingInfoGet.length; j++ ){
-    			if( dispatchingInfoGet[j].id == annotations[i].id ){
-    				break;
-    			}
-    		}
-    		
-    		if( j == dispatchingInfoGet.length ){
-    			var tempObject = {};
-        		tempObject.id = annotations[i].id;
-        		tempObject.path = annotations[i].path;
-        		tempObject.controllerJS = annotations[i].controllerJS;
-        		tempObject.controlFunction = annotations[i].controlFunction;
-        		tempObject.viewPath = annotations[i].viewPath;
-        		tempObject.view = annotations[i].view;
-        	
-        		dispatchingInfoGet.push( tempObject );
-    		}
-    	} else if( (annotations[i].method).toUpperCase() == "POST" ){
-    		var j = 0;
-    		for( j=0; j<dispatchingInfoGet.length; j++ ){
-    			if( dispatchingInfoGet[j].id == annotations[i].id ){
-    				break;
-    			}
-    		}
-    		
-    		if( j == dispatchingInfoGet.length ){
-    			var tempObject = {};
-        		tempObject.id = annotations[i].id;
-        		tempObject.path = annotations[i].path;
-        		tempObject.controllerJS = annotations[i].controllerJS;
-        		tempObject.controlFunction = annotations[i].controlFunction;
-        		tempObject.viewPath = annotations[i].viewPath;
-        		tempObject.view = annotations[i].view;
-        		
-        		dispatchingInfoPost.push( tempObject );
-    		}
-    	}
+
+      	if( (annotations[i].method).toUpperCase() == "GET" ){
+      		var j = 0;
+      		for( j=0; j<dispatchingInfoGet.length; j++ ){
+      			if( dispatchingInfoGet[j] && dispatchingInfoGet[j].id == annotations[i].id ){
+              delete dispatchingInfoGet[j];
+      				// break;
+      			}
+      		}
+
+      		if( j == dispatchingInfoGet.length ){
+      			var tempObject = {};
+          		tempObject.id = annotations[i].id;
+          		tempObject.path = annotations[i].path;
+          		tempObject.controllerJS = annotations[i].controllerJS;
+          		tempObject.controlFunction = annotations[i].controlFunction;
+          		tempObject.viewPath = annotations[i].viewPath;
+          		tempObject.view = annotations[i].view;
+
+          		dispatchingInfoGet.push( tempObject );
+      		}
+      	} else if( (annotations[i].method).toUpperCase() == "POST" ){
+      		var j = 0;
+      		for( j=0; j<dispatchingInfoPost.length; j++ ){
+      			if( dispatchingInfoPost[j] && dispatchingInfoPost[j].id == annotations[i].id ){
+              delete dispatchingInfoPost[j];
+              // break;
+      			}
+      		}
+
+      		if( j == dispatchingInfoPost.length ){
+      			var tempObject = {};
+          		tempObject.id = annotations[i].id;
+          		tempObject.path = annotations[i].path;
+          		tempObject.controllerJS = annotations[i].controllerJS;
+          		tempObject.controlFunction = annotations[i].controlFunction;
+          		tempObject.viewPath = annotations[i].viewPath;
+          		tempObject.view = annotations[i].view;
+
+          		dispatchingInfoPost.push( tempObject );
+      		}
+      	}
       }
-      
-      dispatchingInfo = { "GET" : dispatchingInfoGet, "POST" : dispatchingInfoPost };
-      
+
+      var _dispatchingInfoGet = [];
+      var _dispatchingInfoPost = [];
+
+      var index = 0;
+      for( var i=0; i<dispatchingInfoGet.length; i++ ){
+        if( dispatchingInfoGet[i] ){
+          _dispatchingInfoGet[index++] = dispatchingInfoGet[i];
+        }
+      }
+
+      index = 0;
+      for( var i=0; i<dispatchingInfoPost.length; i++ ){
+        if( dispatchingInfoPost[i] ){
+          _dispatchingInfoPost[index++] = dispatchingInfoPost[i];
+        }
+      }
+
+      dispatchingInfo = { "GET" : _dispatchingInfoGet, "POST" : _dispatchingInfoPost };
+
       var dispatcher = fs.createWriteStream( __contextDispatchingInfo );
       dispatcher.write( JSON.stringify(dispatchingInfo, null, 4) );
 
       resolve( "SUCCESS" );
-      
+
     } catch( err ){
       reject( err );
     }

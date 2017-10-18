@@ -47,7 +47,15 @@ function setViewInfo( express, app ){
 			}
 			// 2. set static Folders
 			for( var i=0; i<__staticFolders.length; i++ ){
-			  app.use( express.static(__staticFolders[i]) );
+				var staticFolderPath = "";
+
+				if( (__staticFolders[i])[0] === "/" ){
+					staticFolderPath = (__staticFolders[i]).substring( 1, __staticFolders[i].length );
+				} else{
+					staticFolderPath = __staticFolders[i];
+				}
+
+			  app.use( express.static(staticFolderPath) );
 			}
 
 			resolve( {"message" : "Set View Engine"} );

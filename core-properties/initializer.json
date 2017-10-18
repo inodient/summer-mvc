@@ -23,6 +23,10 @@
       "files" : []
     },
     {
+      "folder" : "/static",
+      "files" : [ "favicon.ico" ]
+    },
+    {
       "folder" : "/__Logs",
       "files" : []
     }
@@ -113,5 +117,5 @@
     "remove_and_rebuild" : "false",
     "auto_structure_creation" : "true"
   },
-  "static_folders" : [ "/static", "/static/upload", "static/img" ]
+  "static_folders" : [ "/static", "/static/upload", "/static/img" ]
 }
