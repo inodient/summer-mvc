@@ -23,8 +23,8 @@ exports.control_download = function( req, res ){
   return new Promise( function(resolve, reject){
 
     let downloadFileName = req.query.downloadFileName;
-    let savedPath = "static";
-    let savedFileName = 'favicon.ico';
+    let savedPath = "upload";
+    let savedFileName = 'test_image.png';
 
     fileHandler.downloadFile( res, savedPath, savedFileName, downloadFileName + ".png" )
     .then( function(results){
