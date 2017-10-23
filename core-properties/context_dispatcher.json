@@ -49,16 +49,16 @@
             "view": "index.ejs"
         },
         {
-            "id": "exid",
-            "path": "/ex1",
+            "id": "annotation_example_01",
+            "path": "/annotation-example-01",
             "controllerJS": "controller_basic.js",
             "controlFunction": "control",
             "viewPath": "",
             "view": "index.ejs"
         },
         {
-            "id": "exid02",
-            "path": "/ex2",
+            "id": "annotation_example_02",
+            "path": "/annotation-example-02",
             "controllerJS": "controller_basic.js",
             "controlFunction": "control_",
             "viewPath": "",

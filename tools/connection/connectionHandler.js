@@ -60,13 +60,26 @@ module.exports = function( req, res ){
 
 			if( key ){
 				if( callback ){
-					callback( this.req.cookies[key] );
+					callback( decodeURI(this.req.cookies[key]) );
 				} else{
 					return this.req.cookies[key];
 				}
 			} else{
 				if( callback ){
-					callback( this.req.cookies );
+					var cookies = [];
+					
+					for( name in this.req.cookies ){
+						key = name;
+						var value = this.req.cookies[name];
+						
+						key = decodeURI( key );
+						value = decodeURI( value );
+						
+						cookies.push( {key:key, value:value} );
+					}
+					
+					logger.debug( "cookies", cookies );
+					callback( cookies );
 				} else{
 					return this.req.cookies;
 				}
@@ -93,9 +106,9 @@ module.exports = function( req, res ){
 				key = argv[0];
 				value = argv[1];
 			}
-
+			
 			if( key && value ){
-				res.cookie( key, value );
+				res.cookie( encodeURI(key), encodeURI(value) );
 
 				if( callback ){
 					callback( {key:key, value:value}, null );

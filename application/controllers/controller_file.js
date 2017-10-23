@@ -23,7 +23,7 @@ exports.control_download = function( req, res ){
   return new Promise( function(resolve, reject){
 
     let downloadFileName = req.query.downloadFileName;
-    let savedPath = "upload";
+    let savedPath = "static";
     let savedFileName = 'test_image.png';
 
     fileHandler.downloadFile( res, savedPath, savedFileName, downloadFileName + ".png" )

@@ -1,7 +1,7 @@
 /*
-* @controller("exid")
+* @controller("annotation_example_01")
 * @controller-method("get")
-* @controller-requestMapping("/ex1")
+* @controller-requestMapping("/annotation-example-01")
 * @controller-viewPath("")
 * @controller-view("index.ejs")
 */
@@ -20,15 +20,22 @@ exports.control = function( req, res ){
 
 
 /*
-* @controller("exid02")
+* @controller("annotation_example_02")
 * @controller-method("get")
-* @controller-requestMapping("/ex2")
+* @controller-requestMapping("/annotation-example-02")
 * @controller-viewPath("")
 * @controller-view("index.ejs")
 */
 exports.control_ = function( req, res ){
   return new Promise( function(resolve, reject){
-    resolve();
+	  
+	  setModel( req, res )
+	    .then( function(model){
+	      resolve( model );
+	    } )
+	    .catch( function(err){
+	      reject( err );
+	    } );
   } );
 }
 

@@ -16,7 +16,7 @@
     },
     {
       "folder" : "/application/views",
-      "files" : [ "index.ejs", "upload.ejs","error.html" ]
+      "files" : [ "index.ejs", "error.html" ]
     },
     {
       "folder" : "/static/upload",
@@ -24,7 +24,7 @@
     },
     {
       "folder" : "/static",
-      "files" : [ "favicon.ico" ]
+      "files" : [ "favicon.ico", "test_image.png" ]
     },
     {
       "folder" : "/__Logs",

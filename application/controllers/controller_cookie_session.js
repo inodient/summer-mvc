@@ -5,17 +5,19 @@ exports.control = function( req, res ){
 		var connHandler = new connectionHandler( req, res );
 
 		if( req.query.cookieKey && req.query.cookieValue ){
+			var testKey = req.query.cookieKey;
+			var testValue = req.query.cookieValue;
+			
 			connHandler.setCookie( req.query.cookieKey, req.query.cookieValue, function( results, err ){
 				if( err ) reject( err );
 				logger.debug( results );
-				// message = JSON.stringify( results, null, 4 );
 				message = "Cookie : " + req.query.cookieKey + ", " + req.query.cookieValue;
 			} );
-			// connHandler.getCookie( function( results, err ){
-			// 	if( err ) reject( err );
-			// 	logger.debug( results );
-			// 	message = JSON.stringify( results, null, 4 );
-			// } );
+			
+			connHandler.getCookie( function(cookies){
+				logger.debug( cookies );
+			} );
+
 
 		 } else if( req.query.sessionKey && req.query.sessionValue ){
 			 connHandler.setSession( req.query.sessionKey, req.query.sessionValue );
