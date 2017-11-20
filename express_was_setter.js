@@ -25,7 +25,7 @@ function parseAnnotation(){
 				reject( err );
 			} );
 		} else{
-			resolve( {"message" : false} );
+			resolve( {"message" : "Annotation Parsing Failed"} );
 		}
 	} );
 }
@@ -60,7 +60,7 @@ function setViewInfo( express, app ){
 
 			resolve( {"message" : "Set View Engine"} );
 		} catch( err ){
-			reject( err );
+			reject( {"message" : "Setting View Engine Failed"} );
 		}
 	} );
 }
@@ -79,7 +79,7 @@ function setBodyParser( app ){
 
 			resolve( {"message" : "Set Body Parser"} );
 		} catch( err ){
-			reject( err );
+			reject( {"message" : "Setting Body Parser Failed"} );
 		}
 	} );
 }
@@ -104,10 +104,10 @@ function setErrorHandler( app ){
 
 				resolve( {"message" : "Set Error Handler"} );
 			} else{
-				resolve( {"message" : false} );
+				resolve( {"message" : "Setting Error Handler Failed"} );
 			}
 		} catch( err ){
-			reject( err );
+			reject( {"message" : "Setting Error Handler Failed"} );
 		}
 	} );
 }
@@ -138,10 +138,10 @@ function setConnectionHandler( app ){
 
 				resolve( {"message" : "Set Connection Handler"} );
 			} else{
-				resolve( {"message" : false} );
+				resolve( {"message" : "Setting Connection Handler Failed"} );
 			}
 		} catch( err ){
-			reject( err );
+			reject( {"message" : "Setting Connection Handler Failed"} );
 		}
 	} );
 }
@@ -164,10 +164,10 @@ function setFileHandler(){
 
 				resolve( {"message" : "Set File Handler"} );
 			} else{
-				resolve( {"message" : false} );
+				resolve( {"message" : "Setting File Handler Failed"} );
 			}
 		} catch( err ){
-			reject( err );
+			reject( {"message" : "Setting File Handler Failed"} );
 		}
 	} );
 }
@@ -194,10 +194,10 @@ function setMysqlHandler(){
 					reject( err );
 				} );
 			} else{
-				resolve( {"message" : false} );
+				resolve( {"message" : "Setting MySql Failed"} );
 			}
 		} catch( err ){
-			reject( err );
+			reject( {"message" : "Setting MySql Failed"} );
 		}
 	} );
 }
@@ -217,10 +217,10 @@ function setExitHandler(){
 
 				resolve( {"message" : "Set Exit Handler"} );
 			} else{
-				resolve( {"message" : false} );
+				resolve( {"message" : "Setting Exit Handler Failed"} );
 			}
 		} catch( err ){
-			reject( err );
+			reject( {"message" : "Setting Exit Handler Failed"} );
 		}
 	} );
 }

@@ -24,10 +24,10 @@
     },
     {
       "folder" : "/static",
-      "files" : [ "favicon.ico", "test_image.png" ]
+      "files" : [ "test_download.txt" ]
     },
     {
-      "folder" : "/__Logs",
+      "folder" : "/__logs",
       "files" : []
     }
   ],

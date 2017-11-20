@@ -11,6 +11,6 @@
   },
   "file" : {
     "path" : "__defaultLogFilePath",
-    "fileNamePrefix" : "summer-mvc-test"
+    "fileNamePrefix" : "summer-mvc"
   }
 }

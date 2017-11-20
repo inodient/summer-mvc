@@ -24,9 +24,9 @@ exports.control_download = function( req, res ){
 
     let downloadFileName = req.query.downloadFileName;
     let savedPath = "static";
-    let savedFileName = 'test_image.png';
+    let savedFileName = 'test_download.txt';
 
-    fileHandler.downloadFile( res, savedPath, savedFileName, downloadFileName + ".png" )
+    fileHandler.downloadFile( res, savedPath, savedFileName, downloadFileName + ".txt" )
     .then( function(results){
       var message = "** Downloaded File(s) **\n" + JSON.stringify( results, null, 4 );
       logger.debug( message );
