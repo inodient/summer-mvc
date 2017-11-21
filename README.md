@@ -44,8 +44,7 @@ $ node {file__name}.js
 ```
 ex ) $ node app.js
 ```
-During initial running, summer-mvc will create your project's folder hierarchy.
-> more information can be found in http://www.summermvc.com/getting-started
+During initial running, summer-mvc will create your project's folder hierarchy. More information can be found in http://www.summermvc.com/getting-started
 
 
 
