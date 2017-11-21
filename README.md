@@ -10,8 +10,12 @@ If you have any question, please send email to inodient@gmail.com
 
 
 
+
+
 ## Convert Version
 If your project uses summer-mvc under v2.0.0, it must be converted as current version. Please convert project using below steps.
+
+
 
 
 
@@ -21,6 +25,8 @@ Command line tool's folder location is a <b>project root</b> (ex: ../git/Nodejs/
 ```
 $ npm uninstall summer-mvc
 ```
+
+
 
 
 
@@ -43,6 +49,8 @@ During initial running, summer-mvc will create your project's folder hierarchy.
 
 
 
+
+
 #### Step 03 : Copy and Move context_dispatcher.json
 You can use <b>context_dispatcher.json</b> over v2.0.0 without changing contents. Please legacy dispatcher file to latest project folder.
 Legacy <b>context_dispatcher.json</b> can be found at <b>{user-project}/dispatcher</b>.
@@ -52,6 +60,8 @@ And latest location is <b>{user-project}/core-properties/context_dispatcher.json
 Legacy Location : {user-project}/dispatcher
 Latest Location : {user-project}/core-properties
 ```
+
+
 
 
 
@@ -66,6 +76,8 @@ Latest Location : {user-project}/application/controllers
 
 
 
+
+
 #### Step 05 : Copy and Move View Files
 Viewing html page is not changed in version 2.0.0.
 So you can use your legacy view files without changing.
@@ -74,6 +86,8 @@ The only thing you must do is that to move view files to other folders.
 Legacy Location : {user-project}/views
 Latest Location : {user-project}/application/views
 ```
+
+
 
 
 
@@ -88,8 +102,12 @@ Latest Location : {user-project}/application/views
 
 
 
+
+
 ## Philosophy    
 The `summer-mvc` has only one goal to provide very simple way to design web application. As most developer feel comfortable for using the **spring framework**, the `summer-mvc` provides spring framework - like environment. `summer-mvc` uses small **dispatcher-engine** (like spring's dispatcher-servlet), and it can be controlled by **JSON files**(like spring's xxx-servlet.xml).      
+
+
 
 
 
@@ -103,11 +121,15 @@ v 1.1.3 Bug fixed
 
 
 
+
+
 ## People
 The original author of summer-mvc is Changho Kang.  
 If you want to participate to improve <b>summer-mvc</b>,
 please contact <b>inodient@gmail.com</b>.
 We wait passionate contributor.
+
+
 
 
 
