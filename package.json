@@ -1,6 +1,6 @@
 {
   "name": "summer-mvc",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Structured, Light, Spring-like Web Application Development Framework",
   "main": "index.js",
   "scripts": {},
