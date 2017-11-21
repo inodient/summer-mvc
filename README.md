@@ -8,10 +8,12 @@ If you have any question, please send email to inodient@gmail.com
 
 > Please check your summer-mvc version and APIs.
 
-<br>
+
+
 ## Convert Version
 If your project uses summer-mvc under v2.0.0, it must be converted as current version. Please convert project using below steps.
-<br>
+
+
 
 #### Step 01 : Remove legacy summer-mvc
 When you convert summer-mvc version, deleting legacy summer-mvc is the best stable way. As summer-mvc or developer creates their own folders and files, <b>back-up</b> your project is mandatory step. After doing back-up, please execute below command.
@@ -19,7 +21,8 @@ Command line tool's folder location is a <b>project root</b> (ex: ../git/Nodejs/
 ```
 $ npm uninstall summer-mvc
 ```
-<br>
+
+
 
 #### Step 02 : Install lastest summer-mvc and initialize project
 After deleting, please install lastest summer-mvc.
@@ -38,7 +41,7 @@ ex ) $ node app.js
 During initial running, summer-mvc will create your project's folder hierarchy.
 > more information can be found in http://www.summermvc.com/getting-started
 
-<br>
+
 
 #### Step 03 : Copy and Move context_dispatcher.json
 You can use <b>context_dispatcher.json</b> over v2.0.0 without changing contents. Please legacy dispatcher file to latest project folder.
@@ -50,7 +53,8 @@ Legacy Location : {user-project}/dispatcher
 Latest Location : {user-project}/core-properties
 ```
 
-<br>
+
+
 #### Step 04 : Copy and Move Controller Files
 Controlling business logic is not changed in version 2.0.0.
 So you can use your legacy controller without changing.
@@ -59,7 +63,8 @@ The only thing you must do is that to move controller files to other folders.
 Legacy Location : {user-project}/controller
 Latest Location : {user-project}/application/controllers
 ```
-<br>
+
+
 
 #### Step 05 : Copy and Move View Files
 Viewing html page is not changed in version 2.0.0.
@@ -70,8 +75,7 @@ Legacy Location : {user-project}/views
 Latest Location : {user-project}/application/views
 ```
 
-<br>
-<br>
+
 
 ## Features       
 - Focus on fast design & development speed
@@ -81,13 +85,13 @@ Latest Location : {user-project}/application/views
 - Simular architecture with spring framework
 - Support 1 view engine (`ejs`), 1 database engine (`mysql`) (v1.1.0)
 - Provide easy way to manage cookie, session and database(mysql)
-<br>
-<br>
+
+
 
 ## Philosophy    
 The `summer-mvc` has only one goal to provide very simple way to design web application. As most developer feel comfortable for using the **spring framework**, the `summer-mvc` provides spring framework - like environment. `summer-mvc` uses small **dispatcher-engine** (like spring's dispatcher-servlet), and it can be controlled by **JSON files**(like spring's xxx-servlet.xml).      
-<br>
-<br>
+
+
 
 ## History
 v 1.0.0 Initial version    
@@ -96,16 +100,16 @@ v 1.0.2 Bug fixed
 v 1.1.0 Bug fixed    
 v 1.1.3 Bug fixed    
 **v 2.0.0 Major Change | Current Version**
-<br>
-<br>
+
+
 
 ## People
 The original author of summer-mvc is Changho Kang.  
 If you want to participate to improve <b>summer-mvc</b>,
 please contact <b>inodient@gmail.com</b>.
 We wait passionate contributor.
-<br>
-<br>
+
+
 
 ## License
 [MIT Licensed](https://github.com/inodient/summer-mvc/blob/master/LICENSE)  
