@@ -3,13 +3,15 @@ module.exports.getConnection = getConnection;
 module.exports.executeQuery = executeQuery;
 module.exports.releasePool = releasePool;
 module.exports.releaseConnection = releaseConnection;
+module.exports.getQueries = getQueries;
 
 
 
 
 
 const mysql = require( "mysql" );
-const queries = require( __mysqlQueries );
+const queries = require("fs").existsSync( __mysqlQueries ) === true ? require( __mysqlQueries ) : null;
+
 
 
 
@@ -73,7 +75,6 @@ function executeQuery( queryId ){
 	}
 
 	return new Promise( function(resolve, reject){
-
 		if( connection ){
 			executeTransaction( queryId, params, connection )
 			.then( function(queryResults){
@@ -107,7 +108,7 @@ function executeTransaction( queryId, params, connection ){
 					reject( err );
 				}
 
-				connection.query( getQueryString( queryId ), params, function(err, results, fields){
+				connection.query( getQueryString( queryId, params ), params, function(err, results, fields){
 
 					if( err ){
 						connection.rollback( function(){
@@ -147,6 +148,15 @@ function releaseConnection( _connection ){
 }
 
 function getQueryString( queryId, params ){
+	if( queriesXML ){
+		let queriesArr = queriesXML.queries.query;
+
+		for( var i=0; i<queriesArr.length; i++ ){
+			if( queriesArr[i].$.id == queryId ){
+				return setQueryParams( queriesArr[i]._, params );
+			}
+		}
+	}
 
 	for( var i=0; i<queries.length; i++ ){
 		if( queries[i].id == queryId ){
@@ -155,4 +165,91 @@ function getQueryString( queryId, params ){
 	}
 
 	return "SELECT NOW()";
+}
+
+function setQueryParams( queryString, params ){
+
+	if( params ){
+		for( var i=0; i<params.length; i++ ){
+			if( params[i] instanceof Object ){
+				var key = Object.keys( params[i] )[0];
+				var value = ( params[i] )[key];
+
+				if( !isNaN(parseFloat(value)) && isFinite(value) ){
+					queryString = queryString.replace( new RegExp("#" + key + "#", "gi"), value );
+				} else {
+					queryString = queryString.replace( new RegExp("#" + key + "#", "gi"), "'" + value + "'" );
+				}
+			}
+		}
+	}
+
+	return queryString;
+}
+
+
+
+
+function getQueries(){
+	return new Promise( function(resolve, reject){
+		var mysqlHandlerInfo = require(__mysqlHandlerInfo);
+
+
+		if( "queries" in mysqlHandlerInfo && mysqlHandlerInfo.queries != null ){
+			var queryFiles = mysqlHandlerInfo.queries;
+			var queryStrings = [];
+
+			var promises = [];
+
+			for( var i=0; i<queryFiles.length; i++){
+				promises.push( parsingQueries(queryFiles[i]) );
+			}
+
+			Promise.all( promises )
+			.then( function(){
+				var argv = arguments[0];
+
+				for( var j=0; j<argv.length; j++ ){
+					queryStrings = queryStrings.concat( argv[j] );
+				}
+
+				var queries = { "queries" : {"query" : queryStrings } };
+				
+				resolve( queries );
+			} )
+			.catch( function(_err){
+				reject( _err );
+			} );
+		} else {
+			parsingQueries( __mysqlQueriesXML)
+			.then( function( queryStrings ){
+				resolve( { "queries" : {"query" : queryStrings } } );
+			} )
+			.catch( function(err){
+				reject( err );
+			} );
+		}	
+	} );
+}
+
+function parsingQueries( queryFile ){
+	return new Promise( function(resolve, reject){
+		var fs = require('fs'), xml2js = require('xml2js');
+		var parser = new xml2js.Parser();
+
+		if( queryFile.indexOf( process.cwd() ) < 0 ){
+			queryFile = require("path").join( process.cwd(), queryFile );
+		}
+
+		fs.readFile( queryFile, function(err, data){
+			if( err ){
+				reject( err );
+			} else {
+				parser.parseString(data, function(_err, result){
+					if( _err ) reject(_err);
+					resolve( result.queries.query );
+				} );
+			}
+		} );
+	} );
 }

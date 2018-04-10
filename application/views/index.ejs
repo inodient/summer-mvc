@@ -174,10 +174,10 @@
 									<form class="form-inline" action="/getData" method="get">
 										<select class="form-control query_select" id="queryId">
 											<% for( var i=0; i<queries.length; i++ ){ %>
-												<option value=<%= queries[i].id %> ><%= queries[i].id %></option>
+												<option value=<%= queries[i].$.id %> ><%= queries[i].$.id %></option>
 											<% } %>
 										</select>
-										<input id="selectedQueryId" name="selectedQueryId" type="text" value=<%= queries[0].id %> hidden />
+										<input id="selectedQueryId" name="selectedQueryId" type="text" value=<%= queries[0].$.id %> hidden />
 										<button class="btn btn-default">Run</button>
 									</form>
 								</td>

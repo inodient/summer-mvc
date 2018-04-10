@@ -1,10 +1,20 @@
 exports.initStructure = function(){
-  let common = require( __common );
-  let initInfo = require( __initInfo );
-  
-  initContextArchitecture( common, initInfo );
-  initTools( common, initInfo );
+
+	try {
+		let common = require( __common );
+		let initInfo = require( __initInfo );
+
+		initContextArchitecture( common, initInfo );
+		initTools( common, initInfo );
+	} catch( err ){
+		throw err;
+	}
 }
+
+
+
+
+
 
 function initContextArchitecture( common, initInfo ){
 	let architecture = initInfo[ "context_architecture" ];
@@ -35,30 +45,30 @@ function initContextArchitecture( common, initInfo ){
 function initTools( common, initInfo ){
 	let architecture = initInfo[ "tools" ];
 
-	  if( getInitOption( initInfo, "auto_structure_creation" ) == "true" ){
+	if( getInitOption( initInfo, "auto_structure_creation" ) == "true" ){
 
-		  for( var i=0; i<architecture.length; i++ ){
-			  
-			  if( architecture[i].enable ){
-				  let toolFiles = architecture[i].toolFiles;
-				  
-				  for( var j=0; j<toolFiles.length; j++ ){
-					  let folder = toolFiles[j].folder;
-					  let files = toolFiles[j].files;
-			
-					  if( files.length == 0 ){
-						  common.buildStructure( folder );
-					  }
-					  
-					  for( var k=0; k<files.length; k++ ){
-				    	  let fileName = files[k];
-				
-					      common.buildStructure( folder, fileName );
-					  }
-				  }
-			  }
-		   }
-	  }
+		for( var i=0; i<architecture.length; i++ ){
+
+			if( architecture[i].enable ){
+				let toolFiles = architecture[i].toolFiles;
+
+				for( var j=0; j<toolFiles.length; j++ ){
+					let folder = toolFiles[j].folder;
+					let files = toolFiles[j].files;
+
+					if( files.length == 0 ){
+						common.buildStructure( folder );
+					}
+
+					for( var k=0; k<files.length; k++ ){
+						let fileName = files[k];
+
+						common.buildStructure( folder, fileName );
+					}
+				}
+			}
+		}
+	}
 }
 
 function getInitOption( initInfo, option ){
@@ -75,37 +85,3 @@ function getInitOption( initInfo, option ){
       return undefined;
   }
 }
-
-// function makeBackup( folderName ){
-// let common = require( "../common/common.js" );
-//
-// common.renameFolder( folderName );
-// }
-//
-//
-//
-//
-
-// exports.getDefaultExtraction = function(){
-// let initializer = require( require("path").join( process.cwd(), "properties",
-// "initializer.json" ) );
-//
-// return initializer[ "default_extraction" ];
-// }
-
-
-
-
-
-// exports.getControllerDispatcherPath = function(){
-// let path = require( "path" );
-// let initializer = require( require("path").join( process.cwd(), "properties",
-// "initializer.json" ) );
-//
-// if( initializer[ "options" ].use_service == "true" ){
-// return path.join( __dirname, "../", "dispatcher", "controller_dispatcher.js"
-// );
-// } else{
-// return undefined;
-// }
-// }

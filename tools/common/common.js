@@ -1,20 +1,28 @@
-const fs = require('fs');
-const path = require('path');
+var fs = require('fs');
+var path = require('path');
+
+var __runningPath = process.cwd();
+var __staticPath = path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc" );
+
+
+
+
+
 
 exports.buildStructure = function( folder, fileName ){
   let destDir = path.join( __runningPath, folder );
 
   if( fileName ){
-	  let src = path.join( __staticPath, folder, fileName );
+    let src = path.join( __staticPath, folder, fileName );
 
     this.makeHierarchy( folder );
 
-	  try{
-		    fs.accessSync( path.join( destDir, fileName ) );
-		  } catch( err ){
+    try{
+        fs.accessSync( path.join( destDir, fileName ) );
+      } catch( err ){
         console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[" + fileName + "] disappears. Copy File." );
-		    this.copyFile( src, path.join( destDir, fileName) );
-		  }
+        this.copyFile( src, path.join( destDir, fileName) );
+      }
   } else{
     let src = path.join( __staticPath, folder );
 
@@ -22,18 +30,18 @@ exports.buildStructure = function( folder, fileName ){
   }
 }
 
-exports.makeHierarchy = function( folder ){
+exports.makeHierarchy = function( folder, _currentPath ){
   let folderHierarchy = path.join(folder).split( path.sep );
 
-  let currentPath = __runningPath;
+  let currentPath = _currentPath == undefined ? __runningPath : _currentPath;
 
   try{
     for( var i=0; i<folderHierarchy.length; i++ ){
-  	  if( folderHierarchy[i] != "" ){
-  			currentPath = path.join( currentPath, folderHierarchy[i] )
+      if( folderHierarchy[i] != "" ){
+        currentPath = path.join( currentPath, folderHierarchy[i] )
 
-  			this.makeFolder( currentPath );
-  	  }
+        this.makeFolder( currentPath );
+      }
     }
   } catch( err ){
     throw err;
@@ -79,5 +87,6 @@ exports.renameFolder = function( folderName ){
     fs.renameSync( oldPath, newPath )
   } catch( err ){
     console.log( err );
+    throw err;
   }
 }

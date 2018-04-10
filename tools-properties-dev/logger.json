@@ -1,0 +1,16 @@
+{
+  "console" : {
+    "INFO" : true,
+    "DEBUG" : true,
+    "ERROR" : true
+  },
+  "writeFile" : {
+    "INFO" : true,
+    "DEBUG" : true,
+    "ERROR" : true
+  },
+  "file" : {
+    "path" : "__defaultLogFilePath",
+    "fileNamePrefix" : "summer-mvc"
+  }
+}

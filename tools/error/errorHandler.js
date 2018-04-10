@@ -12,7 +12,7 @@ function logErrors(err, req, res, next){
 	if( err instanceof Error ){
 		logMsg = err.message + "\n" + err.stack; 
 	} else{
-		logMsg = String( err );
+		logMsg += require("util").inspect(err, {showHidden: false, depth: null} );
 	}
 	
 	logger.error( "Error Occured when [" + req.path + "] called.\n" + logMsg );

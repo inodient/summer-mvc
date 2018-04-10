@@ -6,7 +6,7 @@
 * @controller-view("index.ejs")
 */
 exports.control = function( req, res ){
-  return new Promise( function(resolve, reject){
+  return new Promise( function(resolve, reject){    
 
     setModel( req, res )
     .then( function(model){
@@ -15,6 +15,7 @@ exports.control = function( req, res ){
     .catch( function(err){
       reject( err );
     } );
+
   } );
 }
 
@@ -28,7 +29,7 @@ exports.control = function( req, res ){
 */
 exports.control_ = function( req, res ){
   return new Promise( function(resolve, reject){
-	  
+
 	  setModel( req, res )
 	    .then( function(model){
 	      resolve( model );
@@ -43,7 +44,8 @@ exports.control_ = function( req, res ){
 function setModel( req, res ){
   return new Promise( function(resolve, reject){
 
-    var queries = require( __mysqlQueries );
+    // var queries = require( __mysqlQueries );
+    var queries = queriesXML.queries.query;
     var model = {};
 
     try{

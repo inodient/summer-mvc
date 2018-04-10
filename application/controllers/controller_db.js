@@ -6,9 +6,13 @@ exports.control = function( req, res, connection ){
 		var queryId = req.query.selectedQueryId;
 
 		if( queryId === "getAccessLog" ){
-			params.push( "2017-09-01", "2017-09-30" );
+			// params.push( "2017-09-01", "2017-09-30" );
+
+			params.push( {"STARTDATE":"2017-09-01"} );
+			params.push( {"ENDDATE":"2017-09-30"} );
+
 		} else if( queryId === "insertAccessLog" ){
-			params.push( (new Date()).toISOString() );
+			params.push( ( (new Date()).toISOString() ).substring( 0, 9) );
 			params.push( "inodient" );
 			params.push( req._parsedUrl.pathname );
 			params.push( JSON.stringify( req.query, null, 4 ) );
@@ -77,7 +81,8 @@ exports.control = function( req, res, connection ){
 
 function setModel( req, res, results, fields ){
 
-	var queries = require( __mysqlQueries );
+	// var queries = require( __mysqlQueries );
+    var queries = queriesXML.queries.query;
 	var model = {};
 
 	try{

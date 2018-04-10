@@ -1,0 +1,21 @@
+<?xml version='1.0'?>
+<queries>
+  <query id='getMySqlVersion'>
+    select version()
+  </query>
+  <query id='getAccessLog'>
+    <![CDATA[
+      select * from connectionInfo 
+      where connectionTime > #STARTDATE# and connectionTime < #ENDDATE#
+    ]]>
+  </query>
+  <query id='insertAccessLog'>
+    insert into connectionInfo values ( ?, ?, ?, ?, ?, ? )
+  </query>
+  <query id='updateAccessLog'>
+    update connectionInfo set userId = ? where param = ?
+  </query>
+  <query id='deleteAccessLog'>
+    delete from connectionInfo where param like ?
+  </query>
+</queries>

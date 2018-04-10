@@ -13,13 +13,15 @@ const path = require( "path" );
 function parseComponent(){
   return new Promise( function(resolve, reject){
 
-	  parser( "controller" )
-	  .then( function(res){
-		  resolve( res );
-	  } )
-	  .catch( function(err){
-		  reject( err );
-	  } );
+    resolve( {"status" : "ignored"} );
+
+	  // parser( "controller" )
+	  // .then( function(res){
+		 //  resolve( res );
+	  // } )
+	  // .catch( function(err){
+		 //  reject( err );
+	  // } );
 
 //    var promises = [];
 //

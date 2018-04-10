@@ -1,4 +1,23 @@
 {
+  "options" : {
+    "use_https" : "true",
+    "use_annotation" : "false",
+    "remove_and_rebuild" : "false",
+    "auto_structure_creation" : "true"
+  },
+
+  "protocol" : {
+    "http" : {
+      "port" : 3000
+    },
+    "https" : {
+      "port" : 8443,
+      "certification_path" : "/core-properties/https",
+      "keyFileName" : "key.pem",
+      "certFileName" : "cert.pem"
+    }
+  },
+
   "port" : 3000,
   "context_architecture" : [
     {
@@ -29,35 +48,41 @@
     {
       "folder" : "/__logs",
       "files" : []
+    },
+    {
+      "folder" : "/core-properties/https",
+      "files" : []
     }
   ],
+
   "views" : {
     "engine" : "ejs"
   },
+
   "tools" : [
   	{
   		"name" : "logger",
   		"enable" : true,
-  		"toolFiles" : [
-  			{
-	  			"folder" : "/tools-properties",
-	  			"files" : [ "logger.json" ]
-  			},
+      "toolFiles" : [
         {
-	  			"folder" : "/__logs",
-	  			"files" : []
-  			}
-  		]
+          "folder" : "/tools-properties",
+          "files" : [ "logger.json" ]
+        },
+        {
+          "folder" : "/__logs",
+          "files" : []
+        }
+      ]  
   	},
   	{
   		"name" : "errorHandler",
   		"enable" : true,
-  		"toolFiles" : [
-  			{
-	  			"folder" : "/tools-submodules",
-	  			"files" : [ "clientErrorHandler.js" ]
-  			}
-  		]
+      "toolFiles" : [
+          {
+            "folder" : "/tools-submodules",
+            "files" : [ "clientErrorHandler.js" ]
+          }
+        ]
   	},
   	{
   		"name" : "connectionHandler",
@@ -97,7 +122,7 @@
   			},
   			{
 	  			"folder" : "/tools-submodules/db/queries",
-	  			"files" : [ "query.json" ]
+	  			"files" : [ "query.xml" ]
   			}
   		]
   	},
@@ -112,10 +137,10 @@
   		]
   	}
   ],
-  "options" : {
-    "use_annotation" : "true",
-    "remove_and_rebuild" : "false",
-    "auto_structure_creation" : "true"
-  },
-  "static_folders" : [ "/static", "/static/upload", "/static/img" ]
+  "static_folders" : [ "/static", "/static/upload", "/static/img",
+    {
+      "url" : "/image",
+      "path" : "/Users/changhokang/Downloads/upload/template/image"
+    }
+  ]
 }

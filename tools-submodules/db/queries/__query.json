@@ -1,0 +1,22 @@
+[
+  {
+    "id" : "getMySqlVersion",
+    "queryString" : "select version() "
+  },
+  {
+    "id" : "getAccessLog",
+    "queryString" : "select * from connectionInfo where connectionTime > ? and connectionTime < ? "
+  },
+  {
+  	"id" : "insertAccessLog",
+  	"queryString" : "insert into connectionInfo values ( ?, ?, ?, ?, ?, ? )"
+  },
+  {
+  	"id" : "updateAccessLog",
+  	"queryString" : "update connectionInfo set userId = ? where param = ? "
+  },
+  {
+  	"id" : "deleteAccessLog",
+  	"queryString" : "delete from connectionInfo where param like ? "
+  }
+]

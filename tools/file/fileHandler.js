@@ -114,9 +114,13 @@ function downloadFile( res, savedPath, savedFileName, originalFileName ){
 function _getUploadDestination( arguments ){
   logger.info( fileInfo[ "default-path" ] );
 
-  var defaultPath = path.join( fileInfo[ "default-path" ] ).split( path.sep )
-
+  var defaultPath = path.join( fileInfo[ "default-path" ] ).split( path.sep );
   var destDir = __runningPath;
+
+  if( fileInfo["default-pre-path"] && fileInfo["default-pre-path"] != "" ){
+    destDir = fileInfo[ "default-pre-path" ];
+    defaultPath = path.join( fileInfo[ "default-path" ] ).split( path.sep );
+  }
 
   for( var i=0; i<defaultPath.length; i++ ){
     if( defaultPath[i] != "" ){

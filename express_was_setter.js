@@ -10,6 +10,8 @@ module.exports.setExitHandler = setExitHandler;
 
 
 
+
+
 //***************************************************
 //*** Prepare Controller - Application
 //***************************************************
@@ -25,10 +27,12 @@ function parseAnnotation(){
 				reject( err );
 			} );
 		} else{
-			resolve( {"message" : "Annotation Parsing Failed"} );
+			resolve( {"message" : "Annotation Parser doesn't set to use."} );
 		}
 	} );
 }
+
+
 
 
 
@@ -45,22 +49,32 @@ function setViewInfo( express, app ){
 				app.engine( "html", require(__viewEngine).renderFile );
 				app.set( "views", __viewsRunningPath );
 			}
+
 			// 2. set static Folders
 			for( var i=0; i<__staticFolders.length; i++ ){
-				var staticFolderPath = "";
 
-				if( (__staticFolders[i])[0] === "/" ){
-					staticFolderPath = (__staticFolders[i]).substring( 1, __staticFolders[i].length );
+				if( typeof __staticFolders[i] === "string" || __staticFolders[i] instanceof String ){
+					var staticFolderPath = "";
+
+					if( (__staticFolders[i])[0] === "/" ){
+						staticFolderPath = (__staticFolders[i]).substring( 1, __staticFolders[i].length );
+					} else{
+						staticFolderPath = __staticFolders[i];
+					}
+
+				 	app.use( express.static(staticFolderPath) );
 				} else{
-					staticFolderPath = __staticFolders[i];
-				}
 
-			  app.use( express.static(staticFolderPath) );
+					var url = __staticFolders[i].url;
+					var path = __staticFolders[i].path;
+
+					app.use( url, express.static(path) );
+				}
 			}
 
 			resolve( {"message" : "Set View Engine"} );
 		} catch( err ){
-			reject( {"message" : "Setting View Engine Failed"} );
+			reject( {"message" : "Setting View Engine Failed", "err" : err} );
 		}
 	} );
 }
@@ -79,7 +93,7 @@ function setBodyParser( app ){
 
 			resolve( {"message" : "Set Body Parser"} );
 		} catch( err ){
-			reject( {"message" : "Setting Body Parser Failed"} );
+			reject( {"message" : "Setting Body Parser Failed", "err" : err} );
 		}
 	} );
 }
@@ -104,10 +118,10 @@ function setErrorHandler( app ){
 
 				resolve( {"message" : "Set Error Handler"} );
 			} else{
-				resolve( {"message" : "Setting Error Handler Failed"} );
+				resolve( {"message" : "Error Handler Failed doesn't set to use."} );
 			}
 		} catch( err ){
-			reject( {"message" : "Setting Error Handler Failed"} );
+			reject( {"message" : "Setting Error Handler Failed", "err" : err} );
 		}
 	} );
 }
@@ -138,15 +152,13 @@ function setConnectionHandler( app ){
 
 				resolve( {"message" : "Set Connection Handler"} );
 			} else{
-				resolve( {"message" : "Setting Connection Handler Failed"} );
+				resolve( {"message" : "Connection handler doesn't set to use."} );
 			}
 		} catch( err ){
-			reject( {"message" : "Setting Connection Handler Failed"} );
+			reject( {"message" : "Setting Connection Handler Failed", "err" : err} );
 		}
 	} );
 }
-
-
 
 
 
@@ -164,10 +176,10 @@ function setFileHandler(){
 
 				resolve( {"message" : "Set File Handler"} );
 			} else{
-				resolve( {"message" : "Setting File Handler Failed"} );
+				resolve( {"message" : "File Handler doesn't set to use."} );
 			}
 		} catch( err ){
-			reject( {"message" : "Setting File Handler Failed"} );
+			reject( {"message" : "Setting File Handler Failed", "err" : err} );
 		}
 	} );
 }
@@ -183,21 +195,30 @@ function setMysqlHandler(){
 	return new Promise( function(resolve, reject){
 		try{
 			if( __mysqlHandlerUsage ){
+
 				global.mysqlHandler = require( __mysqlHandler );
 
 				mysqlHandler.getPool()
 				.then( function(_pool){
 					global.pool = _pool;
-					resolve( {"message" : "Set MySql Handler"} );
+
+					mysqlHandler.getQueries()
+					.then( function(_queries){
+						global.queriesXML = _queries;
+						resolve( {"message" : "Set MySql Handler"} );
+					} )
+					.catch( function(__err){
+						reject( {"message" : "Setting MySql Failed", "err" : __err} )
+					} );
 				} )
-				.catch( function(err){
-					reject( err );
+				.catch( function(_err){
+					reject( {"message" : "Setting MySql Failed", "err" : _err} );
 				} );
 			} else{
-				resolve( {"message" : "Setting MySql Failed"} );
+				resolve( {"message" : "Mysql handler doesn't set to use."} );
 			}
 		} catch( err ){
-			reject( {"message" : "Setting MySql Failed"} );
+			reject( {"message" : "Setting MySql Failed", "err" : err} );
 		}
 	} );
 }
@@ -217,10 +238,10 @@ function setExitHandler(){
 
 				resolve( {"message" : "Set Exit Handler"} );
 			} else{
-				resolve( {"message" : "Setting Exit Handler Failed"} );
+				resolve( {"message" : "Exit handler doesn't set to use."} );
 			}
 		} catch( err ){
-			reject( {"message" : "Setting Exit Handler Failed"} );
+			reject( {"message" : "Setting Exit Handler Failed", "err" : err} );
 		}
 	} );
 }

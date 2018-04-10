@@ -1,13 +1,12 @@
 exports.control = function( req, res ){
 	return new Promise( function(resolve, reject){
-
 		var message = "";
 		var connHandler = new connectionHandler( req, res );
 
 		if( req.query.cookieKey && req.query.cookieValue ){
 			var testKey = req.query.cookieKey;
 			var testValue = req.query.cookieValue;
-			
+
 			connHandler.setCookie( req.query.cookieKey, req.query.cookieValue, function( results, err ){
 				if( err ) reject( err );
 				logger.debug( results );
@@ -36,7 +35,8 @@ exports.control = function( req, res ){
 
 
 function setModel( req, res, message ){
-	var queries = require( __mysqlQueries );
+	// var queries = require( __mysqlQueries );
+    var queries = queriesXML.queries.query;
   var model = {};
 
   model.method = req.method;

@@ -1,4 +1,4 @@
-exports.dispatching = function( req, res ){
+exports.dispatching = function( req, res, dispatchingSpec ){
   return new Promise( function(resolve, reject){
 	let ModelAndView = require( __mav );
 
@@ -6,7 +6,7 @@ exports.dispatching = function( req, res ){
     let mav = new ModelAndView();
     let method = req.method.toUpperCase();
 
-    let dispatchingSpec = getDispatchingSpec( method, req._parsedUrl.pathname );
+    // let dispatchingSpec = getDispatchingSpec( method, req._parsedUrl.pathname );
 
     let view = require("path").join( dispatchingSpec.viewPath, dispatchingSpec.view );
 
@@ -51,31 +51,31 @@ exports.dispatching = function( req, res ){
 
 
 
-function getDispatchingSpec( method, reqPath ){
-  let dispatchingInfo = require( __contextDispatchingInfo );
-
-  let specifications = {};
-  let dispatchingSpec = {};
-
-  let length;
-
-  if( method === "GET" ){
-    specifications = dispatchingInfo[ "GET" ];
-  } else if( method === "POST" ){
-    specifications = dispatchingInfo[ "POST" ];
-  }
-
-  length = specifications.length;
-
-  for( var i=0; i<length; i++ ){
-    if( specifications[i].path === reqPath ){
-      dispatchingSpec = specifications[i];
-      break;
-    }
-  }
-
-  return dispatchingSpec;
-}
+// function getDispatchingSpec( method, reqPath ){
+//   let dispatchingInfo = require( __contextDispatchingInfo );
+//
+//   let specifications = {};
+//   let dispatchingSpec = {};
+//
+//   let length;
+//
+//   if( method === "GET" ){
+//     specifications = dispatchingInfo[ "GET" ];
+//   } else if( method === "POST" ){
+//     specifications = dispatchingInfo[ "POST" ];
+//   }
+//
+//   length = specifications.length;
+//
+//   for( var i=0; i<length; i++ ){
+//     if( specifications[i].path === reqPath ){
+//       dispatchingSpec = specifications[i];
+//       break;
+//     }
+//   }
+//
+//   return dispatchingSpec;
+// }
 
 function getController( controllerJS ){
 	return new Promise( function(resolve, reject){

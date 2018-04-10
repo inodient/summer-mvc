@@ -1,0 +1,146 @@
+{
+  "options" : {
+    "use_https" : "true",
+    "use_annotation" : "false",
+    "remove_and_rebuild" : "false",
+    "auto_structure_creation" : "true"
+  },
+
+  "protocol" : {
+    "http" : {
+      "port" : 3001
+    },
+    "https" : {
+      "port" : 8444,
+      "certification_path" : "/core-properties-dev/https",
+      "keyFileName" : "key.pem",
+      "certFileName" : "cert.pem"
+    }
+  },
+
+  "port" : 3002,
+  "context_architecture" : [
+    {
+      "folder" : "/core-properties-dev",
+      "files" : [ "context_dispatcher.json", "initializer.json" ]
+    },
+    {
+      "folder" : "/application/controllers",
+      "files" : [ "controller_basic.js",
+                  "controller_post.js",
+                  "controller_ajax.js",
+                  "controller_cookie_session.js",
+                  "controller_db.js",
+                  "controller_file.js" ]
+    },
+    {
+      "folder" : "/application/views",
+      "files" : [ "index.ejs", "error.html" ]
+    },
+    {
+      "folder" : "/static/upload",
+      "files" : []
+    },
+    {
+      "folder" : "/static",
+      "files" : [ "test_download.txt" ]
+    },
+    {
+      "folder" : "/__logs",
+      "files" : []
+    },
+    {
+      "folder" : "/core-properties-dev/https",
+      "files" : []
+    }
+  ],
+
+  "views" : {
+    "engine" : "ejs"
+  },
+
+  "tools" : [
+  	{
+  		"name" : "logger",
+  		"enable" : true,
+      "toolFiles" : [
+        {
+          "folder" : "/tools-properties-dev",
+          "files" : [ "logger.json" ]
+        },
+        {
+          "folder" : "/__logs",
+          "files" : []
+        }
+      ]  
+  	},
+  	{
+  		"name" : "errorHandler",
+  		"enable" : true,
+      "toolFiles" : [
+          {
+            "folder" : "/tools-submodules-dev",
+            "files" : [ "clientErrorHandler.js" ]
+          }
+        ]
+  	},
+  	{
+  		"name" : "connectionHandler",
+  		"enable" : true,
+  		"toolFiles" : [
+  			{
+	  			"folder" : "/tools-properties-dev",
+	  			"files" : [ "connection.json" ]
+  			},
+        {
+          "folder" : "/tools-submodules-dev",
+          "files" : [ "connectionHandlerSubmodules.js" ]
+        }
+  		]
+  	},
+  	{
+  		"name" : "fileHandler",
+  		"enable" : true,
+  		"toolFiles" : [
+  			{
+	  			"folder" : "/tools-properties-dev",
+	  			"files" : [ "file.json" ]
+  			},
+        {
+          "folder" : "/tools-submodules-dev",
+          "files" : [ "fileSubmodules.js" ]
+        }
+  		]
+  	},
+  	{
+  		"name" : "mysqlHandler",
+  		"enable" : true,
+  		"toolFiles" : [
+  			{
+	  			"folder" : "/tools-properties-dev",
+	  			"files" : [ "mysql.json" ]
+  			},
+  			{
+	  			"folder" : "/tools-submodules-dev/db/queries",
+	  			"files" : [ "query.xml" ]
+  			}
+  		]
+  	},
+  	{
+  		"name" : "exitHandler",
+  		"enable" : true,
+  		"toolFiles" : [
+  			{
+	  			"folder" : "/tools-submodules-dev",
+	  			"files" : [ "clientExitHandler.js" ]
+  			}
+  		]
+  	}
+  ],
+  "static_folders" : [ "/static", "/static/upload", "/static/img",
+    {
+      "url" : "/image",
+      "path" : "/Users/changhokang/Downloads/upload/template/image"
+    } 
+  ]
+}

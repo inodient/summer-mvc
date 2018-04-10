@@ -8,11 +8,12 @@ module.exports.error = error;
 
 
 
-const fs = require( "fs" );
-const path = require( "path" );
-const util = require( "util" );
-const loggerInfo = require( __loggerInfo );
-const colorInfo = require( __colorInfo );
+var fs = require( "fs" );
+var path = require( "path" );
+var util = require( "util" );
+var loggerInfo = require( __loggerInfo );
+var colorInfo = require( __colorInfo );
+
 
 
 
@@ -27,6 +28,9 @@ function createLogFile(){
 	let filePath = loggerInfo.file.path == "__defaultLogFilePath" ? __defaultLogFilePath : loggerInfo.file.path;
 	let fileNamePrefix = loggerInfo.file.fileNamePrefix;
 	let fileName = getLogFileName( fileNamePrefix );
+
+	var common = require( __common );
+	common.makeHierarchy( filePath, "/" );
 
 	let destination = path.join(filePath, fileName);
 
@@ -72,8 +76,13 @@ function info(){
 
 	for( var i=0; i<arguments.length; i++ ){
 		if( getMessageType(arguments[i]) == "object" ){
+			
 			try{
-				message += JSON.stringify( arguments[i], null, 4 ) + " ";
+				if( JSON.stringify( arguments[i], null, 4 ) === "{}" ){
+					message += require("util").inspect(arguments[i], {showHidden: false, depth: null} );
+				} else {
+					message += JSON.stringify( arguments[i], null, 4 ) + " ";
+				}
 			} catch( err ){
 				var argv = arguments[i];
 				argv = util.inspect( arguments[i], {showHidden: false, depth: null} );
@@ -84,7 +93,7 @@ function info(){
 		}
 	}
 
-	var functionName = getFunctionName( arguments.callee.caller.toString() );
+	var functionName = ( getFunctionName( arguments.callee.caller.toString() ) ).trim();
 
 	if( loggerInfo.writeFile.INFO ){
 		logFileWriteStream.write( "[INFO] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
@@ -101,9 +110,15 @@ function debug(){
 	var message = "";
 
 	for( var i=0; i<arguments.length; i++ ){
+
 		if( getMessageType(arguments[i]) == "object" ){
+
 			try{
-				message += JSON.stringify( arguments[i], null, 4 ) + " ";
+				if( JSON.stringify( arguments[i], null, 4 ) === "{}" ){
+					message += require("util").inspect(arguments[i], {showHidden: false, depth: null} );
+				} else {
+					message += JSON.stringify( arguments[i], null, 4 ) + " ";
+				}
 			} catch( err ){
 				var argv = arguments[i];
 				argv = util.inspect( arguments[i], {showHidden: false, depth: null} );
@@ -138,14 +153,31 @@ function error(){
 		} else{
 			if( getMessageType(arguments[i]) == "object" ){
 				try{
-					message += JSON.stringify( arguments[i], null, 4 ) + " ";
+					if( JSON.stringify( arguments[i], null, 4 ) === "{}" ){
+						message += require("util").inspect(arguments[i], {showHidden: false, depth: null} );
+					} else {
+						message += JSON.stringify( arguments[i], null, 4 ) + " ";
+					}
 				} catch( err ){
 					var argv = arguments[i];
 					argv = util.inspect( arguments[i], {showHidden: false, depth: null} );
 					message += argv + " ";
 				}
 			} else{
-				message += arguments[i] + " ";
+				var tempMessage = arguments[i];
+				var tempMessageArray = tempMessage.split("\n");
+
+				message += tempMessageArray[0] + "\n";
+				message += tempMessageArray[1] + "\n";
+
+				for( var j=2; j<tempMessageArray.length; j++ ){
+					var line = tempMessageArray[j];
+					var lineArray = line.split(",");
+
+					for( var k=0; k<lineArray.length; k++ ){
+						message += "	" + lineArray[k] + "\n";
+					}
+				}
 			}
 		}
 	}

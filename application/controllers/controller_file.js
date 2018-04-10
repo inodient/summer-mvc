@@ -39,7 +39,8 @@ exports.control_download = function( req, res ){
 }
 
 function setModel( req, res, message ){
-  var queries = require( __mysqlQueries );
+  // var queries = require( __mysqlQueries );
+    var queries = queriesXML.queries.query;
   var model = {};
 
   try{
