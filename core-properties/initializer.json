@@ -140,7 +140,7 @@
   "static_folders" : [ "/static", "/static/upload", "/static/img",
     {
       "url" : "/image",
-      "path" : "/Users/changhokang/Downloads/upload/template/image"
+      "path" : "/static/image/urls"
     }
   ]
 }
