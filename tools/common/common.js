@@ -33,6 +33,12 @@ exports.buildStructure = function( folder, fileName ){
 exports.makeHierarchy = function( folder, _currentPath ){
   let folderHierarchy = path.join(folder).split( path.sep );
 
+  if( require("os").platform().indexOf("win") > -1 ){
+    if( folderHierarchy[0] === path.parse(folder).root.replace( /\\/gi, "" ) ){
+      folderHierarchy.splice( 0, 1 );
+    }
+  }
+
   let currentPath = _currentPath == undefined ? __runningPath : _currentPath;
 
   try{
