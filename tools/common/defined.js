@@ -561,6 +561,48 @@ Object.defineProperty(global, "__mysqlQueriesXML", {
 	}
 } );
 
+Object.defineProperty(global, "__mssqlHandler", {
+	get : function(){
+		if( fs.existsSync(path.join( process.cwd(), architecture.tools.db, "mssqlHandler.js" ) ) ){
+			return path.join( process.cwd(), architecture.tools.db, "mssqlHandler.js" );
+		} else{
+			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", architecture.tools.db, "mssqlHandler.js" );
+		}
+	}
+} );
+
+Object.defineProperty(global, "__mssqlHandlerInfo", {
+	get : function(){
+		if( fs.existsSync(path.join( process.cwd(), __toolsPropertiesPath, "mssql.json" ) ) ){
+			return path.join( process.cwd(), __toolsPropertiesPath, "mssql.json" );
+		} else{
+			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", __toolsPropertiesPath, "mssql.json" );
+		}
+	}
+} );
+
+Object.defineProperty(global, "__mssqlQueries", {
+	get : function(){
+		console.log( "\x1b[31m%s\x1b[0m", "[warning]", "__mssqlQueries Usage : JSON type query files are deprecated. Use xml file type. Sample xml can be found in '/tools-submodules/db/queries.'" );
+
+		if( fs.existsSync(path.join( process.cwd(), __toolsSubmodulesPath, "db", "queries", "query.json" ) ) ){
+			return path.join( process.cwd(), __toolsSubmodulesPath, "db", "queries", "query.json" );
+		} else {
+			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", __toolsSubmodulesPath, "db", "queries", "query.json" );
+		}
+	}
+} );
+
+Object.defineProperty(global, "__mssqlQueriesXML", {
+	get : function(){
+		if( fs.existsSync(path.join( process.cwd(), __toolsSubmodulesPath, "db", "queries", "query.xml" ) ) ){
+			return path.join( process.cwd(), __toolsSubmodulesPath, "db", "queries", "query.xml" );
+		} else{
+			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", __toolsSubmodulesPath, "db", "queries", "query.xml" );
+		}
+	}
+} );
+
 Object.defineProperty(global, "__colorInfo", {
 	get : function(){
 		if( fs.existsSync(path.join( process.cwd(), __toolsPropertiesPath, "color.json" ) ) ){
@@ -690,6 +732,26 @@ Object.defineProperty(global, "__mysqlHandlerUsage", {
 		}
 	}
 } );
+
+Object.defineProperty(global, "__mssqlHandlerUsage", {
+	get : function(){
+		try{
+			var tools = initInfo.tools;
+
+			for( var i=0; i<tools.length; i++ ){
+				if( tools[i].name == "mssqlHandler" ){
+					return tools[i].enable;
+				}
+			}
+
+			return false;
+		} catch(err){
+			console.log( err );
+			throw err;
+		}
+	}
+} );
+
 
 Object.defineProperty(global, "__exitHandlerUsage", {
 	get : function(){

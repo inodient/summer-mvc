@@ -126,6 +126,20 @@
   			}
   		]
   	},
+    {
+      "name" : "mssqlHandler",
+      "enable" : true,
+      "toolFiles" : [
+        {
+          "folder" : "/tools-properties",
+          "files" : [ "mssql.json" ]
+        },
+        {
+          "folder" : "/tools-submodules/db/queries",
+          "files" : [ "query.xml" ]
+        }
+      ]
+    },
   	{
   		"name" : "exitHandler",
   		"enable" : true,

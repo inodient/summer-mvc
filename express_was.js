@@ -25,6 +25,7 @@ setterPromises.push( setter.setBodyParser( app ) );
 setterPromises.push( setter.setConnectionHandler( app ) );
 setterPromises.push( setter.setFileHandler() );
 setterPromises.push( setter.setMysqlHandler() );
+setterPromises.push( setter.setMssqlHandler() );
 setterPromises.push( setter.setExitHandler() );
 
 Promise.all( setterPromises )
