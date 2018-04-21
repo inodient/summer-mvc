@@ -25,58 +25,28 @@ exports.control = function( req, res, connection ){
 			params.push( "%getData%" );
 		}
 
-		mysqlHandler.executeQuery( queryId, params, connection )
-		.then( function( queryResults ){
-			logger.debug( queryResults.results );
-			resolve( setModel( req, res, JSON.stringify(queryResults.results, null, 4), null ) );
-		} )
-		.catch( function(err){
-			reject( err );
-		} );
+		
 
+		if( queryId.indexOf( "mssql") > -1 ){
+			mssqlHandler.executeQuery( queryId, params, connection.mssqlConnection )
+			.then( function( queryResults ){
+				// logger.debug( queryResults );
+				resolve( setModel( req, res, JSON.stringify(queryResults.results, null, 4), null ) );
+			} )
+			.catch( function(err){
+				reject( err );
+			} );
+		} else {
+			mysqlHandler.executeQuery( queryId, params, connection.mysqlConnection )
+			.then( function( queryResults ){
+				logger.debug( queryResults.results );
+				resolve( setModel( req, res, JSON.stringify(queryResults.results, null, 4), null ) );
+			} )
+			.catch( function(err){
+				reject( err );
+			} );
+		}
 	} );
-
-
-//	mysqlHandler.getConnection( pool )
-//	.then( function(connection){
-//		mysqlHandler.executeQuery( "getMysqlVersion", connection )
-//		.then( function(queryResults){
-//			mysqlHandler.releaseConnection( connection );
-//			logger.debug( queryResults.results );
-//		} );
-//	} )
-//	.catch( function(err){
-//		logger.error( err );
-//	} );
-
-	// mysqlHandler.getConnection( pool )
-	// .then( mysqlHandler.executeQuery.bind( null, "getMysqlVersion" ) )
-	// .then( function(results){
-	// 	logger.info( results.results );
-	// } )
-	// .catch( function(err){
-	// 	logger.error( err );
-	// } );
-
-	// mysqlHandler.getConnection()
-	// .then( mysqlHandler.executeQuery.bind( null, "getMySqlVersion" ) )
-	// .then( function(results){
-	// 	logger.info( results.results );
-	// } )
-	// .catch( function(err){
-	// 	logger.error( err );
-	// } );
-
-
-
-	// mysqlHandler.executeQuery( "getMySqlVersion" )
-	// .then( function(results){
-	// 	logger.info( results.results );
-	// } )
-	// .catch( function(err){
-	// 	logger.error( err );
-	// } );
-
 }
 
 function setModel( req, res, results, fields ){

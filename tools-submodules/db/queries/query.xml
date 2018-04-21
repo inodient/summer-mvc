@@ -18,4 +18,10 @@
   <query id='deleteAccessLog'>
     delete from connectionInfo where param like ?
   </query>
+  <query id='mssql-getZCCT1010'>
+    select * from ZCCT1010 where EMP_NO = 'i0198101';
+  </query>
+  <query id='mssql-getTestDB'>
+    INSERT INTO TB_TEST (test,id) VALUES ('11', 'kangchangho.com' )
+  </query>
 </queries>

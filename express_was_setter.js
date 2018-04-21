@@ -5,6 +5,7 @@ module.exports.setErrorHandler = setErrorHandler;
 module.exports.setConnectionHandler = setConnectionHandler;
 module.exports.setFileHandler = setFileHandler;
 module.exports.setMysqlHandler = setMysqlHandler;
+module.exports.setMssqlHandler = setMssqlHandler;
 module.exports.setExitHandler = setExitHandler;
 
 
@@ -201,10 +202,13 @@ function setMysqlHandler(){
 				mysqlHandler.getPool()
 				.then( function(_pool){
 					global.pool = _pool;
+					global.mysqlPool = _pool;
 
 					mysqlHandler.getQueries()
 					.then( function(_queries){
 						global.queriesXML = _queries;
+						global.mysqlQueriesXML = _queries;
+
 						resolve( {"message" : "Set MySql Handler"} );
 					} )
 					.catch( function(__err){
@@ -222,6 +226,48 @@ function setMysqlHandler(){
 		}
 	} );
 }
+
+
+
+
+//***************************************************
+//** Prepare mssql Handler - Tools
+//***************************************************
+function setMssqlHandler(){
+	return new Promise( function(resolve, reject){
+		try{
+			if( __mssqlHandlerUsage ){
+
+				global.mssqlHandler = require( __mssqlHandler );
+
+				mssqlHandler.getPool()
+				.then( function(_pool){
+					global.pool = _pool;
+					global.mssqlPool = _pool;
+
+					mssqlHandler.getQueries()
+					.then( function(_queries){
+						global.queriesXML = _queries;
+						global.mssqlQueriesXML = _queries;
+
+						resolve( {"message" : "Set MsSql Handler"} );
+					} )
+					.catch( function(__err){
+						reject( {"message" : "Setting MsSql Failed", "err" : __err} )
+					} );
+				} )
+				.catch( function(_err){
+					reject( {"message" : "Setting MsSql Failed", "err" : _err} );
+				} );
+			} else{
+				resolve( {"message" : "Mssql handler doesn't set to use."} );
+			}
+		} catch( err ){
+			reject( {"message" : "Setting MsSql Failed", "err" : err} );
+		}
+	} );
+}
+
 
 
 
