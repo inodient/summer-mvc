@@ -148,6 +148,16 @@ function releaseConnection( _connection ){
 }
 
 function getQueryString( queryId, params ){
+	if( mysqlQueriesXML ){
+		let queriesArr = mysqlQueriesXML.queries.query;
+
+		for( var i=0; i<queriesArr.length; i++ ){
+			if( queriesArr[i].$.id == queryId ){
+				return setQueryParams( queriesArr[i]._, params );
+			}
+		}
+	}
+	
 	if( queriesXML ){
 		let queriesArr = queriesXML.queries.query;
 

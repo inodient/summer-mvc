@@ -150,124 +150,6 @@ function executeTransaction( queryId, params ){
 		.catch( function(err){
 			reject( err );
 		} );
-
-		
-
-
-		// getPool()
-		// .then( function(_pool){
-		// 	var transaction = new mssql.Transaction( _pool );
-
-		// 	transaction.begin( function(err){
-
-		// 		if( err ){
-		// 			console.log( err );
-		// 			reject( err );
-		// 		} else{
-		// 			let rolledBack = false;
-
-		// 			transaction.on( "rollback", function(aborted){
-		// 				rolledBack = true;
-		// 			} )
-
-		// 			const _request = transaction.request();
-
-		// 			_request.query( getQueryString( queryId, params ), function(err, result){
-
-		// 				if (err) {
-		// 		            if (!rolledBack) {
-		// 		                transaction.rollback(err => {
-		// 		                    if( err ){
-		// 		                    	console.log( err );
-		// 		                    	reject( err );
-		// 		                    } else{
-		// 		                    	console.log( "ROLLBACK SUCCEED" );
-
-		// 		                    	resolve( Object.assign( result, {"pool":_pool} ) );
-		// 		                    }
-		// 		                })
-		// 		            }
-		// 		        } else {
-		// 		            transaction.commit(err => {
-		// 		            	if( err ){
-		// 		            		console.log( err )
-		// 		            		reject( err );
-		// 		            	} else{
-		// 		            		console.log( "TRANSACTION COMMIT SUCCEED" );
-		// 		            		resolve(  Object.assign( result, {"pool":_pool} ) );
-		// 		            	}
-		// 		            })
-		// 		        }
-		// 			} )
-		// 		}
-		// 	} )
-		// })
-		// .catch( function(err){
-		// 	console.log( "ASDFASDF" );
-		// 	console.log( err );
-
-		// 	// releasePool( pool );
-		// 	pool.close();
-
-		// 	getPool()
-		// 	.then( function(_pool){
-		// 		console.log( "HERE" );
-
-		// 		global.pool = _pool;
-
-		// 		var transaction = new mssql.Transaction( pool );
-
-		// 		transaction.begin( function(err){
-
-		// 			if( err ){
-		// 				console.log( err );
-		// 				reject( err );
-		// 			} else{
-		// 				let rolledBack = false;
-
-		// 				transaction.on( "rollback", function(aborted){
-		// 					rolledBack = true;
-		// 				} )
-
-		// 				const _request = transaction.request();
-
-		// 				_request.query( getQueryString( queryId, params ), function(err, result){
-
-		// 					if (err) {
-		// 			            if (!rolledBack) {
-		// 			                transaction.rollback(err => {
-		// 			                    if( err ){
-		// 			                    	console.log( err );
-		// 			                    	reject( err );
-		// 			                    } else{
-		// 			                    	console.log( "ROLLBACK SUCCEED" );
-
-		// 			                    	resolve( Object.assign( result, {"pool":_pool} ) );
-		// 			                    }
-		// 			                })
-		// 			            }
-		// 			        } else {
-		// 			            transaction.commit(err => {
-		// 			            	if( err ){
-		// 			            		console.log( err )
-		// 			            		reject( err );
-		// 			            	} else{
-		// 			            		console.log( "TRANSACTION COMMIT SUCCEED" );
-		// 			            		resolve(  Object.assign( result, {"pool":_pool} ) );
-		// 			            	}
-		// 			            })
-		// 			        }
-		// 				} )
-		// 			}
-		// 		} )
-
-		// 	} )
-		// 	.catch( function(err){
-		// 		reject( err );
-		// 	} );
-
-		// 	reject( err );
-		// });
 	} );
 }
 
@@ -280,6 +162,16 @@ function releasePool( pool ){
 }
 
 function getQueryString( queryId, params ){
+	if( mssqlQueriesXML ){
+		let queriesArr = mssqlQueriesXML.queries.query;
+
+		for( var i=0; i<queriesArr.length; i++ ){
+			if( queriesArr[i].$.id == queryId ){
+				return setQueryParams( queriesArr[i]._, params );
+			}
+		}
+	}
+	
 	if( queriesXML ){
 		let queriesArr = queriesXML.queries.query;
 
@@ -324,11 +216,11 @@ function setQueryParams( queryString, params ){
 
 function getQueries(){
 	return new Promise( function(resolve, reject){
-		var mysqlHandlerInfo = require(__mysqlHandlerInfo);
+		var mssqlHandlerInfo = require(__mssqlHandlerInfo);
 
 
-		if( "queries" in mysqlHandlerInfo && mysqlHandlerInfo.queries != null ){
-			var queryFiles = mysqlHandlerInfo.queries;
+		if( "queries" in mssqlHandlerInfo && mssqlHandlerInfo.queries != null ){
+			var queryFiles = mssqlHandlerInfo.queries;
 			var queryStrings = [];
 
 			var promises = [];
@@ -353,7 +245,7 @@ function getQueries(){
 				reject( _err );
 			} );
 		} else {
-			parsingQueries( __mysqlQueriesXML)
+			parsingQueries( __mssqlQueriesXML )
 			.then( function( queryStrings ){
 				resolve( { "queries" : {"query" : queryStrings } } );
 			} )
