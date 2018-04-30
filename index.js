@@ -47,6 +47,19 @@ require( "./tools/common/defined.js" );
 
 
 
+//***************************************************
+//*** Inline Core Properties
+//***************************************************
+global.__inlineContextDispatchingInfo = null;
+
+exports.setInlineContextDispatchingInfo = function(){
+	__inlineContextDispatchingInfo = arguments[0];
+	logger.info( "Inline dispatching information loaded." );
+}
+
+
+
+
 
 //***************************************************
 //*** Create summer-mvc project hierarchy
@@ -75,5 +88,3 @@ if( __loggerUsage ){
 //*** Call Exporess WAS
 //***************************************************
 const express_was = require( "./express_was.js" );
-
-

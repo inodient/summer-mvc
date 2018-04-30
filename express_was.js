@@ -61,7 +61,7 @@ Promise.all( setterPromises )
 	var credentials = httpsInitializer.getHttpsCertifications();
 
 	if( __httpsUsage && !credentials.status && credentials.status != "error" ){
-		var httpsServer = https.createServer( httpsInitializer.getHttpsCertifications(), app );
+		httpsServer = https.createServer( httpsInitializer.getHttpsCertifications(), app );
 
 		httpsServer.listen( __defaultHttpsPort, () => {
 		  logger.info( "Listen Port For HTTPS : " + __defaultHttpsPort );
@@ -79,7 +79,7 @@ Promise.all( setterPromises )
 
 
 	// method = get
-	let dispatchingInfo = require( __contextDispatchingInfo );
+	let dispatchingInfo = __inlineContextDispatchingInfo != null ? __inlineContextDispatchingInfo : require( __contextDispatchingInfo );
 	let getSpecifications = dispatchingInfo[ "GET" ];
 
 	for( let i=0; i<getSpecifications.length; i++ ){
@@ -107,7 +107,13 @@ Promise.all( setterPromises )
 		        if( !contentDisposition ){
 
 		          res.status(200);
-		          res.render( mav.view, mav.model );
+
+		          // path.join returns "." when parameters are empty string
+		          if( mav.view != "." ){
+		          	res.render( mav.view, mav.model );
+		          } else{
+		          	res.send( mav.model );
+		          }
 		        }
 		        // 2-2-2. File Download
 		        else{
@@ -153,8 +159,12 @@ Promise.all( setterPromises )
 
 		        // 2-2-1. Render View
 		        if( !contentDisposition ){
-		        	res.status(200);
-		        	res.render( mav.view, mav.model );
+		        	// path.join returns "." when parameters are empty string
+					if( mav.view != "." ){
+						res.render( mav.view, mav.model );
+					} else{
+						res.send( mav.model );
+					}
 		        }
 		        // 2-2-2. File Download
 		        else{
