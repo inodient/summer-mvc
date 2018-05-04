@@ -1,7 +1,10 @@
 {
   "connectionLimit" : 100,
-  "host" : "localhost",
-  "user" : "root",
-  "password" : "123qwer@",
-  "database" : "summer-mvc"
+  "host" : "****",
+  "user" : "****",
+  "password" : "****",
+  "database" : "****",
+  "queries" : [
+  	"/tools-submodules-dev/db/queries/query.xml"
+  ]
 }
