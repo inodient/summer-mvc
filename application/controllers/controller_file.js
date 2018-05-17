@@ -39,24 +39,36 @@ exports.control_download = function( req, res ){
 }
 
 function setModel( req, res, message ){
-  // var queries = require( __mysqlQueries );
-    var queries = queriesXML.queries.query;
-  var model = {};
+  return new Promise( function(resolve, reject){
 
-  try{
-    model.method = req.method;
-    model.path = req._parsedUrl.pathname;;
-    model.queryString = JSON.stringify( req.query, null, 4 );
-    model.params = JSON.stringify( req.params, null, 4 );
+    var mysqlQueries = [];
+    var mssqlQueries = [];
 
-    model.message = message;
-    model.queries = queries;
+    var model = {};
 
-    return model;
-  } catch( err ){
-    throw err;
-  }
+    if( __mysqlHandlerUsage ){
+      mysqlQueries = mysqlQueriesXML.queries.query;
+    } 
+    if( __mssqlHandlerUsage ){
+      mssqlQueries = mssqlQueriesXML.queries.query;
+    } 
 
+    try{
+      model.method = req.method;
+      model.path = req._parsedUrl.pathname;;
+      model.queryString = JSON.stringify( req.query, null, 4 );
+      model.params = JSON.stringify( req.params, null, 4 );
+
+      model.mysqlQueries = mysqlQueries;
+      model.mssqlQueries = mssqlQueries;
+      model.message = message;
+
+      resolve( model );
+    } catch( err ){
+      logger.error( "controller_file.js error", err );
+      reject( err );
+    }
+  } );
 }
 
 

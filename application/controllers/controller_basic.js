@@ -44,9 +44,17 @@ exports.control_ = function( req, res ){
 function setModel( req, res ){
   return new Promise( function(resolve, reject){
 
-    // var queries = require( __mysqlQueries );
-    // var queries = queriesXML.queries.query;
+    var mysqlQueries = [];
+    var mssqlQueries = [];
+
     var model = {};
+
+    if( __mysqlHandlerUsage ){
+      mysqlQueries = mysqlQueriesXML.queries.query;
+    } 
+    if( __mssqlHandlerUsage ){
+      mssqlQueries = mssqlQueriesXML.queries.query;
+    } 
 
     try{
       model.method = req.method;
@@ -54,13 +62,13 @@ function setModel( req, res ){
       model.queryString = JSON.stringify( req.query, null, 4 );
       model.params = JSON.stringify( req.params, null, 4 );
 
-      // model.queries = queries;
-      model.queries = [];
+      model.mysqlQueries = mysqlQueries;
+      model.mssqlQueries = mssqlQueries;
       model.message = "Default summer-mvc Test Request"
 
       resolve( model );
     } catch( err ){
-      console.log( "controller_basic.js error" );
+      console.log( "controller_basic.js error", err );
       reject( err );
     }
   } );

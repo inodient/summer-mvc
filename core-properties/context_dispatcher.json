@@ -10,7 +10,7 @@
         },
         {
             "id": "ajaxRequest",
-            "path": "/ajaxRequest",
+            "path": "/ajaxrequest",
             "controllerJS": "controller_ajax.js",
             "controlFunction": "control",
             "viewPath": "",
@@ -18,7 +18,7 @@
         },
         {
             "id": "setCookie",
-            "path": "/setCookie",
+            "path": "/setcookie",
             "controllerJS": "controller_cookie_session.js",
             "controlFunction": "control",
             "viewPath": "",
@@ -26,7 +26,7 @@
         },
         {
             "id": "setSession",
-            "path": "/setSession",
+            "path": "/setsession",
             "controllerJS": "controller_cookie_session.js",
             "controlFunction": "control",
             "viewPath": "",
@@ -34,8 +34,16 @@
         },
         {
             "id": "getData",
-            "path": "/getData",
-            "controllerJS": "controller_db.js",
+            "path": "/getdata-mysql",
+            "controllerJS": "controller_mysql.js",
+            "controlFunction": "control",
+            "viewPath": "",
+            "view": "index.ejs"
+        },
+        {
+            "id": "getData",
+            "path": "/getdata-mssql",
+            "controllerJS": "controller_mssql.js",
             "controlFunction": "control",
             "viewPath": "",
             "view": "index.ejs"
@@ -70,14 +78,6 @@
             "id": "upload",
             "path": "/upload",
             "controllerJS": "controller_file.js",
-            "controlFunction": "control",
-            "viewPath": "",
-            "view": "index.ejs"
-        },
-        {
-            "id": "ajaxRequest",
-            "path": "/ajaxRequest2",
-            "controllerJS": "controller_ajax.js",
             "controlFunction": "control",
             "viewPath": "",
             "view": "index.ejs"

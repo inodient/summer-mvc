@@ -1,6 +1,9 @@
 {
-	"user": "**",
+"user": "**",
 	"password": "****",
 	"server": "****",
-	"database": "****"
+	"database": "****",
+	"queries" : [
+		"/tools-submodules-dev/db/queries/mssqlQuery.xml"
+	]
 }

@@ -1,10 +1,10 @@
 {
-  "connectionLimit" : 100,
-  "host" : "****",
-  "user" : "****",
-  "password" : "****",
-  "database" : "****",
-  "queries" : [
-  	"/tools-submodules-dev/db/queries/query.xml"
-  ]
+	"connectionLimit" : 100,
+	"host" : "www.summermvc.com",
+	"user" : "smvc-test",
+	"password" : "1234Summer@",
+	"database" : "summer-mvc",
+	"queries" : [
+		"/tools-submodules-dev/db/queries/mysqlQuery.xml"
+	]
 }

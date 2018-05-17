@@ -30,7 +30,8 @@
                   "controller_post.js",
                   "controller_ajax.js",
                   "controller_cookie_session.js",
-                  "controller_db.js",
+                  "controller_mysql.js",
+                  "controller_mssql.js",
                   "controller_file.js" ]
     },
     {
@@ -122,7 +123,7 @@
   			},
   			{
 	  			"folder" : "/tools-submodules-dev/db/queries",
-	  			"files" : [ "query.xml" ]
+	  			"files" : [ "mysqlQuery.xml" ]
   			}
   		]
   	},
@@ -136,7 +137,7 @@
         },
         {
           "folder" : "/tools-submodules-dev/db/queries",
-          "files" : [ "query.xml" ]
+          "files" : [ "mssqlQuery.xml" ]
         }
       ]
     },

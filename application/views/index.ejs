@@ -45,7 +45,7 @@
 	  		$("#ajax_request").on( "click", function(){
 	  		  var queryText = $("#ajaxMessage").val();
 
-          $.get( "/ajaxRequest?text=" + queryText, function(data, status){
+          $.get( "/ajaxrequest?text=" + queryText, function(data, status){
             $("#message").text( data.text.toString() );
           } );
 	      } );
@@ -137,7 +137,7 @@
 							<tr>
 								<td class="col-lg-3 col-md-3 col-sm-3">Cookie</td>
 								<td>
-									<form class="form-inline" action="/setCookie" method="get">
+									<form class="form-inline" action="/setcookie" method="get">
 										<div class="input-group">
 											<input style="width:50%" class="form-control" name="cookieKey" placeholder="key" required />
 											<input style="width:50%" class="form-control" name="cookieValue" placeholder="value" required />
@@ -151,7 +151,7 @@
 							<tr>
 								<td class="col-lg-3 col-md-3 col-sm-3">Session</td>
 								<td>
-									<form class="form-inline" action="/setSession" method="get">
+									<form class="form-inline" action="/setsession" method="get">
 										<div class="input-group">
 											<input style="width:50%" class="form-control" name="sessionKey" placeholder="key" required />
 											<input style="width:50%" class="form-control" name="sessionValue" placeholder="value" required />
@@ -170,17 +170,43 @@
 					<table class="table test_table">
 						<tbody>
 							<tr>
-								<td class="col-lg-3 col-md-3 col-sm-3">DB</td>
+								<td class="col-lg-3 col-md-3 col-sm-3">Mysql</td>
 								<td>
-									<form class="form-inline" action="/getData" method="get">
-										<% if( queries && queries.length > 0 ){ %>
+									<form class="form-inline" action="/getdata-mysql" method="get">
+										<% if( mysqlQueries && mysqlQueries.length > 0 ){ %>
 											<select class="form-control query_select" id="queryId">
-												<% for( var i=0; i<queries.length; i++ ){ %>
-													<option value=<%= queries[i].$.id %> ><%= queries[i].$.id %></option>
+												<% for( var i=0; i<mysqlQueries.length; i++ ){ %>
+													<option value=<%= mysqlQueries[i].$.id %> ><%= mysqlQueries[i].$.id %></option>
 												<% } %>
 											</select>
-											<input id="selectedQueryId" name="selectedQueryId" type="text" value=<%= queries[0].$.id %> hidden />
+											<input id="selectedQueryId" name="selectedQueryId" type="text" value=<%= mysqlQueries[0].$.id %> hidden />
 											<button class="btn btn-default">Run</button>
+										<% } else { %>
+											<p>Disabled</p>
+										<% } %>
+									</form>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="table-responsive">
+					<table class="table test_table">
+						<tbody>
+							<tr>
+								<td class="col-lg-3 col-md-3 col-sm-3">Mssql</td>
+								<td>
+									<form class="form-inline" action="/getdata-mssql" method="get">
+										<% if( mssqlQueries && mssqlQueries.length > 0 ){ %>
+											<select class="form-control query_select" id="queryId">
+												<% for( var i=0; i<mssqlQueries.length; i++ ){ %>
+													<option value=<%= mssqlQueries[i].$.id %> ><%= mssqlQueries[i].$.id %></option>
+												<% } %>
+											</select>
+											<input id="selectedQueryId" name="selectedQueryId" type="text" value=<%= mssqlQueries[0].$.id %> hidden />
+											<button class="btn btn-default">Run</button>
+										<% } else { %>
+											<p>Disabled</p>
 										<% } %>
 									</form>
 								</td>
