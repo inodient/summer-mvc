@@ -50,7 +50,7 @@ function uploadFile( req ){
             logger.debug( "Uploading : " + saveTo);
 
           } catch( err ){
-            logger.error( err );
+            console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[fileHandler.js]", err );
             throw err;
           }
         });
@@ -62,6 +62,7 @@ function uploadFile( req ){
 
         busboy.on( "error", function(err){
           logger.error( err );
+          console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[fileHandler.js]", err );
           reject( err );
         });
 
@@ -69,6 +70,7 @@ function uploadFile( req ){
 
       } catch(err){
         logger.error( "BUSBOY Catch an ERROR when Upload File.", err );
+        console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[fileHandler.js]", err );
         reject( err );
       }
     } );
@@ -103,6 +105,7 @@ function downloadFile( res, savedPath, savedFileName, originalFileName ){
 
     } )
     .catch( function(err){
+      console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[fileHandler.js]", err );
       reject( err );
     } );
   } );
@@ -112,30 +115,36 @@ function downloadFile( res, savedPath, savedFileName, originalFileName ){
 
 
 function _getUploadDestination( arguments ){
-  logger.info( fileInfo[ "default-path" ] );
 
-  var defaultPath = path.join( fileInfo[ "default-path" ] ).split( path.sep );
-  var destDir = __runningPath;
+  try {
+    logger.info( fileInfo[ "default-path" ] );
 
-  if( fileInfo["default-pre-path"] && fileInfo["default-pre-path"] != "" ){
-    destDir = fileInfo[ "default-pre-path" ];
-    defaultPath = path.join( fileInfo[ "default-path" ] ).split( path.sep );
-  }
+    var defaultPath = path.join( fileInfo[ "default-path" ] ).split( path.sep );
+    var destDir = __runningPath;
 
-  for( var i=0; i<defaultPath.length; i++ ){
-    if( defaultPath[i] != "" ){
-      destDir = path.join( destDir, defaultPath[i] );
-      logger.debug( destDir );
+    if( fileInfo["default-pre-path"] && fileInfo["default-pre-path"] != "" ){
+      destDir = fileInfo[ "default-pre-path" ];
+      defaultPath = path.join( fileInfo[ "default-path" ] ).split( path.sep );
+    }
+
+    for( var i=0; i<defaultPath.length; i++ ){
+      if( defaultPath[i] != "" ){
+        destDir = path.join( destDir, defaultPath[i] );
+        logger.debug( destDir );
+        common.makeFolder( destDir );
+      }
+    }
+
+    for( var i=1; i<arguments.length; i++ ){
+      destDir = path.join( destDir, arguments[i].toString() );
       common.makeFolder( destDir );
     }
-  }
 
-  for( var i=1; i<arguments.length; i++ ){
-    destDir = path.join( destDir, arguments[i].toString() );
-    common.makeFolder( destDir );
+    return destDir;
+  } catch( err ){
+    console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[fileHandler.js]", err );
+    throw err;
   }
-
-  return destDir;
 }
 
 function _setDownloadResponse( res, savedPath, savedFileName, originalFileName ){
@@ -154,6 +163,7 @@ function _setDownloadResponse( res, savedPath, savedFileName, originalFileName )
       resolve( res );
 
     } catch( err ){
+      console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[fileHandler.js]", err );
       reject( err );
     }
   } );

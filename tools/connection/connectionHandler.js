@@ -4,6 +4,7 @@ module.exports = function( req, res ){
 		this.req = req;
 		this.res = res;
 	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[connectionHandler.js]", err );
 		throw err;
 	}
 
@@ -20,6 +21,7 @@ module.exports = function( req, res ){
 				return undefined;
 			}
 		} catch( err ){
+			console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[connectionHandler.js]", err );
 			throw err;
 		}
 	}
@@ -37,6 +39,7 @@ module.exports = function( req, res ){
 				return undefined;
 			}
 		} catch( err ){
+			console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[connectionHandler.js]", err );
 			throw err;
 		}
 	}
@@ -89,6 +92,7 @@ module.exports = function( req, res ){
 			if( callback ){
 				callback( null, err );
 			} else{
+				console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[connectionHandler.js]", err );
 				throw( err );
 			}
 		}
@@ -120,6 +124,7 @@ module.exports = function( req, res ){
 			if( callback ){
 				callback( null, err );
 			} else{
+				console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[connectionHandler.js]", err );
 				throw err;
 			}
 		}
@@ -145,6 +150,7 @@ module.exports = function( req, res ){
 			if( callback ){
 				callback( err );
 			} else{
+				console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[connectionHandler.js]", err );
 				throw err;
 			}
 		}
@@ -181,6 +187,7 @@ module.exports = function( req, res ){
 			if( callback ){
 				callback( null, err );
 			} else{
+				console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[connectionHandler.js]", err );
 				throw err;
 			}
 		}
@@ -210,6 +217,7 @@ module.exports = function( req, res ){
 			if( callback ){
 				callback( err );
 			} else{
+				console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[connectionHandler.js]", err );
 				throw err;
 			}
 		}
@@ -225,13 +233,17 @@ module.exports = function( req, res ){
 				} );
 			} else{
 				req.session.destroy( function(err){
-					if( err ) throw err;
+					if( err ){ 
+						console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[connectionHandler.js]", err );
+						throw err; 
+					}
 				} );
 			}
 		} catch( err ){
 			if( callback ){
 				callback( err );
 			} else{
+				console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[connectionHandler.js]", err );
 				throw err;
 			}
 		}
@@ -247,13 +259,17 @@ module.exports = function( req, res ){
 				} );
 			} else{
 				req.session.regenerate( function(err){
-					if( err ) throw err;
+					if( err ){
+						console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[connectionHandler.js]", err );
+						throw err;
+					} 
 				} );
 			}
 		} catch( err ){
 			if( callback ){
 				callback( err );
 			} else{
+				console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[connectionHandler.js]", err );
 				throw err;
 			}
 		}
@@ -269,13 +285,17 @@ module.exports = function( req, res ){
 				} );
 			} else{
 				req.session.reload( function(err){
-					if( err ) throw err;
+					if( err ){
+						console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[connectionHandler.js]", err );
+						throw err;
+					}
 				} );
 			}
 		} catch( err ){
 			if( callback ){
 				callback( err );
 			} else{
+				console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[connectionHandler.js]", err );
 				throw err;
 			}
 		}
@@ -291,13 +311,17 @@ module.exports = function( req, res ){
 				} );
 			} else{
 				req.session.save( function(err){
-					if( err ) throw err;
+					if( err ){ 
+						console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[connectionHandler.js]", err );
+						throw err; 
+					}
 				} );
 			}
 		} catch( err ){
 			if( callback ){
 				callback( err );
 			} else{
+				console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[connectionHandler.js]", err );
 				throw err;
 			}
 		}
@@ -312,6 +336,7 @@ module.exports = function( req, res ){
 			if( callback ){
 				callback( err );
 			} else{
+				console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[connectionHandler.js]", err );
 				throw err;
 			}
 		}
@@ -337,6 +362,7 @@ module.exports = function( req, res ){
 			if( callback ){
 				callback( err );
 			} else{
+				console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[connectionHandler.js]", err );
 				throw err;
 			}
 		}
@@ -362,6 +388,7 @@ module.exports = function( req, res ){
 			if( callback ){
 				callback( err );
 			} else{
+				console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[connectionHandler.js]", err );
 				throw err;
 			}
 		}

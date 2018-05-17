@@ -25,6 +25,7 @@ function parseAnnotation(){
 				resolve( {"message" : "Annotation Parsing Succeed"} );
 			} )
 			.catch( function(err){
+				console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[exoress_was_setter.js]", err );
 				reject( err );
 			} );
 		} else{
@@ -75,6 +76,7 @@ function setViewInfo( express, app ){
 
 			resolve( {"message" : "Set View Engine"} );
 		} catch( err ){
+			console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[exoress_was_setter.js]", err );
 			reject( {"message" : "Setting View Engine Failed", "err" : err} );
 		}
 	} );
@@ -94,6 +96,7 @@ function setBodyParser( app ){
 
 			resolve( {"message" : "Set Body Parser"} );
 		} catch( err ){
+			console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[exoress_was_setter.js]", err );
 			reject( {"message" : "Setting Body Parser Failed", "err" : err} );
 		}
 	} );
@@ -122,6 +125,7 @@ function setErrorHandler( app ){
 				resolve( {"message" : "Error Handler Failed doesn't set to use."} );
 			}
 		} catch( err ){
+			console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[exoress_was_setter.js]", err );
 			reject( {"message" : "Setting Error Handler Failed", "err" : err} );
 		}
 	} );
@@ -156,6 +160,7 @@ function setConnectionHandler( app ){
 				resolve( {"message" : "Connection handler doesn't set to use."} );
 			}
 		} catch( err ){
+			console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[exoress_was_setter.js]", err );
 			reject( {"message" : "Setting Connection Handler Failed", "err" : err} );
 		}
 	} );
@@ -180,6 +185,7 @@ function setFileHandler(){
 				resolve( {"message" : "File Handler doesn't set to use."} );
 			}
 		} catch( err ){
+			console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[exoress_was_setter.js]", err );
 			reject( {"message" : "Setting File Handler Failed", "err" : err} );
 		}
 	} );
@@ -212,16 +218,19 @@ function setMysqlHandler(){
 						resolve( {"message" : "Set MySql Handler"} );
 					} )
 					.catch( function(__err){
+						console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[exoress_was_setter.js]", __err );
 						reject( {"message" : "Setting MySql Failed", "err" : __err} )
 					} );
 				} )
 				.catch( function(_err){
+					console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[exoress_was_setter.js]", _err );
 					reject( {"message" : "Setting MySql Failed", "err" : _err} );
 				} );
 			} else{
 				resolve( {"message" : "Mysql handler doesn't set to use."} );
 			}
 		} catch( err ){
+			console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[exoress_was_setter.js]", err );
 			reject( {"message" : "Setting MySql Failed", "err" : err} );
 		}
 	} );
@@ -253,16 +262,19 @@ function setMssqlHandler(){
 						resolve( {"message" : "Set MsSql Handler"} );
 					} )
 					.catch( function(__err){
+						console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[exoress_was_setter.js]", __err );
 						reject( {"message" : "Setting MsSql Failed", "err" : __err} )
 					} );
 				} )
 				.catch( function(_err){
+					console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[exoress_was_setter.js]", _err );
 					reject( {"message" : "Setting MsSql Failed", "err" : _err} );
 				} );
 			} else{
 				resolve( {"message" : "Mssql handler doesn't set to use."} );
 			}
 		} catch( err ){
+			console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[exoress_was_setter.js]", err );
 			reject( {"message" : "Setting MsSql Failed", "err" : err} );
 		}
 	} );
@@ -287,6 +299,7 @@ function setExitHandler(){
 				resolve( {"message" : "Exit handler doesn't set to use."} );
 			}
 		} catch( err ){
+			console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[exoress_was_setter.js]", err );
 			reject( {"message" : "Setting Exit Handler Failed", "err" : err} );
 		}
 	} );
