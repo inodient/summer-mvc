@@ -37,7 +37,7 @@ exports.control = function( req, res, connection ){
 				reject( err );
 			} );
 		} else {
-			mysqlHandler.executeQuery( queryId, params, connection.mysqlConnection )
+			mysqlHandler.executeQuery( queryId, params, connection )
 			.then( function( queryResults ){
 				logger.debug( queryResults.results );
 				resolve( setModel( req, res, JSON.stringify(queryResults.results, null, 4), null ) );

@@ -128,7 +128,7 @@
   	},
     {
       "name" : "mssqlHandler",
-      "enable" : true,
+      "enable" : false,
       "toolFiles" : [
         {
           "folder" : "/tools-properties",

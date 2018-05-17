@@ -1,0 +1,27 @@
+<?xml version='1.0'?>
+<queries>
+  <query id='getMySqlVersion'>
+    select version()
+  </query>
+  <query id='getAccessLog'>
+    <![CDATA[
+      select * from connectionInfo 
+      where connectionTime > #STARTDATE# and connectionTime < #ENDDATE#
+    ]]>
+  </query>
+  <query id='insertAccessLog'>
+    insert into connectionInfo values ( ?, ?, ?, ?, ?, ? )
+  </query>
+  <query id='updateAccessLog'>
+    update connectionInfo set userId = ? where param = ?
+  </query>
+  <query id='deleteAccessLog'>
+    delete from connectionInfo where param like ?
+  </query>
+  <query id='mssql-getZCCT1010'>
+    select * from ZCCT1010 where EMP_NO = 'i0198101';
+  </query>
+  <query id='mssql-getTestDB'>
+    INSERT INTO TB_TEST (test,id) VALUES ('11', 'kangchangho.com' )
+  </query>
+</queries>
