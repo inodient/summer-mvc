@@ -21,36 +21,42 @@ function getPool(){
 		try{
 			resolve( mysql.createPool( require(__mysqlHandlerInfo) ) );
 		} catch( err ){
+			console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mysqlHandler.js]", err );
 			reject( err );
 		}
 	} );
 }
 
 function getConnection(){
-	var _pool = undefined;
+	try {
+		var _pool = undefined;
 
-	if( arguments ){
-		_pool = arguments[0];
-	}
+		if( arguments ){
+			_pool = arguments[0];
+		}
 
-	return new Promise( function(resolve, reject){
+		return new Promise( function(resolve, reject){
 
-		if( _pool ){
-			_pool.getConnection( function(err, _connection){
-				if( err ) reject( err );
-				resolve( _connection );
-			} );
-
-		} else{
-			getPool()
-			.then( function(_pool){
+			if( _pool ){
 				_pool.getConnection( function(err, _connection){
 					if( err ) reject( err );
 					resolve( _connection );
 				} );
-			} );
-		}
-	} );
+
+			} else{
+				getPool()
+				.then( function(_pool){
+					_pool.getConnection( function(err, _connection){
+						if( err ) reject( err );
+						resolve( _connection );
+					} );
+				} );
+			}
+		} );
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mysqlHandler.js]", err );
+		throw err;
+	}
 }
 
 
@@ -59,44 +65,51 @@ function getConnection(){
 
 
 function executeQuery( queryId ){
-	var params = undefined;
-	var connection = undefined;
+	try {
+		var params = undefined;
+		var connection = undefined;
 
-	if( arguments[1] && typeof arguments[1] == "object" ){
-		if( arguments[1] instanceof Array ){
-			params = arguments[1];
+		if( arguments[1] && typeof arguments[1] == "object" ){
+			if( arguments[1] instanceof Array ){
+				params = arguments[1];
 
-			if( arguments[2] ){
-				connection = arguments[2];
+				if( arguments[2] ){
+					connection = arguments[2];
+				}
+			} else if( !(arguments[1] instanceof Array) ){
+				connection = arguments[1];
 			}
-		} else if( !(arguments[1] instanceof Array) ){
-			connection = arguments[1];
 		}
+
+		return new Promise( function(resolve, reject){
+			if( connection ){
+				executeTransaction( queryId, params, connection )
+				.then( function(queryResults){
+					resolve( queryResults );
+				} )
+				.catch( function(err){
+					console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mysqlHandler.js]", err );
+					reject( err );
+				} );
+			} else{
+				getConnection()
+				.then( executeTransaction.bind(null, queryId, params) )
+				.then( function(queryResults){
+					releaseConnection( queryResults.connection );
+					releasePool( queryResults.connection.config.pool );
+
+					resolve( queryResults );
+				} )
+				.catch( function(err){
+					console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mysqlHandler.js]", err );
+					reject( err );
+				} );
+			}
+		} );
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mysqlHandler.js]", err );
+		throw err;
 	}
-
-	return new Promise( function(resolve, reject){
-		if( connection ){
-			executeTransaction( queryId, params, connection )
-			.then( function(queryResults){
-				resolve( queryResults );
-			} )
-			.catch( function(err){
-				reject( err );
-			} );
-		} else{
-			getConnection()
-			.then( executeTransaction.bind(null, queryId, params) )
-			.then( function(queryResults){
-				releaseConnection( queryResults.connection );
-				releasePool( queryResults.connection.config.pool );
-
-				resolve( queryResults );
-			} )
-			.catch( function(err){
-				reject( err );
-			} );
-		}
-	} );
 }
 
 function executeTransaction( queryId, params, connection ){
@@ -105,6 +118,7 @@ function executeTransaction( queryId, params, connection ){
 		try{
 			connection.beginTransaction( function(err){
 				if( err ){
+					console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mysqlHandler.js]", err );
 					reject( err );
 				}
 
@@ -112,6 +126,7 @@ function executeTransaction( queryId, params, connection ){
 
 					if( err ){
 						connection.rollback( function(){
+							console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mysqlHandler.js]", err );
 							reject( err );
 						} );
 					}
@@ -119,6 +134,7 @@ function executeTransaction( queryId, params, connection ){
 					connection.commit( function(err){
 						if( err ){
 							connection.rollback( function(){
+								console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mysqlHandler.js]", err );
 								reject( err );
 							} )
 						}
@@ -129,6 +145,7 @@ function executeTransaction( queryId, params, connection ){
 				} );
 			} );
 		} catch( err ){
+			console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mysqlHandler.js]", err );
 			reject( err );
 		}
 	} );
@@ -140,61 +157,81 @@ function executeTransaction( queryId, params, connection ){
 
 
 function releasePool( pool ){
-	pool.end();
+	try {
+		pool.end();
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mysqlHandler.js]", err );
+		throw err;
+	}
 }
 
 function releaseConnection( _connection ){
-	_connection.destroy();
+	try {
+		_connection.destroy();
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mysqlHandler.js]", err );
+		throw err;
+	}
 }
 
 function getQueryString( queryId, params ){
-	if( mysqlQueriesXML ){
-		let queriesArr = mysqlQueriesXML.queries.query;
+	try {
+		if( mysqlQueriesXML ){
+			let queriesArr = mysqlQueriesXML.queries.query;
 
-		for( var i=0; i<queriesArr.length; i++ ){
-			if( queriesArr[i].$.id == queryId ){
-				return setQueryParams( queriesArr[i]._, params );
+			for( var i=0; i<queriesArr.length; i++ ){
+				if( queriesArr[i].$.id == queryId ){
+					return setQueryParams( queriesArr[i]._, params );
+				}
 			}
 		}
-	}
-	
-	if( queriesXML ){
-		let queriesArr = queriesXML.queries.query;
+		
+		if( queriesXML ){
+			let queriesArr = queriesXML.queries.query;
 
-		for( var i=0; i<queriesArr.length; i++ ){
-			if( queriesArr[i].$.id == queryId ){
-				return setQueryParams( queriesArr[i]._, params );
+			for( var i=0; i<queriesArr.length; i++ ){
+				if( queriesArr[i].$.id == queryId ){
+					return setQueryParams( queriesArr[i]._, params );
+				}
 			}
 		}
-	}
 
-	for( var i=0; i<queries.length; i++ ){
-		if( queries[i].id == queryId ){
-			return queries[i].queryString;
+		for( var i=0; i<queries.length; i++ ){
+			if( queries[i].id == queryId ){
+				return queries[i].queryString;
+			}
 		}
-	}
 
-	return "SELECT NOW()";
+		return "SELECT NOW()";
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mysqlHandler.js]", err );
+		throw err;
+	}
 }
 
 function setQueryParams( queryString, params ){
 
-	if( params ){
-		for( var i=0; i<params.length; i++ ){
-			if( params[i] instanceof Object ){
-				var key = Object.keys( params[i] )[0];
-				var value = ( params[i] )[key];
+	try {
+		if( params ){
+			for( var i=0; i<params.length; i++ ){
+				if( params[i] instanceof Object ){
+					var key = Object.keys( params[i] )[0];
+					var value = ( params[i] )[key];
 
-				if( !isNaN(parseFloat(value)) && isFinite(value) ){
-					queryString = queryString.replace( new RegExp("#" + key + "#", "gi"), value );
-				} else {
-					queryString = queryString.replace( new RegExp("#" + key + "#", "gi"), "'" + value + "'" );
+					if( !isNaN(parseFloat(value)) && isFinite(value) ){
+						queryString = queryString.replace( new RegExp("#" + key + "#", "gi"), value );
+					} else {
+						queryString = queryString.replace( new RegExp("#" + key + "#", "gi"), "'" + value + "'" );
+					}
 				}
 			}
 		}
-	}
 
-	return queryString;
+		return queryString;
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mysqlHandler.js]", err );
+		throw err;
+	}
 }
 
 
@@ -228,6 +265,7 @@ function getQueries(){
 				resolve( queries );
 			} )
 			.catch( function(_err){
+				console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mysqlHandler.js]", _err );
 				reject( _err );
 			} );
 		} else {
@@ -236,6 +274,7 @@ function getQueries(){
 				resolve( { "queries" : {"query" : queryStrings } } );
 			} )
 			.catch( function(err){
+				console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mysqlHandler.js]", err );
 				reject( err );
 			} );
 		}	
@@ -253,10 +292,14 @@ function parsingQueries( queryFile ){
 
 		fs.readFile( queryFile, function(err, data){
 			if( err ){
+				console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mysqlHandler.js]", err );
 				reject( err );
 			} else {
 				parser.parseString(data, function(_err, result){
-					if( _err ) reject(_err);
+					if( _err ){
+						console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mysqlHandler.js]", err );
+						reject( _err );						
+					}
 					resolve( result.queries.query );
 				} );
 			}

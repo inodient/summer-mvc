@@ -20,8 +20,13 @@ var colorInfo = require( __colorInfo );
 
 // Initializing Logger - Start
 function initLogger(){
-	let destination = createLogFile();
-	global.logFileWriteStream = createStream( destination );
+	try {
+		let destination = createLogFile();
+		global.logFileWriteStream = createStream( destination );
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[logger.js]", err );
+		throw err;
+	}
 }
 
 function createLogFile(){
@@ -38,19 +43,31 @@ function createLogFile(){
 		fs.openSync( destination, "a" );
 		return destination;
 	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[logger.js]", err );
 		throw err;
 	}
 }
 
 function getLogFileName( fileName ){
-	let date = ( ( new Date() ).toISOString() ).substring( 0, 10 );
-	fileName = fileName + "_" + date + ".log";
+	try {
+		let date = ( ( new Date() ).toISOString() ).substring( 0, 10 );
+		fileName = fileName + "_" + date + ".log";
 
-	return fileName;
+		return fileName;
+	
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[logger.js]", err );
+		throw err;
+	}
 }
 
 function createStream( destination ){
-	return fs.createWriteStream( destination, {flags: "a", "encoding" : "utf8", "mode" : 0666} );
+	try {
+		return fs.createWriteStream( destination, {flags: "a", "encoding" : "utf8", "mode" : 0666} );
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[logger.js]", err );
+		throw err;
+	}
 }
 // Initializing Logger - End
 
@@ -59,99 +76,30 @@ function createStream( destination ){
 
 // Write Log - Start
 function log( type, message ){
-	var curTime = new Date();
-	curTime = curTime.toISOString();
+	try {
+		var curTime = new Date();
+		curTime = curTime.toISOString();
 
-	var functionName = getFunctionName( arguments.callee.caller.toString() );
+		var functionName = getFunctionName( arguments.callee.caller.toString() );
 
-	logFileWriteStream.write( "[" + type + "] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
-	console.log( "[" + type + "] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
+		logFileWriteStream.write( "[" + type + "] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
+		console.log( "[" + type + "] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[logger.js]", err );
+		throw err;
+	}
 }
 
 function info(){
-	var curTime = new Date();
-	curTime = curTime.toISOString();
+	try {
+		var curTime = new Date();
+		curTime = curTime.toISOString();
 
-	var message = "";
+		var message = "";
 
-	for( var i=0; i<arguments.length; i++ ){
-		if( getMessageType(arguments[i]) == "object" ){
-			
-			try{
-				if( JSON.stringify( arguments[i], null, 4 ) === "{}" ){
-					message += require("util").inspect(arguments[i], {showHidden: false, depth: null} );
-				} else {
-					message += JSON.stringify( arguments[i], null, 4 ) + " ";
-				}
-			} catch( err ){
-				var argv = arguments[i];
-				argv = util.inspect( arguments[i], {showHidden: false, depth: null} );
-				message += argv + " ";
-			}
-		} else{
-			message += arguments[i] + " ";
-		}
-	}
-
-	var functionName = ( getFunctionName( arguments.callee.caller.toString() ) ).trim();
-
-	if( loggerInfo.writeFile.INFO ){
-		logFileWriteStream.write( "[INFO] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
-	}
-	if( loggerInfo.console.INFO ){
-		console.log( attachColorPrefix(colorInfo.FgYellow) + "%s" + attachColorPrefix(colorInfo.Reset), "[INFO]", "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "", ""  );
-	}
-}
-
-function debug(){
-	var curTime = new Date();
-	curTime = curTime.toISOString();
-
-	var message = "";
-
-	for( var i=0; i<arguments.length; i++ ){
-
-		if( getMessageType(arguments[i]) == "object" ){
-
-			try{
-				if( JSON.stringify( arguments[i], null, 4 ) === "{}" ){
-					message += require("util").inspect(arguments[i], {showHidden: false, depth: null} );
-				} else {
-					message += JSON.stringify( arguments[i], null, 4 ) + " ";
-				}
-			} catch( err ){
-				var argv = arguments[i];
-				argv = util.inspect( arguments[i], {showHidden: false, depth: null} );
-				message += argv + " ";
-			}
-		} else{
-			message += arguments[i] + " ";
-		}
-	}
-
-	var functionName = getFunctionName( arguments.callee.caller.toString() );
-
-	if( loggerInfo.writeFile.INFO ){
-		logFileWriteStream.write( "[DEBUG] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
-	}
-	if( loggerInfo.console.INFO ){
-		console.log( attachColorPrefix(colorInfo.FgCyan) + "%s" +  attachColorPrefix(colorInfo.Reset), "[DEBUG]", "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
-	}
-}
-
-function error(){
-	var curTime = new Date();
-	curTime = curTime.toISOString();
-
-	var functionName = getFunctionName( arguments.callee.caller.toString() );
-
-	var message = "";
-
-	for( var i=0; i<arguments.length; i++ ){
-		if( arguments[i] instanceof Error ){
-			message += arguments[i].message + "\n" + arguments[i].stack;
-		} else{
+		for( var i=0; i<arguments.length; i++ ){
 			if( getMessageType(arguments[i]) == "object" ){
+				
 				try{
 					if( JSON.stringify( arguments[i], null, 4 ) === "{}" ){
 						message += require("util").inspect(arguments[i], {showHidden: false, depth: null} );
@@ -164,29 +112,120 @@ function error(){
 					message += argv + " ";
 				}
 			} else{
-				var tempMessage = arguments[i];
-				var tempMessageArray = tempMessage.split("\n");
+				message += arguments[i] + " ";
+			}
+		}
 
-				message += tempMessageArray[0] + "\n";
-				message += tempMessageArray[1] + "\n";
+		var functionName = ( getFunctionName( arguments.callee.caller.toString() ) ).trim();
 
-				for( var j=2; j<tempMessageArray.length; j++ ){
-					var line = tempMessageArray[j];
-					var lineArray = line.split(",");
+		if( loggerInfo.writeFile.INFO ){
+			logFileWriteStream.write( "[INFO] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
+		}
+		if( loggerInfo.console.INFO ){
+			console.log( attachColorPrefix(colorInfo.FgYellow) + "%s" + attachColorPrefix(colorInfo.Reset), "[INFO]", "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "", ""  );
+		}
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[logger.js]", err );
+		throw err;
+	}
+}
 
-					for( var k=0; k<lineArray.length; k++ ){
-						message += "	" + lineArray[k] + "\n";
+function debug(){
+
+	try {
+		var curTime = new Date();
+		curTime = curTime.toISOString();
+
+		var message = "";
+
+		for( var i=0; i<arguments.length; i++ ){
+
+			if( getMessageType(arguments[i]) == "object" ){
+
+				try{
+					if( JSON.stringify( arguments[i], null, 4 ) === "{}" ){
+						message += require("util").inspect(arguments[i], {showHidden: false, depth: null} );
+					} else {
+						message += JSON.stringify( arguments[i], null, 4 ) + " ";
+					}
+				} catch( err ){
+					var argv = arguments[i];
+					argv = util.inspect( arguments[i], {showHidden: false, depth: null} );
+					message += argv + " ";
+				}
+			} else{
+				message += arguments[i] + " ";
+			}
+		}
+
+		var functionName = getFunctionName( arguments.callee.caller.toString() );
+
+		if( loggerInfo.writeFile.INFO ){
+			logFileWriteStream.write( "[DEBUG] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
+		}
+		if( loggerInfo.console.INFO ){
+			console.log( attachColorPrefix(colorInfo.FgCyan) + "%s" +  attachColorPrefix(colorInfo.Reset), "[DEBUG]", "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
+		}
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[logger.js]", err );
+		throw err;
+	}
+}
+
+function error(){
+
+	try {
+		var curTime = new Date();
+		curTime = curTime.toISOString();
+
+		var functionName = getFunctionName( arguments.callee.caller.toString() );
+
+		var message = "";
+
+		for( var i=0; i<arguments.length; i++ ){
+			if( arguments[i] instanceof Error ){
+				message += arguments[i].message + "\n" + arguments[i].stack;
+			} else{
+				if( getMessageType(arguments[i]) == "object" ){
+					try{
+						if( JSON.stringify( arguments[i], null, 4 ) === "{}" ){
+							message += require("util").inspect(arguments[i], {showHidden: false, depth: null} );
+						} else {
+							message += JSON.stringify( arguments[i], null, 4 ) + " ";
+						}
+					} catch( err ){
+						var argv = arguments[i];
+						argv = util.inspect( arguments[i], {showHidden: false, depth: null} );
+						message += argv + " ";
+					}
+				} else{
+					var tempMessage = arguments[i];
+					var tempMessageArray = tempMessage.split("\n");
+
+					message += tempMessageArray[0] + "\n";
+					message += tempMessageArray[1] + "\n";
+
+					for( var j=2; j<tempMessageArray.length; j++ ){
+						var line = tempMessageArray[j];
+						var lineArray = line.split(",");
+
+						for( var k=0; k<lineArray.length; k++ ){
+							message += "	" + lineArray[k] + "\n";
+						}
 					}
 				}
 			}
 		}
-	}
 
-	if( loggerInfo.writeFile.ERROR ){
-		logFileWriteStream.write( "[ERROR] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
-	}
-	if( loggerInfo.console.ERROR ){
-		console.log(  attachColorPrefix(colorInfo.FgRed) + "%s" +  attachColorPrefix(colorInfo.Reset), "[ERROR]", "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
+		if( loggerInfo.writeFile.ERROR ){
+			logFileWriteStream.write( "[ERROR] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
+		}
+		if( loggerInfo.console.ERROR ){
+			console.log(  attachColorPrefix(colorInfo.FgRed) + "%s" +  attachColorPrefix(colorInfo.Reset), "[ERROR]", "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
+		}
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[logger.js]", err );
+		throw err;
 	}
 }
 // Write Log - End
@@ -196,21 +235,39 @@ function error(){
 
 // Helper Functions - Start
 function getFunctionName( func ){
-  func = func.substr('function '.length);
-  func = func.substr(0, func.indexOf('('));
 
-	if( func == "" ) func = "ANONYMOUS_FUNC";
-	if( func.indexOf( "=>" ) >= 0 ) func = "ANONYMOUS_FUNC";
+	try {
+		func = func.substr('function '.length);
+	  	func = func.substr(0, func.indexOf('('));
 
-	return func;
+		if( func == "" ) func = "ANONYMOUS_FUNC";
+		if( func.indexOf( "=>" ) >= 0 ) func = "ANONYMOUS_FUNC";
+
+		return func;
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[logger.js]", err );
+		throw err;
+	}
 }
 
 function getMessageType( message ){
-	return typeof message;
+
+	try {
+		return typeof message;
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[logger.js]", err );
+		throw err;
+	}
 }
 
 function attachColorPrefix( colorValue ){
-	return "\x1b" + colorValue;
+
+	try {
+		return "\x1b" + colorValue;
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[logger.js]", err );
+		throw err;
+	}
 }
 
 Object.defineProperty(global, '__callerFileName', {
@@ -230,9 +287,12 @@ Object.defineProperty(global, '__callerFileName', {
 			    	return callerfile.replace( path.dirname(require.main.filename), "" );
 			    }
 			}
-		} catch (err) {}
-			return undefined;
+		} catch (err) {
+			console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[logger.js]", err );
 		}
+			
+		return undefined;
+	}
 });
 
 Object.defineProperty(global, '__stack', {

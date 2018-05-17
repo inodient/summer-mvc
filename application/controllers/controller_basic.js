@@ -45,7 +45,7 @@ function setModel( req, res ){
   return new Promise( function(resolve, reject){
 
     // var queries = require( __mysqlQueries );
-    var queries = queriesXML.queries.query;
+    // var queries = queriesXML.queries.query;
     var model = {};
 
     try{
@@ -54,7 +54,8 @@ function setModel( req, res ){
       model.queryString = JSON.stringify( req.query, null, 4 );
       model.params = JSON.stringify( req.params, null, 4 );
 
-      model.queries = queries;
+      // model.queries = queries;
+      model.queries = [];
       model.message = "Default summer-mvc Test Request"
 
       resolve( model );

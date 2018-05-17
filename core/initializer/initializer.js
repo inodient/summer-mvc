@@ -7,6 +7,7 @@ exports.initStructure = function(){
 		initContextArchitecture( common, initInfo );
 		initTools( common, initInfo );
 	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[initializer.js]", err );
 		throw err;
 	}
 }
@@ -17,71 +18,88 @@ exports.initStructure = function(){
 
 
 function initContextArchitecture( common, initInfo ){
-	let architecture = initInfo[ "context_architecture" ];
+	try {
+		let architecture = initInfo[ "context_architecture" ];
 
-	  if( getInitOption( initInfo, "auto_structure_creation" ) == "true" ){
+		  if( getInitOption( initInfo, "auto_structure_creation" ) == "true" ){
 
-	    for( var i=0; i<architecture.length; i++ ){
-	      let folder = architecture[i].folder;
+		    for( var i=0; i<architecture.length; i++ ){
+		      let folder = architecture[i].folder;
 
-	      if( getInitOption( "remove_and_rebuild" ) == "true" ){
-	          // makeBackup( folder );
-	          console.log( "remove_and_rebuild" );
-	      }
-	      
-	      if( architecture[i].files.length == 0 ){
-	    	  common.buildStructure( folder );
-	      }
+		      if( getInitOption( "remove_and_rebuild" ) == "true" ){
+		          // makeBackup( folder );
+		          console.log( "remove_and_rebuild" );
+		      }
+		      
+		      if( architecture[i].files.length == 0 ){
+		    	  common.buildStructure( folder );
+		      }
 
-	      for( var j=0; j<architecture[i].files.length; j++ ){
-	        let fileName = architecture[i].files[j];
+		      for( var j=0; j<architecture[i].files.length; j++ ){
+		        let fileName = architecture[i].files[j];
 
-	        common.buildStructure( folder, fileName );
-	      }
-	    }
-	  }
+		        common.buildStructure( folder, fileName );
+		      }
+		    }
+		  }
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[initializer.js]", err );
+		throw( err );
+	}
 }
 
 function initTools( common, initInfo ){
-	let architecture = initInfo[ "tools" ];
 
-	if( getInitOption( initInfo, "auto_structure_creation" ) == "true" ){
+	try {
+		let architecture = initInfo[ "tools" ];
 
-		for( var i=0; i<architecture.length; i++ ){
+		if( getInitOption( initInfo, "auto_structure_creation" ) == "true" ){
 
-			if( architecture[i].enable ){
-				let toolFiles = architecture[i].toolFiles;
+			for( var i=0; i<architecture.length; i++ ){
 
-				for( var j=0; j<toolFiles.length; j++ ){
-					let folder = toolFiles[j].folder;
-					let files = toolFiles[j].files;
+				if( architecture[i].enable ){
+					let toolFiles = architecture[i].toolFiles;
 
-					if( files.length == 0 ){
-						common.buildStructure( folder );
-					}
+					for( var j=0; j<toolFiles.length; j++ ){
+						let folder = toolFiles[j].folder;
+						let files = toolFiles[j].files;
 
-					for( var k=0; k<files.length; k++ ){
-						let fileName = files[k];
+						if( files.length == 0 ){
+							common.buildStructure( folder );
+						}
 
-						common.buildStructure( folder, fileName );
+						for( var k=0; k<files.length; k++ ){
+							let fileName = files[k];
+
+							common.buildStructure( folder, fileName );
+						}
 					}
 				}
 			}
 		}
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[initializer.js]", err );
+		throw( err );
 	}
 }
 
 function getInitOption( initInfo, option ){
-  let options = initInfo[ "options" ];
+
+	try {
+		let options = initInfo[ "options" ];
   
-  switch( option ) {
-    case "use_service" :
-      return String( options.use_service );
-    case "remove_and_rebuild" :
-      return String( options.remove_and_rebuild );
-    case "auto_structure_creation" :
-      return String( options.auto_structure_creation );
-    default:
-      return undefined;
-  }
+		  switch( option ) {
+		    case "use_service" :
+		      return String( options.use_service );
+		    case "remove_and_rebuild" :
+		      return String( options.remove_and_rebuild );
+		    case "auto_structure_creation" :
+		      return String( options.auto_structure_creation );
+		    default:
+		      return undefined;
+		  }
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[initializer.js]", err );
+		throw( err );
+	}
 }

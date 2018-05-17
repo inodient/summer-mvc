@@ -25,7 +25,7 @@ function getHttpsCertifications(){
 
 		return credentials;
 	} catch( err ){
-		console.log( err );
+		logger.error( err );
 		return err;
 	}
 }

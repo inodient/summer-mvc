@@ -52,7 +52,7 @@ function exitHandler(options) {
 			}
 
 		} catch( err ){
-			console.error( err );
+			console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[exitHandler.js]", err );
 			reject( err );
 		}
 	} );
@@ -82,7 +82,7 @@ function releaseResources(){
 			resolve();
 		} )
 		.catch( function(err){
-			logger.error( err );
+			console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[exitHandler.js]", err );
 			reject( err );
 		} );
 	} );
@@ -105,6 +105,7 @@ function releaseGlobalPool(){
 				resolve( "" );
 			}
 		} catch( err ){
+			console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[exitHandler.js]", err );
 			reject( err );
 		}
 	} );
@@ -129,6 +130,7 @@ function releaseLogFileStream(){
 				resolve( "" );
 			}
 		} catch( err ){
+			console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[exitHandler.js]", err );
 			reject( err );
 		}
 	} );

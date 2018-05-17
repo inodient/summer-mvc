@@ -12,6 +12,7 @@ exports.versionUpgrade = function(){
 		translateQueryJsonToXml();
 		upgradeProject();
 	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[versionController.js]", err );
 		throw err;
 	}	
 }
@@ -24,6 +25,7 @@ function translateQueryJsonToXml(){
 			__translateQueryJsonToXml( path.join(process.cwd(), "tools-submodules-dev", "db", "queries"), "query.json");
 		}	
 	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[versionController.js]", err );
 		throw err;
 	}
 }
@@ -58,6 +60,7 @@ function __translateQueryJsonToXml( folder, fileName ){
 		fs.writeFileSync( path.join(folder, "query.xml"), queryXML );
 
 	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[versionController.js]", err );
 		throw err;
 	}
 }
@@ -83,6 +86,7 @@ function upgradeProject(){
 				break;
 		}
 	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[versionController.js]", err );
 		throw( err );
 	}
 }
@@ -141,6 +145,7 @@ function checkVersionUpgradeType(){
 
 		return upgradeType;
 	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[versionController.js]", err );
 		throw( err );
 	}
 }
@@ -149,6 +154,7 @@ function upgradeProudctionLegacy( type ){
 	try {
 		upgradeInitializer( type );
 	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[versionController.js]", err );
 		throw( err );
 	}
 }
@@ -157,6 +163,7 @@ function upgradeDevelopmentLegacy( type ){
 	try {
 		upgradeInitializer( type );
 	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[versionController.js]", err );
 		throw( err );
 	}
 }
@@ -166,6 +173,7 @@ function upgraeProductionLegacyToDevelopment( type ){
 		exportInitializer();
 		buildStructureFromLegacy();
 	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[versionController.js]", err );
 		throw( err );
 	}
 }
@@ -270,6 +278,7 @@ function upgradeInitializer( type ){
 		fs.truncateSync( initInfoPath );
 		fs.writeFileSync( initInfoPath, JSON.stringify(initInfo, null, 4) );
 	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[versionController.js]", err );
 		throw( err );
 	}
 }
@@ -305,6 +314,7 @@ function exportInitializer(){
 		fs.openSync( initInfoPath, 'w' );
 		fs.writeFileSync( initInfoPath, JSON.stringify(defaultInitInfo, null, 4) );
 	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[versionController.js]", err );
 		throw( err );
 	}
 }
@@ -320,6 +330,7 @@ function buildStructureFromLegacy(){
 			__buildStructureFromLegacy( initInfo.tools[i].toolFiles );
 		}
 	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[versionController.js]", err );
 		throw( err );
 	}
 }
@@ -358,6 +369,7 @@ function __buildStructureFromLegacy( filePathInfo ){
 			}
 		}
 	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[versionController.js]", err );
 		throw( err );
 	}
 }

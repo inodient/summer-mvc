@@ -8,6 +8,7 @@
 	  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
 	  <meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 	  <style>
 	  	.jumbotron{
@@ -172,13 +173,15 @@
 								<td class="col-lg-3 col-md-3 col-sm-3">DB</td>
 								<td>
 									<form class="form-inline" action="/getData" method="get">
-										<select class="form-control query_select" id="queryId">
-											<% for( var i=0; i<queries.length; i++ ){ %>
-												<option value=<%= queries[i].$.id %> ><%= queries[i].$.id %></option>
-											<% } %>
-										</select>
-										<input id="selectedQueryId" name="selectedQueryId" type="text" value=<%= queries[0].$.id %> hidden />
-										<button class="btn btn-default">Run</button>
+										<% if( queries && queries.length > 0 ){ %>
+											<select class="form-control query_select" id="queryId">
+												<% for( var i=0; i<queries.length; i++ ){ %>
+													<option value=<%= queries[i].$.id %> ><%= queries[i].$.id %></option>
+												<% } %>
+											</select>
+											<input id="selectedQueryId" name="selectedQueryId" type="text" value=<%= queries[0].$.id %> hidden />
+											<button class="btn btn-default">Run</button>
+										<% } %>
 									</form>
 								</td>
 							</tr>

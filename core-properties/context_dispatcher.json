@@ -47,6 +47,14 @@
             "controlFunction": "control_download",
             "viewPath": "",
             "view": "index.ejs"
+        },
+        {
+            "id": "emptyview",
+            "path": "/emptyview",
+            "controllerJS": "controller_basic.js",
+            "controlFunction": "control",
+            "viewPath": "",
+            "view": ""   
         }
     ],
     "POST": [
@@ -73,6 +81,14 @@
             "controlFunction": "control",
             "viewPath": "",
             "view": "index.ejs"
+        },
+        {
+            "id": "emptyviewpost",
+            "path": "/emptyviewpost",
+            "controllerJS": "controller_basic.js",
+            "controlFunction": "control",
+            "viewPath": "",
+            "view": ""   
         }
     ]
 }

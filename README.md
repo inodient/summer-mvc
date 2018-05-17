@@ -1,132 +1,130 @@
 # summer-mvc
-Structured, light, spring-like web application development framework.      
+Structured, Light, spring-like web application framwork for desiging **RESTful API**.      
 
-
-
-
+```javascript
+const mvc = require( "summer-mvc" );    
+```   
 
 ### http://www.summermvc.com
 
 
+## Information  
+`Express` or other Nodejs web service middleware is very simple and well-design to use.
+But when using them, there are some needs to design our own application architecture such as controller, db executor or VO / DO.
+The `summer-mvc` will help you.
 
+The `summer-mvc` has only one goal to provide very simple way to design web application.
+If developer just run application using `summer-mvc`, the `summer-mvc` core module automatically build your application architecture.
+It looks simular the `spring-framework`'s one.
 
+And the `summer-mvc` have so many supporting tools such as **connection handler, error handler, exit handler, db handler, file handler and logger**.
+These tools can shorten development speed.
 
-## Information
-The lastest version of summer-mvc is v2.0.0.
-<b>Technical site is opend at http://www.summermvc.com.</b>
-If you have any question, please send email to inodient@gmail.com
-
-> Please check your summer-mvc version and APIs.
-
-
-
-
-
-## Convert Version
-If your project uses summer-mvc under v2.0.0, it must be converted as current version. Please convert project using below steps.
-
-
-
-
-
-#### Step 01 : Remove legacy summer-mvc
-When you convert summer-mvc version, deleting legacy summer-mvc is the best stable way. As summer-mvc or developer creates their own folders and files, <b>back-up</b> your project is mandatory step. After doing back-up, please execute below command.
-Command line tool's folder location is a <b>project root</b> (ex: ../git/Nodejs/summer-mvc-test).
-```
-$ npm uninstall summer-mvc
-```
+Finally, the `summer-mvc` is optimized to implement `RESTful API`. 
+Only 5 to 10 minutes of study, developers can implement their own APIs.
 
 
 
 
 
-#### Step 02 : Install lastest summer-mvc and initialize project
-After deleting, please install lastest summer-mvc.
-It can be done same way when you install summer-mvc currently.
-Please execute below command.
-```
-$ npm install summer-mvc
-```
-After installing, please run application for intializing project.
-```
-$ node {file__name}.js
-```
-```
-ex ) $ node app.js
-```
-During initial running, summer-mvc will create your project's folder hierarchy. More information can be found in http://www.summermvc.com/getting-started
+
+
+
+## Installation
+```      
+$ npm install summer-mvc      
+```    
+
+[![IMAGE ALT TEXT HERE](https://www.summermvc.com/write_code.png)](https://youtu.be/nbqMR-WhsBQ)  
 
 
 
 
-
-#### Step 03 : Copy and Move context_dispatcher.json
-You can use <b>context_dispatcher.json</b> over v2.0.0 without changing contents. Please legacy dispatcher file to latest project folder.
-Legacy <b>context_dispatcher.json</b> can be found at <b>{user-project}/dispatcher</b>.
-And latest location is <b>{user-project}/core-properties/context_dispatcher.json</b>.
+## Quick Start
+#### 1. Auto Building Mechanism
+In your js file, require module `summer-mvc`.   
+Then `summer-mvc` build architecture, authomatically.     
+( dispatcher, controller, views, queries etc )   
 
 ```
-Legacy Location : {user-project}/dispatcher
-Latest Location : {user-project}/core-properties
+const mvc = require( "summer-mvc" );    
+```    
+
 ```
+$ node app.js
+```    
+
+[![IMAGE ALT TEXT HERE](https://www.summermvc.com/install.png)](https://youtu.be/RJFem_aWxIY)  
 
 
 
 
-
-#### Step 04 : Copy and Move Controller Files
-Controlling business logic is not changed in version 2.0.0.
-So you can use your legacy controller without changing.
-The only thing you must do is that to move controller files to other folders.
+#### 2. Accessing Initial Web Page
+After building, call `basic http request` in your browser.  
+Default port is 3000. ex) http://localhost:3000    
 ```
-Legacy Location : {user-project}/controller
-Latest Location : {user-project}/application/controllers
-```
+http://{your-host-name}:{port}    
+```    
 
 
 
+#### 3. Create Application
+The last job is that implement application.
+Since the `summer-mvc` automatically create `controller` folders in project,
+implement control function and assign that at `context-dispatcher`. 
 
-
-#### Step 05 : Copy and Move View Files
-Viewing html page is not changed in version 2.0.0.
-So you can use your legacy view files without changing.
-The only thing you must do is that to move view files to other folders.
-```
-Legacy Location : {user-project}/views
-Latest Location : {user-project}/application/views
-```
-
+> exports.control = function( req, res, connection ){ ...  } 
+    
+[![IMAGE ALT TEXT HERE](https://www.summermvc.com/execution.png)](https://youtu.be/xZz1hEwbBus)  
+    
 
 
 
 
 ## Features       
-- Focus on fast design & development speed
-- Use `express` for serving http request, response
-- Provide automatic *application-building-machanism*
-- Provide structural designing method using **JSON** file format
-- Simular architecture with spring framework
-- Support 1 view engine (`ejs`), 1 database engine (`mysql`) (v1.1.0)
-- Provide easy way to manage cookie, session and database(mysql)
+- Adopt and Release `Auto-Building-Machenism`
+- Using `express` as core web servicing middleware
+- Support 1 view engine (`ejs`)
+- Support 2 database engine (`mssql`, `mysql`) (v2.1.4)
+- Support 6 tools : log, db, connection, error, exit, file
 
 
 
 
 
-## Philosophy    
-The `summer-mvc` has only one goal to provide very simple way to design web application. As most developer feel comfortable for using the **spring framework**, the `summer-mvc` provides spring framework - like environment. `summer-mvc` uses small **dispatcher-engine** (like spring's dispatcher-servlet), and it can be controlled by **JSON files**(like spring's xxx-servlet.xml).      
+## Techincal Site
+Please check your summer-mvc version and APIs.  
+There are some need to discuss and get guides, please send email to inodient@gmail.com
+Korean written site will be opened at July 2018.
+
+**More information can be found at https://www.summermvc.com**.
+( This site is being updating continuosly. )
+
+
+
+
+## Youtube Channel
+[summer-mvc youtube channel](https://www.youtube.com/channel/UCmpfNkTMaMR2lw25JFrwC6g?view_as=subscriber)
+
+#### Initialising
+[![IMAGE ALT TEXT HERE](https://www.summermvc.com/install.png)](https://youtu.be/WRuBzKUgipg)
 
 
 
 
 
-## History
-v 1.0.0 Initial version    
-v 1.0.1 Bug fixed    
-v 1.0.2 Bug fixed    
-v 1.1.0 Bug fixed    
-v 1.1.3 Bug fixed    
-**v 2.0.0 Major Change | Current Version**
+  
+
+
+
+## Version 2.1.5
+1. Support `Nodejs` production / development mode
+2. Support `Javascript` Syntax Validator
+3. Support both `http` / `https`
+4. Support inline `dispatcher` assigning
+5. Add supported dbms - mssql
+
+
 
 
 
@@ -134,8 +132,10 @@ v 1.1.3 Bug fixed
 
 ## People
 The original author of summer-mvc is Changho Kang.  
-If you want to participate to improve <b>summer-mvc</b>,
-please contact <b>inodient@gmail.com</b>.
+
+If you want to participate to improve **summer-mvc**,
+please contact **inodient@gmail.com**.
+
 We wait passionate contributor.
 
 

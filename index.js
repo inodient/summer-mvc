@@ -60,6 +60,27 @@ exports.setInlineContextDispatchingInfo = function(){
 
 
 
+//***************************************************
+//*** Inline Simle Routers
+//***************************************************
+global.simpleGetRouters = [];
+global.simplePostRouters = [];
+
+exports.get = function( path, callback ){
+	var simpleGetRouter = { "path" : path, "callback" : callback };
+	simpleGetRouters.push( simpleGetRouter );
+	logger.info( "Inline Router for '" + path + "' [GET] is added." );
+}
+
+exports.post = function( path, callback ){
+	var simplePostRouter = { "path" : path, "callback" : callback };
+	simplePostRouters.push( simplePostRouter );
+	logger.info( "Inline Router for '" + path + "' [POST] is added." );
+}
+
+
+
+
 
 //***************************************************
 //*** Create summer-mvc project hierarchy

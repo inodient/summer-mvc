@@ -50,6 +50,7 @@ exports.makeHierarchy = function( folder, _currentPath ){
       }
     }
   } catch( err ){
+    console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[common.js]", err );
     throw err;
   }
 }
@@ -72,12 +73,14 @@ exports.copyFile = function(src, dest) {
   try {
     data = require( "fs" ).readFileSync( src, "utf8" );
   } catch ( err ){
+    console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[common.js]", err );
     throw err;
   }
 
   try{
     fs.writeFileSync( dest, data );
   } catch( err ){
+    console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[common.js]", err );
     throw err;
   }
 }
@@ -92,7 +95,7 @@ exports.renameFolder = function( folderName ){
   try{
     fs.renameSync( oldPath, newPath )
   } catch( err ){
-    console.log( err );
+    console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[common.js]", err );
     throw err;
   }
 }

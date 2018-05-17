@@ -78,6 +78,22 @@ Promise.all( setterPromises )
 
 
 
+	// inline get routers
+	for( let i=0; i<simpleGetRouters.length; i++ ){
+		app.get( simpleGetRouters[i].path, simpleGetRouters[i].callback );
+	}
+
+	// inline post routers
+	for( let i=0; i<simplePostRouters.length; i++ ){
+		app.get( simplePostRouters[i].path, simplePostRouters[i].callback );
+	}
+
+
+
+
+
+
+
 	// method = get
 	let dispatchingInfo = __inlineContextDispatchingInfo != null ? __inlineContextDispatchingInfo : require( __contextDispatchingInfo );
 	let getSpecifications = dispatchingInfo[ "GET" ];
@@ -123,12 +139,16 @@ Promise.all( setterPromises )
 
 		      }
 		    } catch( err ){
+ 		      console.log( "Error occured while res rendering : app.get" );
 		      res.status(404);
+		      logger.error( err );
 		      next( err );
 		    }
 		  } )
 		  .catch( function(err){
+            console.log( "Error occured while res rendering : app.get" );
 		    res.status(500);
+		    logger.error( err );
 		    next( err );
 		  } );
 		} );
@@ -174,6 +194,7 @@ Promise.all( setterPromises )
 		      }
 		    } catch( err ){
 		      console.log( "Error occured while res rendering : app.post" );
+		      logger.error( err );
 		      res.status(404);
 		      next( err );
 		    }
@@ -181,6 +202,7 @@ Promise.all( setterPromises )
 		  .catch( function(err){
 		    console.log( "Error catched in app.post method..." );
 		    res.status(500);
+		    logger.error( err );
 		    next( err );
 		  } );
 		} );
