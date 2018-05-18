@@ -4,7 +4,7 @@ exports.control = function( req, res, connection ){
 
 		if( __mssqlHandlerUsage ){
 			var params = [];
-			var queryId = req.query.selectedQueryId;
+			var queryId = req.query.selectedMssqlQueryId;
 
 			if( queryId === "getAccessLog" ){
 				var date = new Date();
@@ -14,17 +14,17 @@ exports.control = function( req, res, connection ){
 				params.push( {"ENDDATE":date} );
 
 			} else if( queryId === "insertAccessLog" ){
-				params.push( ( (new Date()).toISOString() ).substring( 0, 9) );
-				params.push( "inodient" );
-				params.push( req._parsedUrl.pathname );
-				params.push( JSON.stringify( req.query, null, 4 ) );
-				params.push( JSON.stringify( req.params, null, 4 ) );
-				params.push( req.method );
+				params.push( { "CONNECTIONTIME": ( (new Date()).toISOString() ).substring( 0, 9) } );
+				params.push( { "USERID": "inodient" } );
+				params.push( { "FULLPATH": req._parsedUrl.pathname } );
+				params.push( { "QUERY": JSON.stringify( req.query, null, 4 ) } );
+				params.push( { "PARAM": JSON.stringify( req.params, null, 4 ) } );
+				params.push( { "METHOD": req.method } );
 			} else if( queryId === "updateAccessLog" ){
-				params.push( "inodient" );
-				params.push( "your_user_id" );
+				params.push( { "USERID": "summer-mvc" } );
+				params.push( { "PARAM": "inodient" } );
 			} else if( queryId === "deleteAccessLog" ){
-				params.push( "%getData%" );
+				params.push( { "PARAM": "%getData%" } );
 			}
 			
 			mssqlHandler.executeQuery( queryId, params, connection.mssqlConnection )

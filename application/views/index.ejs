@@ -17,24 +17,50 @@
 	  		color: lightgray;
 	  	}
 
+	  	.contents {
+	  		font-size: 14.5px;
+	  		max-width: 1100px;
+	  	}
+
 	  	.test_table{
 	  		margin-bottom: 0px;
 	  	}
 
 	  	.test_table tbody tr td{
 	  		border: 0px;
+	  		margin: auto;
 	  	}
 
 	  	.input-group{
 	  		width: 100%;
+	  		border-radius: 0px;
+	  	}
+
+	  	.input-group *{
+	  		border-radius: 0px;
+	  	}
+
+	  	.btn-default {
+	  		border-radius: 0px;
+	  		background-color: #00000005;
+	  	}
+
+	  	.btn-default:hover, .btn-default:active {
+	  		background-color: #3d3d3d;
+	  		color: #ffffff;
+	  	}
+
+	  	.table-td-title {
+	  		background-color: #00000005;
 	  	}
 
 	  	.query_select{
-	  		width: 100%;
+	  		border-radius: 0px;
+	  		/*width: 100%;*/
 	  	}
 
 	  	.site-footer-container {
-	  		padding: 100px;
+	  		padding: 30px 100px 30px 100px;
 	  	}
 
 	  </style>
@@ -45,14 +71,18 @@
 	  		$("#ajax_request").on( "click", function(){
 	  		  var queryText = $("#ajaxMessage").val();
 
-          $.get( "/ajaxrequest?text=" + queryText, function(data, status){
-            $("#message").text( data.text.toString() );
-          } );
-	      } );
+	          $.get( "/ajaxrequest?text=" + queryText, function(data, status){
+	            $("#message").text( data.text.toString() );
+	          } );
+		      } );
 
-				$("#queryId").on( "change", function(){
-					$("#selectedQueryId").val( this.value );
-				} );
+					$("#mysqlQueryId").on( "change", function(){
+						$("#selectedMysqlQueryId").val( this.value );
+					} );
+
+					$("#mssqlQueryId").on( "change", function(){
+						$("#selectedMssqlQueryId").val( this.value );
+					} );
 
 	      $(function() {
 		  // We can attach the `fileselect` event to all file inputs on the page
@@ -90,15 +120,15 @@
 </head>
 <body>
 	<div class="jumbotron text-center">
-		<h1>Welcome summer-mvc</h1>
-		<p>Very Light Web Application <b>Framework & SDK</b> for Nodejs</p>
-	</div>
-	<div class="container-fluid" style="font-size:15px">
+	    <h1>summer-mvc</h1>
+	    <p>Web Application <b>Framework & Environment</b> for Nodejs</p>
+	  </div>
+	<div class="container-fluid contents" style="font-size:15px">
 		<div class="row">
 			<div class="col-lg-1 col-md-1 col-sm-1"></div>
 
 			<div class="col-lg-5 col-md-5 col-sm-5">
-				<h3>Test</h3>
+				<h3>Test & Actions</h3>
 				<hr>
 				<div class="table-responsive">
 					<table class="table test_table">
@@ -106,7 +136,7 @@
 							<tr>
 								<td class="col-lg-3 col-md-3 col-sm-3">Post Request</td>
 								<td>
-									<form class="form-inline" action="/" method="post">
+									<form action="/" method="post">
 										<div class="input-group">
 											<input type="input" class="form-control" name="postMessage" placeholder="Post Message" />
 											<div class="input-group-btn">
@@ -119,12 +149,14 @@
 							<tr>
 								<td class="col-lg-3 col-md-3 col-sm-3">Ajax Request</td>
 								<td>
+									<form action="" method="">
 										<div class="input-group">
 											<input type="input" class="form-control" id="ajaxMessage" placeholder="Ajax Message" required />
 											<div class="input-group-btn">
-												<button type="submit" class="btn btn-default" id="ajax_request">Send</button>
+												<button type="button" class="btn btn-default" id="ajax_request">Send</button>
 											</div>
 										</div>
+									</form>
 								</td>
 							</tr>
 						</tbody>
@@ -137,9 +169,9 @@
 							<tr>
 								<td class="col-lg-3 col-md-3 col-sm-3">Cookie</td>
 								<td>
-									<form class="form-inline" action="/setcookie" method="get">
+									<form action="/setcookie" method="get">
 										<div class="input-group">
-											<input style="width:50%" class="form-control" name="cookieKey" placeholder="key" required />
+											<input style="width:50%; border-right: 0px" class="form-control" name="cookieKey" placeholder="key" required />
 											<input style="width:50%" class="form-control" name="cookieValue" placeholder="value" required />
 											<div class="input-group-btn">
 												<button class="btn btn-default">Set</button>
@@ -151,9 +183,9 @@
 							<tr>
 								<td class="col-lg-3 col-md-3 col-sm-3">Session</td>
 								<td>
-									<form class="form-inline" action="/setsession" method="get">
+									<form action="/setsession" method="get">
 										<div class="input-group">
-											<input style="width:50%" class="form-control" name="sessionKey" placeholder="key" required />
+											<input style="width:50%; border-right: 0px" class="form-control" name="sessionKey" placeholder="key" required />
 											<input style="width:50%" class="form-control" name="sessionValue" placeholder="value" required />
 											<div class="input-group-btn">
 												<button class="btn btn-default">Set</button>
@@ -172,18 +204,22 @@
 							<tr>
 								<td class="col-lg-3 col-md-3 col-sm-3">Mysql</td>
 								<td>
-									<form class="form-inline" action="/getdata-mysql" method="get">
-										<% if( mysqlQueries && mysqlQueries.length > 0 ){ %>
-											<select class="form-control query_select" id="queryId">
-												<% for( var i=0; i<mysqlQueries.length; i++ ){ %>
-													<option value=<%= mysqlQueries[i].$.id %> ><%= mysqlQueries[i].$.id %></option>
-												<% } %>
-											</select>
-											<input id="selectedQueryId" name="selectedQueryId" type="text" value=<%= mysqlQueries[0].$.id %> hidden />
-											<button class="btn btn-default">Run</button>
-										<% } else { %>
-											<p>Disabled</p>
-										<% } %>
+									<form action="/getdata-mysql" method="get">
+										<div class="input-group">
+											<% if( mysqlQueries && mysqlQueries.length > 0 ){ %>
+												<select class="form-control query_select" id="mysqlQueryId">
+													<% for( var i=0; i<mysqlQueries.length; i++ ){ %>
+														<option value=<%= mysqlQueries[i].$.id %> ><%= mysqlQueries[i].$.id %></option>
+													<% } %>
+												</select>
+												<input id="selectedMysqlQueryId" name="selectedMysqlQueryId" type="text" value=<%= mysqlQueries[0].$.id %> hidden />
+												<div class="input-group-btn">
+													<button class="btn btn-default" >Run</button>
+												</div>
+											<% } else { %>
+												<p>Disabled</p>
+											<% } %>
+										</div>
 									</form>
 								</td>
 							</tr>
@@ -196,18 +232,22 @@
 							<tr>
 								<td class="col-lg-3 col-md-3 col-sm-3">Mssql</td>
 								<td>
-									<form class="form-inline" action="/getdata-mssql" method="get">
-										<% if( mssqlQueries && mssqlQueries.length > 0 ){ %>
-											<select class="form-control query_select" id="queryId">
-												<% for( var i=0; i<mssqlQueries.length; i++ ){ %>
-													<option value=<%= mssqlQueries[i].$.id %> ><%= mssqlQueries[i].$.id %></option>
-												<% } %>
-											</select>
-											<input id="selectedQueryId" name="selectedQueryId" type="text" value=<%= mssqlQueries[0].$.id %> hidden />
-											<button class="btn btn-default">Run</button>
-										<% } else { %>
-											<p>Disabled</p>
-										<% } %>
+									<form action="/getdata-mssql" method="get">
+										<div class="input-group">
+											<% if( mssqlQueries && mssqlQueries.length > 0 ){ %>
+												<select class="form-control query_select" id="mssqlQueryId">
+													<% for( var i=0; i<mssqlQueries.length; i++ ){ %>
+														<option value=<%= mssqlQueries[i].$.id %> ><%= mssqlQueries[i].$.id %></option>
+													<% } %>
+												</select>
+												<input id="selectedMssqlQueryId" name="selectedMssqlQueryId" type="text" value=<%= mssqlQueries[0].$.id %> hidden />
+												<div class="input-group-btn">
+													<button class="btn btn-default">Run</button>
+												<% } else { %>
+												</div>
+												<p>Disabled</p>
+											<% } %>
+										</div>
 									</form>
 								</td>
 							</tr>
@@ -221,12 +261,12 @@
 							<tr>
 								<td class="col-lg-3 col-md-3 col-sm-3">File Upload</td>
 								<td>
-									<form id="uploadForm" class="form-inline" action="/upload" method="post" enctype="multipart/form-data">
+									<form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
 										<div class="input-group">
 											<input type="text" class="form-control" readonly>
-			                <label class="input-group-btn">
+			                		<label class="input-group-btn">
 			                    <span class="btn btn-default">
-			                        Submit <input type="file" style="display: none;" name="uploadFileForm" multiple>
+			                        Upload <input type="file" style="display: none;" name="uploadFileForm" multiple>
 			                    </span>
 			                </label>
 			            	</div>
@@ -236,9 +276,9 @@
 							<tr>
 								<td class="col-lg-3 col-md-3 col-sm-3">File Download</td>
 								<td>
-									<form class="form-inline" action="/download" method="get">
+									<form action="/download" method="get">
 										<div class="input-group">
-											<input class="form-control" name="downloadFileName" placeholder="file name" required/>
+											<input type="text" class="form-control" name="downloadFileName" placeholder="file name" required/>
 											<div class="input-group-btn">
 												<button type="submit" class="btn btn-default">Download</button>
 											</div>
@@ -260,26 +300,26 @@
 					<table class="table table-bordered text-center">
 						<tbody>
 							<tr>
-								<td>Method</td>
+								<td class="table-td-title">Method</td>
 								<td><%= method %></td>
 							</tr>
 							<tr>
-								<td>Path</td>
+								<td class="table-td-title">Path</td>
 								<td><%= path %></td>
 							</tr>
 							<tr>
-								<td>Query String</td>
+								<td class="table-td-title">Query String</td>
 								<td><%= queryString %></td>
 							</tr>
 							<tr>
-								<td>Params</td>
+								<td class="table-td-title">Params</td>
 								<td><%= params %></td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 				<hr>
-				<textarea style="width:100%; min-height:240px; border:1px solid lightgray" id="message" readonly><%= message %></textarea>
+				<textarea style="width:100%; min-height:300px; border:1px solid lightgray; padding: 20px" id="message" readonly><%= message %></textarea>
 			</div>
 			<div class="col-lg-1 col-md-1 col-sm-1"></div>
 		</div>

@@ -4,7 +4,7 @@ exports.control = function( req, res, connection ){
 
 		if( __mysqlHandlerUsage ){
 			var params = [];
-			var queryId = req.query.selectedQueryId;
+			var queryId = req.query.selectedMysqlQueryId;
 
 			if( queryId === "getAccessLog" ){
 				var date = new Date();
@@ -21,8 +21,8 @@ exports.control = function( req, res, connection ){
 				params.push( JSON.stringify( req.params, null, 4 ) );
 				params.push( req.method );
 			} else if( queryId === "updateAccessLog" ){
+				params.push( "summer-mvc" );
 				params.push( "inodient" );
-				params.push( "your_user_id" );
 			} else if( queryId === "deleteAccessLog" ){
 				params.push( "%getData%" );
 			}

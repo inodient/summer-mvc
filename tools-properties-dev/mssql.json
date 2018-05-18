@@ -1,8 +1,8 @@
 {
-"user": "**",
-	"password": "****",
-	"server": "****",
-	"database": "****",
+"user": "usrCERND",
+	"password": "usrIMSI^0730CERND",
+	"server": "DIOPRDB01",
+	"database": "front2007",
 	"queries" : [
 		"/tools-submodules-dev/db/queries/mssqlQuery.xml"
 	]
