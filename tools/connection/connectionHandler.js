@@ -354,6 +354,7 @@ module.exports = function( req, res ){
 			}
 
 			if( maxAge ){
+				logger.debug( maxAge );
 				req.session.cookie.maxAge = maxAge;
 			} else{
 				throw "IllegalArgumentError : not enough arguments";

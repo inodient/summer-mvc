@@ -1,6 +1,7 @@
 module.exports.logErrors = logErrors;
 module.exports.clientErrorHandler = require( __clientErrorHandler );
 module.exports.defaultLogHandler = defaultLogHandler;
+module.exports.pageNotFoundErrorHandler = pageNotFoundErrorHandler;
 
 
 
@@ -8,7 +9,7 @@ module.exports.defaultLogHandler = defaultLogHandler;
 
 function logErrors(err, req, res, next){
 	var logMsg = "";
-	
+
 	if( err instanceof Error ){
 		logMsg = err.message + "\n" + err.stack; 
 	} else{
@@ -27,16 +28,21 @@ function defaultLogHandler(err, req, res, next) {
   }
 
   var statusCode = res.statusCode;
-  
+
   if( statusCode == "404" ){
 	  res.render( "error.html" );  
   } else if( statusCode == "500" ){
 	  res.render( "error.html" );
   } else if( statusCode == "200" ){
-	  res.status( 404 );
+	  res.status( 500 );
 	  res.render( "error.html" );
   } else{
 	  res.render( "error.html" );
   }
   
+}
+
+function pageNotFoundErrorHandler( req, res, next ){
+	res.status(404);
+	res.render( "error.html" );
 }

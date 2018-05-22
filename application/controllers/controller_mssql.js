@@ -24,12 +24,12 @@ exports.control = function( req, res, connection ){
 				params.push( { "USERID": "summer-mvc" } );
 				params.push( { "PARAM": "inodient" } );
 			} else if( queryId === "deleteAccessLog" ){
-				params.push( { "PARAM": "%getData%" } );
+				params.push( { "FULLPATH": "getdata" } );
 			}
 			
 			mssqlHandler.executeQuery( queryId, params, connection.mssqlConnection )
 			.then( function( queryResults ){
-				resolve( setModel( req, res, JSON.stringify(queryResults.results, null, 4), null ) );
+				resolve( setModel( req, res, JSON.stringify(queryResults.originalResults, null, 4), null ) );
 			} )
 			.catch( function(err){
 				reject( err );

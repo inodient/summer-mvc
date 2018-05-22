@@ -82,9 +82,14 @@ function executeQuery( queryId ){
 	return new Promise( function(resolve, reject){
 		if( connection ){
 			connection.query( getQueryString( queryId, params ) )
-			.then( function( queryResults ){
-				resolve( { connection:connection, results:queryResults, rowsAffacted:queryResults.rowsAffacted } );
+			.then( function( results ){
+				delete results.recordset;
+				resolve( { connection:connection, originalResults:results, data:results.recordsets, rowsAffacted:results.rowsAffacted } );
 			} )
+			.catch( function(err){
+				console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mssqlHandler.js]", err );
+				reject( err );
+			} );
 		} else{
 			executeTransaction( queryId, params )
 			.then( function(queryResults){
@@ -195,11 +200,11 @@ function getQueryString( queryId, params ){
 
 		for( var i=0; i<queries.length; i++ ){
 			if( queries[i].id == queryId ){
-				return queries[i].queryString;
+				return setQuryParams( queries[i].queryString, params );
 			}
 		}
 
-		return "SELECT NOW()";
+		return "SELECT @@version";
 	} catch( err ){
 		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mssqlHandler.js]", err );
 		throw err;
@@ -209,21 +214,77 @@ function getQueryString( queryId, params ){
 function setQueryParams( queryString, params ){
 	try {
 		if( params ){
-			for( var i=0; i<params.length; i++ ){
-				if( params[i] instanceof Object ){
-					var key = Object.keys( params[i] )[0];
-					var value = ( params[i] )[key];
 
+			if( queryString.indexOf("?") > -1 ){
+				for( var i=0; i<params.length; i++ ){
 					if( !isNaN(parseFloat(value)) && isFinite(value) ){
-						queryString = queryString.replace( new RegExp("#" + key + "#", "gi"), value );
+						queryString = queryString.replace( "?", "" + params[i] + "" );
 					} else {
-						queryString = queryString.replace( new RegExp("#" + key + "#", "gi"), "'" + value + "'" );
+						queryString = queryString.replace( "?", "'" + params[i] + "'" );
+					}
+				}
+			} else{
+				for( var i=0; i<params.length; i++ ){
+					if( params[i] instanceof Object ){
+
+						var key = Object.keys( params[i] )[0];
+						var value = ( params[i] )[key];
+
+						if( !isNaN(parseFloat(value)) && isFinite(value) ){
+							queryString = queryString.replace( new RegExp("#" + key + "#", "gi"), value );
+						} else {
+							queryString = queryString.replace( new RegExp("#" + key + "#", "gi"), "'" + value + "'" );
+						}
 					}
 				}
 			}
 		}
 
+		return setLikeQueryParam( queryString );
+	} catch( err ){
+		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mssqlHandler.js]", err );
+		throw err;
+	}
+}
+
+function setLikeQueryParam( queryString ){
+	try {
+		var queryArray = queryString.split( /where/i );
+		var prePhase = queryArray[0];
+		var splitPhase = "";
+
+		if( queryArray.length > 1 ){
+			for( var j=1; j<queryArray.length; j++ ){
+				var wherePhase = ( ( queryArray[j] ).trim() ).replace( /\s\s+/g, ' ' );
+
+				if( wherePhase.length > 0 ){
+					var wherePhaseArray = wherePhase.split(" ");
+
+					for( var i=1; i<wherePhaseArray.length; i++ ){
+
+						if( wherePhaseArray[i-1].toUpperCase() === "LIKE" ){
+							var param = wherePhaseArray[i];
+							param = param.replace( /'/gi, "" );
+							param = "'%" + param + "%'";
+							wherePhaseArray[i] = param;
+						}
+					}
+
+					wherePhase = "";
+
+					for( var i=0; i<wherePhaseArray.length; i++ ){
+						wherePhase += " " + wherePhaseArray[i];
+					}
+				}
+
+				splitPhase += " WHERE" + wherePhase;
+			}
+
+			queryString = prePhase + splitPhase;
+		}
+
 		return queryString;
+
 	} catch( err ){
 		console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[mssqlHandler.js]", err );
 		throw err;

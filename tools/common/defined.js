@@ -553,10 +553,10 @@ Object.defineProperty(global, "__mysqlQueries", {
 
 Object.defineProperty(global, "__mysqlQueriesXML", {
 	get : function(){
-		if( fs.existsSync(path.join( process.cwd(), __toolsSubmodulesPath, "db", "queries", "query.xml" ) ) ){
-			return path.join( process.cwd(), __toolsSubmodulesPath, "db", "queries", "query.xml" );
+		if( fs.existsSync(path.join( process.cwd(), __toolsSubmodulesPath, "db", "queries", "mysqlQuery.xml" ) ) ){
+			return path.join( process.cwd(), __toolsSubmodulesPath, "db", "queries", "mysqlQuery.xml" );
 		} else{
-			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", __toolsSubmodulesPath, "db", "queries", "query.xml" );
+			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", __toolsSubmodulesPath, "db", "queries", "mssqlQuery.xml" );
 		}
 	}
 } );
@@ -595,10 +595,10 @@ Object.defineProperty(global, "__mssqlQueries", {
 
 Object.defineProperty(global, "__mssqlQueriesXML", {
 	get : function(){
-		if( fs.existsSync(path.join( process.cwd(), __toolsSubmodulesPath, "db", "queries", "query.xml" ) ) ){
-			return path.join( process.cwd(), __toolsSubmodulesPath, "db", "queries", "query.xml" );
+		if( fs.existsSync(path.join( process.cwd(), __toolsSubmodulesPath, "db", "queries", "mssqlQuery.xml" ) ) ){
+			return path.join( process.cwd(), __toolsSubmodulesPath, "db", "queries", "mssqlQuery.xml" );
 		} else{
-			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", __toolsSubmodulesPath, "db", "queries", "query.xml" );
+			return path.join( path.dirname( require.main.filename ), "node_modules", "summer-mvc", __toolsSubmodulesPath, "db", "queries", "mssqlQuery.xml" );
 		}
 	}
 } );

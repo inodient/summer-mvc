@@ -16,6 +16,6 @@
     update connectionInfo set userId = ? where param = ?
   </query>
   <query id='deleteAccessLog'>
-    delete from connectionInfo where param like ?
+    delete from connectionInfo where fullpath like ?
   </query>
 </queries>

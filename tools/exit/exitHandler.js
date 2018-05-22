@@ -97,13 +97,31 @@ function releaseResources(){
 function releaseGlobalPool(){
 	return new Promise( function(resolve, reject){
 		try{
-			if( __mysqlHandlerUsage ){
-				pool.end();
+			var messageArray = [];
 
-				resolve( {"message" : "Release MySql Pool"} );
-			} else{
-				resolve( "" );
+			if( __mysqlHandlerUsage ){
+				mysqlPool.end();
+				messageArray.push( "Release Mysql Pool" );
+
+				if( pool.dbms === "mysql" ) pool.end();
+			} 
+			if( __mssqlHandlerUsage ){
+				mssqlPool.close();
+				messageArray.push( "Release Mssql Pool" );
+
+				if( pool.dbms === "mssql" ) pool.close();
 			}
+
+			var message = "";
+			for( var i=0; i<messageArray.length; i++ ){
+				message += messageArray[i] + ", ";
+			}
+
+			message = message.trim();
+			message = message.substring( 0, message.length - 1 );
+
+			resolve( {"message" : message} );
+			
 		} catch( err ){
 			console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[exitHandler.js]", err );
 			reject( err );

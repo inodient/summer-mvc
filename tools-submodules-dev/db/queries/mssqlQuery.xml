@@ -29,7 +29,7 @@
   </query>
   <query id='deleteAccessLog'>
     <![CDATA[
-      delete from connectionInfo where param like #PARAM#
+      delete from connectionInfo where fullpath like #FULLPATH#
     ]]>
   </query>
 </queries>

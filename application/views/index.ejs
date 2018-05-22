@@ -54,13 +54,25 @@
 	  		background-color: #00000005;
 	  	}
 
-	  	.query_select{
+	  	.input-group .query_select{
 	  		border-radius: 0px;
+	  		-webkit-appearance: none;
 	  		/*width: 100%;*/
 	  	}
 
 	  	.site-footer-container {
 	  		padding: 30px 100px 30px 100px;
+	  	}
+
+	  	.anchor {
+	  		text-decoration: none;
+	  		color: lightgray;
+	  	}
+
+	  	.anchor:hover {
+	  		text-decoration: none;
+	  		cursor: pointer;
+	  		color: lightgray;
 	  	}
 
 	  </style>
@@ -120,8 +132,10 @@
 </head>
 <body>
 	<div class="jumbotron text-center">
-	    <h1>summer-mvc</h1>
-	    <p>Web Application <b>Framework & Environment</b> for Nodejs</p>
+	    <a class="anchor" href="/">
+	    	<h1>summer-mvc</h1>
+	    	<p>Web Application <b>Framework & Environment</b> for Nodejs</p>
+	    </a>
 	  </div>
 	<div class="container-fluid contents" style="font-size:15px">
 		<div class="row">
@@ -208,6 +222,9 @@
 										<div class="input-group">
 											<% if( mysqlQueries && mysqlQueries.length > 0 ){ %>
 												<select class="form-control query_select" id="mysqlQueryId">
+													<option value=<%= mysqlQueries[0].$.id %> >
+														- Please Select Query -
+													</option>
 													<% for( var i=0; i<mysqlQueries.length; i++ ){ %>
 														<option value=<%= mysqlQueries[i].$.id %> ><%= mysqlQueries[i].$.id %></option>
 													<% } %>
@@ -236,8 +253,13 @@
 										<div class="input-group">
 											<% if( mssqlQueries && mssqlQueries.length > 0 ){ %>
 												<select class="form-control query_select" id="mssqlQueryId">
+													<option value=<%= mssqlQueries[0].$.id %> >
+														- Please Select Query -
+													</option>
 													<% for( var i=0; i<mssqlQueries.length; i++ ){ %>
-														<option value=<%= mssqlQueries[i].$.id %> ><%= mssqlQueries[i].$.id %></option>
+														<option value=<%= mssqlQueries[i].$.id %> >
+															<%= mssqlQueries[i].$.id %>
+														</option>
 													<% } %>
 												</select>
 												<input id="selectedMssqlQueryId" name="selectedMssqlQueryId" type="text" value=<%= mssqlQueries[0].$.id %> hidden />
@@ -266,7 +288,7 @@
 											<input type="text" class="form-control" readonly>
 			                		<label class="input-group-btn">
 			                    <span class="btn btn-default">
-			                        Upload <input type="file" style="display: none;" name="uploadFileForm" multiple>
+			                        Upload <input type="file" style="display: none;" name="uploadFileHidden" multiple>
 			                    </span>
 			                </label>
 			            	</div>

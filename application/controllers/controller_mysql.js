@@ -24,7 +24,7 @@ exports.control = function( req, res, connection ){
 				params.push( "summer-mvc" );
 				params.push( "inodient" );
 			} else if( queryId === "deleteAccessLog" ){
-				params.push( "%getData%" );
+				params.push( "getdata" );
 			}
 
 			mysqlHandler.executeQuery( queryId, params, connection.mysqlConnection )

@@ -10,5 +10,5 @@ function genUuid( req ){
 }
 
 function genName(){
-	return "SMVCSESS";
+	return "SMCSESS";
 }

@@ -160,10 +160,10 @@ function debug(){
 
 		var functionName = getFunctionName( arguments.callee.caller.toString() );
 
-		if( loggerInfo.writeFile.INFO ){
+		if( loggerInfo.writeFile.DEBUG ){
 			logFileWriteStream.write( "[DEBUG] - [" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + "\n"  );
 		}
-		if( loggerInfo.console.INFO ){
+		if( loggerInfo.console.DEBUG ){
 			console.log( attachColorPrefix(colorInfo.FgCyan) + "%s" +  attachColorPrefix(colorInfo.Reset), "[DEBUG]", "[" + __callerFileName + " : " + __line + " | " + functionName + " - " + curTime + "] " + message + ""  );
 		}
 	} catch( err ){

@@ -48,7 +48,7 @@ require( "./tools/common/defined.js" );
 
 
 //***************************************************
-//*** Inline Core Properties
+//*** Inline dispatching Properties
 //***************************************************
 global.__inlineContextDispatchingInfo = null;
 
@@ -61,7 +61,7 @@ exports.setInlineContextDispatchingInfo = function(){
 
 
 //***************************************************
-//*** Inline Simle Routers
+//*** Inline Simple Routers
 //***************************************************
 global.simpleGetRouters = [];
 global.simplePostRouters = [];

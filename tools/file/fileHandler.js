@@ -26,7 +26,7 @@ function uploadFile( req ){
 
     return new Promise( function(resolve, reject){
 
-      logger.debug( "destDir : ", destDir );
+      logger.info( "destDir : ", destDir );
 
       try{
         var busboy = new Busboy({ headers: req.headers });
@@ -47,7 +47,7 @@ function uploadFile( req ){
             var saveTo = path.join( destDir, resultObject.savedFileName );
             file.pipe(fs.createWriteStream(saveTo));
 
-            logger.debug( "Uploading : " + saveTo);
+            logger.info( "Uploading : " + saveTo);
 
           } catch( err ){
             console.log( "\x1b[31m%s\x1b[0m", "[summer-mvc core]", "[fileHandler.js]", err );
@@ -56,7 +56,7 @@ function uploadFile( req ){
         });
 
         busboy.on( "finish", function() {
-          logger.debug( "Upload complete" );
+          logger.info( "Upload complete" );
           resolve( resultObject );
         });
 
@@ -95,12 +95,12 @@ function downloadFile( res, savedPath, savedFileName, originalFileName ){
       fileStream.pipe( response );
 
       fileStream.on( "data", function(){
-    	  logger.debug( "Downloading : " + savedFileName );
+    	  logger.info( "Downloading : " + savedFileName );
       });
 
       fileStream.on( "close", function(){
-        logger.debug( "Download Complete" );
-        resolve( { "originalFileName" : originalFileName, "savedPath" : savedPath, "savedFileName" : savedFileName } );
+        logger.info( "Download Complete" );
+        // resolve( { "originalFileName" : originalFileName, "savedPath" : savedPath, "savedFileName" : savedFileName } );
       });
 
     } )
@@ -130,7 +130,7 @@ function _getUploadDestination( arguments ){
     for( var i=0; i<defaultPath.length; i++ ){
       if( defaultPath[i] != "" ){
         destDir = path.join( destDir, defaultPath[i] );
-        logger.debug( destDir );
+        logger.info( destDir );
         common.makeFolder( destDir );
       }
     }

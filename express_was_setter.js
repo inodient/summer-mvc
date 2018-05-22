@@ -114,9 +114,10 @@ function setErrorHandler( app ){
 		try{
 			if( __errorHandlerUsage ){
 				var errorHandler = require( __errorHandler );
-				app.use( errorHandler.logErrors );
 				app.use( errorHandler.clientErrorHandler );
+				app.use( errorHandler.logErrors );
 				app.use( errorHandler.defaultLogHandler );
+				app.use( errorHandler.pageNotFoundErrorHandler );
 
 				global.errorHandler;
 
@@ -208,6 +209,7 @@ function setMysqlHandler(){
 				mysqlHandler.getPool()
 				.then( function(_pool){
 					global.pool = _pool;
+					pool.dbms = "mysql";
 					global.mysqlPool = _pool;
 
 					mysqlHandler.getQueries()
@@ -252,6 +254,7 @@ function setMssqlHandler(){
 				mssqlHandler.getPool()
 				.then( function(_pool){
 					global.pool = _pool;
+					pool.dbms = "mssql";
 					global.mssqlPool = _pool;
 
 					mssqlHandler.getQueries()

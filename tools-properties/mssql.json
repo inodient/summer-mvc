@@ -1,8 +1,8 @@
 {
-	"user": "**",
-	"password": "****",
-	"server": "****",
-	"database": "****",
+	"user": "summermvc",
+	"password": "Od62!6GI46!5",
+	"server": "den1.mssql1.gear.host",
+	"database": "summermvc",
 	"queries" : [
 		"/tools-submodules/db/queries/mssqlQuery.xml"
 	]
